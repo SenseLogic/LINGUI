@@ -8,7 +8,7 @@ Internationalization code generator.
 
 Lingui converts human-readable translation scripts into compilable D/C# code which can be directly integrated into the localized application.
 
-Its minimalistic syntax is designed to allow professional translators to specify static and parametric translations in a simple way.
+Its minimalistic syntax is designed to allow professional translators to specify both static and parametric translations in a simple way.
 
 ## Sample
 
