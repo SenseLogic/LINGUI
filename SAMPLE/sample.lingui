@@ -1,0 +1,61 @@
+Game
+    New_game
+    Welcome first_name last_name
+    Pears count
+
+English : Game
+    New_game
+        "New game"
+
+    Welcome first_name last_name
+        "Welcome, "
+        first_name
+        " "
+        last_name
+        "!"
+
+    Pears count
+        *count
+        " "
+        if @count = one
+            "pear"
+        else
+            "pears"
+
+German : Game
+    New_game
+        "Neues Spiel"
+
+    Welcome first_name last_name
+        "Willkommen, "
+        first_name
+        " "
+        last_name
+        "!"
+
+    Pears count
+        *count
+        " "
+        if @count = one
+            "Birne"
+        else
+            "Birnen"
+
+French : Game
+    New_game
+        "Nouveau jeu"
+
+    Welcome first_name last_name
+        "Bienvenue, "
+        first_name
+        " "
+        last_name
+        " !"
+
+    Pears count
+        *count
+        " "
+        if @count = one
+            "poire"
+        else
+            "poires"

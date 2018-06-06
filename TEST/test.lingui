@@ -1,0 +1,127 @@
+Game
+
+    Main_menu
+
+    :Chests count
+
+    :Swords count
+
+    :No_swords
+        Swords( 0* )
+
+    :One_sword
+        Swords( 1* )
+
+    The_items items
+
+    The_items_have_been_found items
+
+    Test
+        var no_chests one_chest
+        no_chests = Chests( 0* )
+        one_chest = Chests( 1* )
+        The_items_have_been_found( no_chests )
+        The_items_have_been_found( one_chest )
+        The_items_have_been_found( Chests( 2* ) )
+        The_items_have_been_found( No_swords() )
+        The_items_have_been_found( One_sword() )
+        The_items_have_been_found( Swords( 2* ) )
+
+English : Game
+
+    Main_menu
+        "Main menu"
+
+    :Chests count
+        if #count = 1
+            "chest"
+        else
+            "chests"
+        *result = *count
+
+    :Swords count
+        if @count = one
+            "sword"
+        else
+            "swords"
+        *result = *count
+
+    The_items items
+        if #items = 0
+            "No "
+        elseif #items = 1
+            "The "
+        else
+            "The "
+            *items
+            " "
+        items
+
+    The_items_have_been_found items
+        The_items( items )
+        if #items = 1
+            " has"
+        else
+            " have"
+        " been found.\n"
+
+French : Game
+
+    Main_menu
+        "Menu principal"
+
+    :Chests count
+        if #count <= 1
+            "coffre"
+        else
+            "coffres"
+        *result = *count
+        &result = male
+
+    :Swords count
+        if @count = one
+            "épée"
+        else
+            "épées"
+        *result = *count
+        &result = female
+
+    The_items items
+        if #items = 0
+            if &items = female
+                "Aucune "
+            else
+                "Aucun "
+        elseif #items = 1
+            if HasFirstCharacter( GetLowerCase( $items ), "aâeéêèiîoôuûh" )
+                "L'"
+            elseif &items = female
+                "La "
+            else
+                "Le "
+        else
+            "Les "
+            *items
+            " "
+        items
+
+    Have items
+        if #items = 0
+            " n'a"
+        elseif #items <= 1
+            " a"
+        else
+            " ont"
+
+    Been_found items
+        " été trouvé"
+        if &items = female
+            "e"
+        if #items > 1
+            "s"
+
+    The_items_have_been_found items
+        The_items( items )
+        Have( items )
+        Been_found( items )
+        ".\n"

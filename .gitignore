@@ -1,0 +1,8 @@
+lingui
+*.o
+SAMPLE/CS/sample.exe
+SAMPLE/D/sample
+SAMPLE/D/sample.o
+TEST/CS/test.exe
+TEST/D/test
+TEST/D/test.o
