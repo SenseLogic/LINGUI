@@ -1,11 +1,11 @@
-module GAME_LANGUAGE_MODULE;
+module game_language;
 
 // -- IMPORTS
 
-import GENRE_MODULE;
-import PLURALITY_MODULE;
-import LANGUAGE_MODULE;
-import TRANSLATION_MODULE;
+import genre;
+import plurality;
+import language;
+import translation;
 
 // -- TYPES
 

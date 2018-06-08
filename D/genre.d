@@ -1,4 +1,4 @@
-module GENRE_MODULE;
+module genre;
 
 // -- TYPES
 

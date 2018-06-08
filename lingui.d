@@ -890,23 +890,23 @@ class RULE
     {
         if ( DOptionIsEnabled )
         {
-            code.AddLine( "module " ~ GetClassName() ~ "_MODULE;" );
+            code.AddLine( "module " ~ GetClassName().toLower() ~ ";" );
             code.AddLine( "" );
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
-            code.AddLine( "import GENRE_MODULE;" );
-            code.AddLine( "import PLURALITY_MODULE;" );
+            code.AddLine( "import genre;" );
+            code.AddLine( "import plurality;" );
 
             if ( IsBaseLanguage )
             {
-                code.AddLine( "import LANGUAGE_MODULE;" );
+                code.AddLine( "import language;" );
             }
             else
             {
-                code.AddLine( "import " ~ BaseLanguageRule.GetClassName() ~ "_MODULE;" );
+                code.AddLine( "import " ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
             }
 
-            code.AddLine( "import TRANSLATION_MODULE;" );
+            code.AddLine( "import translation;" );
             code.AddLine( "" );
         }
 

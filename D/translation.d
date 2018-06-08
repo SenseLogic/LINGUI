@@ -1,10 +1,10 @@
-module TRANSLATION_MODULE;
+module translation;
 
 // -- IMPORTS
 
 import std.conv : to;
-import GENRE_MODULE;
-import PLURALITY_MODULE;
+import genre;
+import plurality;
 
 // -- TYPES
 

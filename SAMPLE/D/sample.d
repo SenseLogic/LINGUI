@@ -1,11 +1,11 @@
 // -- IMPORTS
 
 import std.stdio : writeln;
-import ENGLISH_LANGUAGE_MODULE;
-import FRENCH_LANGUAGE_MODULE;
-import GAME_LANGUAGE_MODULE;
-import GERMAN_LANGUAGE_MODULE;
-import TRANSLATION_MODULE;
+import english_language;
+import french_language;
+import game_language;
+import german_language;
+import translation;
 
 // -- FUNCTIONS
 

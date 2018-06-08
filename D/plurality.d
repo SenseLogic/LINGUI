@@ -1,4 +1,4 @@
-module PLURALITY_MODULE;
+module plurality;
 
 // -- TYPES
 
