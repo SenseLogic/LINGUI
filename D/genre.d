@@ -1,4 +1,4 @@
-module genre;
+module lingui.genre;
 
 // -- TYPES
 

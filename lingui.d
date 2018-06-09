@@ -890,23 +890,23 @@ class RULE
     {
         if ( DOptionIsEnabled )
         {
-            code.AddLine( "module " ~ GetClassName().toLower() ~ ";" );
+            code.AddLine( "module lingui." ~ GetClassName().toLower() ~ ";" );
             code.AddLine( "" );
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
-            code.AddLine( "import genre;" );
-            code.AddLine( "import plurality;" );
+            code.AddLine( "import lingui.genre;" );
+            code.AddLine( "import lingui.plurality;" );
 
             if ( IsBaseLanguage )
             {
-                code.AddLine( "import language;" );
+                code.AddLine( "import lingui.language;" );
             }
             else
             {
-                code.AddLine( "import " ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
+                code.AddLine( "import lingui." ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
             }
 
-            code.AddLine( "import translation;" );
+            code.AddLine( "import lingui.translation;" );
             code.AddLine( "" );
         }
 

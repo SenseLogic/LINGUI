@@ -1,4 +1,4 @@
-module plurality;
+module lingui.plurality;
 
 // -- TYPES
 

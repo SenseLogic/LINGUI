@@ -1,10 +1,10 @@
-module translation;
+module lingui.translation;
 
 // -- IMPORTS
 
+import lingui.genre;
+import lingui.plurality;
 import std.conv : to;
-import genre;
-import plurality;
 
 // -- TYPES
 

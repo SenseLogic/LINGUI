@@ -1,11 +1,11 @@
-module french_language;
+module lingui.french_language;
 
 // -- IMPORTS
 
-import genre;
-import plurality;
-import game_language;
-import translation;
+import lingui.genre;
+import lingui.plurality;
+import lingui.game_language;
+import lingui.translation;
 
 // -- TYPES
 

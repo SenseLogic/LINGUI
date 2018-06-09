@@ -1,11 +1,11 @@
-module language;
+module lingui.language;
 
 // -- IMPORTS
 
+import lingui.genre;
+import lingui.translation;
 import std.conv : to;
 import std.string : endsWith, indexOf, startsWith;
-import genre;
-import translation;
 
 // -- TYPES
 
