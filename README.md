@@ -155,9 +155,9 @@ A function can have parameters, which are translation variables with the followi
 
 A function can declare local translation variables, which can be used to temporarily store partial translations.
 
-A function returns a translated string, which is the concatenation of its evaluated textual expressions.
+A function returns a translated text which is the concatenation of the function textual expressions.
 
-It is transparently stored inside an implicit `result` translation variable, unless the function has a single-line definition.
+It is transparently accumulated inside an implicit `result` translation variable, unless the function has a single-line definition.
 
 If the function name is prefixed by a colon (`:`), the function returns the `result` translation variable itself, instead of just its text property.
 
