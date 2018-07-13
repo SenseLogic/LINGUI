@@ -147,19 +147,28 @@ The other languages then provide language-specific implementations for all these
 
 ### Functions
 
-Function can have parameters, which are translation variables providing one or several of the following informations :
+A function can have parameters, which are translation variables with the following properties :
 
 *   a text (`$`);
 *   a quantity text (`*`), which can be either an integer (`#`) or real (`%`) value;
 *   a genre (`&`).
 
-By default, functions return a translated string, which is the concatenation of the string value of all their executed statements.
+A function can declare local translation variables, which can be used to temporarily store partial translations.
 
-Unless the function has a single-line definition, this result is transparently accumulated inside an implicit `result` translation variable.
+A function returns a translated string, which is the concatenation of its evaluated textual expressions.
 
-If the function name is prefixed by a colon (`:`), the function will return the `result` translation variable itself, instead of just its text property.
+It is transparently stored inside an implicit `result` translation variable, unless the function has a single-line definition.
+
+If the function name is prefixed by a colon (`:`), the function returns the `result` translation variable itself, instead of just its text property.
 
 ### Statements
+
+*   Textual expressions
+
+    ```lua
+    "Some text...\n"
+    GetTitleCase( Swords( 2* ) )
+    ```
 
 *   Conditions
 
@@ -175,13 +184,6 @@ If the function name is prefixed by a colon (`:`), the function will return the 
         ...
     else
         ...
-    ```
-
-*   Textual expressions
-
-    ```lua
-    "Some text...\n"
-    GetTitleCase( Swords( 2* ) )
     ```
 
 *   Variable declarations and assignments
