@@ -150,7 +150,7 @@ The other languages then provide language-specific implementations for all these
 A function can have parameters, which are translation variables with the following properties :
 
 *   a text (`$`);
-*   a quantity text (`*`), which can be either an integer (`#`) or real (`%`) value;
+*   a quantity text (`*`), with an integer (`#`) or real (`%`) value;
 *   a genre (`&`).
 
 A function can declare local translation variables, which can be used to temporarily store partial translations.
