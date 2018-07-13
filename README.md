@@ -157,7 +157,7 @@ A function can declare local translation variables, which can be used to tempora
 
 A function returns a translated text which is the concatenation of the function textual expressions.
 
-It is transparently accumulated inside an implicit `result` translation variable, unless the function has a single-line definition.
+They are automatically accumulated inside an implicit `result` translation variable, unless the function has a single-line definition.
 
 If the function name is prefixed by a colon (`:`), the function returns the `result` translation variable itself, instead of just its text property.
 
