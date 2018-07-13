@@ -147,18 +147,17 @@ The other languages then provide language-specific implementations for all these
 
 ### Functions
 
-Most functions simply return a translated string.
-
-They can optionally have parameters, which are translation objects providing one or several of the following informations :
+Function can have parameters, which are translation variables providing one or several of the following informations :
 
 *   a text (`$`);
-*   a quantity text (`*`), specified either in integer (`#`) or real (`%`) format;
+*   a quantity text (`*`), which can be either an integer (`#`) or real (`%`) value;
 *   a genre (`&`).
 
-If the function name is prefixed by a colon (`:`), it will instead return a translation object, which can be used as a parameter for another translation function.
+By default, functions return a translated string, which is the concatenation of the string value of all their executed statements.
 
-Single-line functions directly return their result, while longer functions return the concatenation of their statement values,
-stored inside a result translation variable (`result`).
+Unless the function has a single-line definition, this result is transparently accumulated inside an implicit `result` translation variable.
+
+If the function name is prefixed by a colon (`:`), the function will return the `result` translation variable itself, instead of just its text property.
 
 ### Statements
 
