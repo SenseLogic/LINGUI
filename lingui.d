@@ -1481,12 +1481,8 @@ void main(
 
         argument_array = argument_array[ 1 .. $ ];
 
-        if ( option == "--verbose" )
-        {
-            VerboseOptionIsEnabled = true;
-        }
-        else if ( option == "--cs"
-                  && !DOptionIsEnabled )
+        if ( option == "--cs"
+             && !DOptionIsEnabled )
         {
             CsOptionIsEnabled = true;
         }
@@ -1498,6 +1494,10 @@ void main(
         else if ( option == "--uppercase" )
         {
             UpperCaseOptionIsEnabled = true;
+        }
+        else if ( option == "--verbose" )
+        {
+            VerboseOptionIsEnabled = true;
         }
         else
         {
@@ -1516,7 +1516,7 @@ void main(
         writeln( "Options :" );
         writeln( "    --cs" );
         writeln( "    --d" );
-        writeln( "    --unity" );
+        writeln( "    --uppercase" );
         writeln( "    --verbose" );
         writeln( "Examples :" );
         writeln( "    lingui --cs --verbose test.lingui CS/" );
