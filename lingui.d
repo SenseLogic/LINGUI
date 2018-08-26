@@ -1386,6 +1386,20 @@ class SCRIPT
             input_file_path,
             output_file_path;
 
+        if ( UpperCaseOptionIsEnabled )
+        {
+            file_name = file_name.toUpper();
+        }
+
+        if ( CsOptionIsEnabled )
+        {
+            file_name ~= ".cs";
+        }
+        else if ( DOptionIsEnabled )
+        {
+            file_name ~= ".d";
+        }
+
         input_file_path = GetExecutablePath( input_folder_path ~ file_name );
         output_file_path = output_folder_path ~ file_name;
 
@@ -1419,6 +1433,9 @@ class SCRIPT
         string output_folder_path
         )
     {
+        string
+            input_folder_path;
+
         if ( Rule.SubRuleArray.length > 0 )
         {
             foreach( language_rule; Rule.SubRuleArray )
@@ -1435,18 +1452,17 @@ class SCRIPT
         {
             if ( CsOptionIsEnabled )
             {
-                WriteBaseFile( "CS/", output_folder_path, "genre.cs" );
-                WriteBaseFile( "CS/", output_folder_path, "language.cs" );
-                WriteBaseFile( "CS/", output_folder_path, "plurality.cs" );
-                WriteBaseFile( "CS/", output_folder_path, "translation.cs" );
+                input_folder_path = "CS/";
             }
             else if ( DOptionIsEnabled )
             {
-                WriteBaseFile( "D/", output_folder_path, "genre.d" );
-                WriteBaseFile( "D/", output_folder_path, "language.d" );
-                WriteBaseFile( "D/", output_folder_path, "plurality.d" );
-                WriteBaseFile( "D/", output_folder_path, "translation.d" );
+                input_folder_path = "D/";
             }
+
+            WriteBaseFile( input_folder_path, output_folder_path, "genre" );
+            WriteBaseFile( input_folder_path, output_folder_path, "language" );
+            WriteBaseFile( input_folder_path, output_folder_path, "plurality" );
+            WriteBaseFile( input_folder_path, output_folder_path, "translation" );
         }
     }
 
