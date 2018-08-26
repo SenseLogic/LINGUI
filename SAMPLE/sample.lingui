@@ -1,10 +1,10 @@
 Game
-    New_game
+    NewGame
     Welcome first_name last_name
     Pears count
 
 English : Game
-    New_game
+    NewGame
         "New game"
 
     Welcome first_name last_name
@@ -23,7 +23,7 @@ English : Game
             "pears"
 
 German : Game
-    New_game
+    NewGame
         "Neues Spiel"
 
     Welcome first_name last_name
@@ -42,7 +42,7 @@ German : Game
             "Birnen"
 
 French : Game
-    New_game
+    NewGame
         "Nouveau jeu"
 
     Welcome first_name last_name

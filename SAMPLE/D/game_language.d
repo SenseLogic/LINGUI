@@ -13,7 +13,7 @@ class GAME_LANGUAGE : LANGUAGE
 {
     // -- INQUIRIES
 
-    string New_game(
+    string NewGame(
         )
     {
         return "";

@@ -10,7 +10,7 @@ namespace LINGUI
     {
         // -- INQUIRIES
 
-        public virtual string New_game(
+        public virtual string NewGame(
             )
         {
             return "";

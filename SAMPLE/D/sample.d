@@ -13,7 +13,7 @@ void TestLanguage(
     GAME_LANGUAGE game_language
     )
 {
-    writeln( game_language.New_game() );
+    writeln( game_language.NewGame() );
     writeln( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
     writeln( game_language.Pears( TRANSLATION( 0 ) ) );
     writeln( game_language.Pears( TRANSLATION( 1 ) ) );

@@ -21,7 +21,7 @@ class GERMAN_LANGUAGE : GAME_LANGUAGE
 
     // -- INQUIRIES
 
-    override string New_game(
+    override string NewGame(
         )
     {
         return "Neues Spiel";

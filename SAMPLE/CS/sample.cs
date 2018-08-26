@@ -13,7 +13,7 @@ public class TEST
         GAME_LANGUAGE game_language
         )
     {
-        Console.WriteLine( game_language.New_game() );
+        Console.WriteLine( game_language.NewGame() );
         Console.WriteLine( game_language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
         Console.WriteLine( game_language.Pears( new TRANSLATION( 0 ) ) );
         Console.WriteLine( game_language.Pears( new TRANSLATION( 1 ) ) );

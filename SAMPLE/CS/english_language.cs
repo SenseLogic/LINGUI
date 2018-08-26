@@ -18,7 +18,7 @@ namespace LINGUI
 
         // -- INQUIRIES
 
-        public override string New_game(
+        public override string NewGame(
             )
         {
             return "New game";

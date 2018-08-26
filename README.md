@@ -14,12 +14,12 @@ Its minimalistic syntax is designed to allow professional translators to specify
 
 ```lua
 Game
-    New_game
+    NewGame
     Welcome first_name last_name
     Pears count
 
 English : Game
-    New_game
+    NewGame
         "New game"
 
     Welcome first_name last_name
@@ -38,7 +38,7 @@ English : Game
             "pears"
 
 German : Game
-    New_game
+    NewGame
         "Neues Spiel"
 
     Welcome first_name last_name
@@ -57,7 +57,7 @@ German : Game
             "Birnen"
 
 French : Game
-    New_game
+    NewGame
         "Nouveau jeu"
 
     Welcome first_name last_name
@@ -97,7 +97,7 @@ namespace LINGUI
 
         // -- INQUIRIES
 
-        public override string New_game(
+        public override string NewGame(
             )
         {
             return "New game";
@@ -165,7 +165,7 @@ public class TEST
         GAME_LANGUAGE game_language
         )
     {
-        Console.WriteLine( game_language.New_game() );
+        Console.WriteLine( game_language.NewGame() );
         Console.WriteLine( game_language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
         Console.WriteLine( game_language.Pears( new TRANSLATION( 0 ) ) );
         Console.WriteLine( game_language.Pears( new TRANSLATION( 1 ) ) );
