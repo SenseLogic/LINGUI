@@ -4,8 +4,8 @@ module lingui.game_language;
 
 import lingui.genre;
 import lingui.plurality;
-import lingui.language;
 import lingui.translation;
+import lingui.language;
 
 // -- TYPES
 

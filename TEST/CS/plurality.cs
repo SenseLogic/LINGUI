@@ -1,10 +1,10 @@
 // -- IMPORTS
 
-using LINGUI;
+using GAME;
 
 // -- TYPES
 
-namespace LINGUI
+namespace GAME
 {
     public enum PLURALITY
     {

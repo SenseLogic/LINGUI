@@ -1,63 +1,70 @@
+// -- IMPORTS
+
+using LINGUI;
+
 // -- TYPES
 
-public class GERMAN_LANGUAGE : GAME_LANGUAGE
+namespace LINGUI
 {
-    // -- CONSTRUCTORS
-
-    public GERMAN_LANGUAGE(
-        )
+    public class GERMAN_LANGUAGE : GAME_LANGUAGE
     {
-        Name = "German";
-    }
+        // -- CONSTRUCTORS
 
-    // -- INQUIRIES
-
-    public override string New_game(
-        )
-    {
-        return "Neues Spiel";
-    }
-
-    // ~~
-
-    public override string Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        result_translation.AddText( "Willkommen, " );
-        result_translation.AddText( first_name_translation );
-        result_translation.AddText( " " );
-        result_translation.AddText( last_name_translation );
-        result_translation.AddText( "!" );
-
-        return result_translation.Text;
-    }
-
-    // ~~
-
-    public override string Pears(
-        TRANSLATION count_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        result_translation.AddText( count_translation.Quantity );
-        result_translation.AddText( " " );
-
-        if ( count_translation.GetGermanCardinalPlurality() == PLURALITY.One )
+        public GERMAN_LANGUAGE(
+            )
         {
-            result_translation.AddText( "Birne" );
-        }
-        else
-        {
-            result_translation.AddText( "Birnen" );
+            Name = "German";
         }
 
-        return result_translation.Text;
+        // -- INQUIRIES
+
+        public override string New_game(
+            )
+        {
+            return "Neues Spiel";
+        }
+
+        // ~~
+
+        public override string Welcome(
+            TRANSLATION first_name_translation,
+            TRANSLATION last_name_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( "Willkommen, " );
+            result_translation.AddText( first_name_translation );
+            result_translation.AddText( " " );
+            result_translation.AddText( last_name_translation );
+            result_translation.AddText( "!" );
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
+        public override string Pears(
+            TRANSLATION count_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( count_translation.Quantity );
+            result_translation.AddText( " " );
+
+            if ( count_translation.GetGermanCardinalPlurality() == PLURALITY.One )
+            {
+                result_translation.AddText( "Birne" );
+            }
+            else
+            {
+                result_translation.AddText( "Birnen" );
+            }
+
+            return result_translation.Text;
+        }
     }
 }

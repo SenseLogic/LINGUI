@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using LINGUI;
+using GAME;
 
 // -- TYPES
 
-namespace LINGUI
+namespace GAME
 {
     public class LANGUAGE
     {

@@ -79,7 +79,81 @@ French : Game
 ```cs
 // -- IMPORTS
 
+using LINGUI;
+
+// -- TYPES
+
+namespace LINGUI
+{
+    public class ENGLISH_LANGUAGE : GAME_LANGUAGE
+    {
+        // -- CONSTRUCTORS
+
+        public ENGLISH_LANGUAGE(
+            )
+        {
+            Name = "English";
+        }
+
+        // -- INQUIRIES
+
+        public override string New_game(
+            )
+        {
+            return "New game";
+        }
+
+        // ~~
+
+        public override string Welcome(
+            TRANSLATION first_name_translation,
+            TRANSLATION last_name_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( "Welcome, " );
+            result_translation.AddText( first_name_translation );
+            result_translation.AddText( " " );
+            result_translation.AddText( last_name_translation );
+            result_translation.AddText( "!" );
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
+        public override string Pears(
+            TRANSLATION count_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( count_translation.Quantity );
+            result_translation.AddText( " " );
+
+            if ( count_translation.GetEnglishCardinalPlurality() == PLURALITY.One )
+            {
+                result_translation.AddText( "pear" );
+            }
+            else
+            {
+                result_translation.AddText( "pears" );
+            }
+
+            return result_translation.Text;
+        }
+    }
+}
+```
+
+```cs
+// -- IMPORTS
+
 using System;
+using LINGUI;
 
 // -- TYPES
 
@@ -336,19 +410,21 @@ lingui [options] script_file.lingui OUTPUT_FOLDER/
 ```
 --cs : generate C# files
 --d : generate D files
+--base : generate the base classes
+--namespace LINGUI : use this namespace
 --uppercase : generate uppercase filenames
 --verbose : show the processing messages
 ```
 
-The `--cs` and `--d` options can't be used at the same time.
+The `--cs` and `--d` options are mutually exclusive.
 
 ### Examples
 
 ```bash
-lingui --cs --verbose test.lingui CS/
+lingui --cs --base --namespace GAME --verbose test.lingui CS/
 ```
 
-Converts a Lingui script file to C# source code files.
+Converts a Lingui script file to C# source code files, generating the base classes too and using "GAME" as namespace.
 
 ```bash
 lingui --d --verbose test.lingui D/

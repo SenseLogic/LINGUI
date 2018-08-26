@@ -1,11 +1,11 @@
 // -- IMPORTS
 
 using System;
-using LINGUI;
+using GAME;
 
 // -- TYPES
 
-namespace LINGUI
+namespace GAME
 {
     public struct TRANSLATION
     {

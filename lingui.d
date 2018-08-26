@@ -890,23 +890,35 @@ class RULE
     {
         if ( DOptionIsEnabled )
         {
-            code.AddLine( "module lingui." ~ GetClassName().toLower() ~ ";" );
+            code.AddLine( "module " ~ Namespace ~ "." ~ GetClassName().toLower() ~ ";" );
             code.AddLine( "" );
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
-            code.AddLine( "import lingui.genre;" );
-            code.AddLine( "import lingui.plurality;" );
+            code.AddLine( "import " ~ BaseNamespace ~ ".genre;" );
+            code.AddLine( "import " ~ BaseNamespace ~ ".plurality;" );
+            code.AddLine( "import " ~ BaseNamespace ~ ".translation;" );
 
             if ( IsBaseLanguage )
             {
-                code.AddLine( "import lingui.language;" );
+                code.AddLine( "import " ~ BaseNamespace ~ ".language;" );
             }
             else
             {
-                code.AddLine( "import lingui." ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
+                code.AddLine( "import " ~ Namespace ~ "." ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
+            }
+            code.AddLine( "" );
+        }
+        else if ( CsOptionIsEnabled )
+        {
+            code.AddLine( "// -- IMPORTS" );
+            code.AddLine( "" );
+
+            if ( BaseNamespace != Namespace )
+            {
+                code.AddLine( "using " ~ BaseNamespace ~ ";" );
             }
 
-            code.AddLine( "import lingui.translation;" );
+            code.AddLine( "using " ~ Namespace ~ ";" );
             code.AddLine( "" );
         }
 
@@ -915,6 +927,8 @@ class RULE
 
         if ( CsOptionIsEnabled )
         {
+            code.AddLine( "namespace " ~ Namespace );
+            code.AddLine( "{" );
             code.AddLine( "public class " ~ GetClassName() ~ " : " );
         }
         else if ( DOptionIsEnabled )
@@ -963,6 +977,11 @@ class RULE
         }
 
         code.AddLine( "}" );
+
+        if ( CsOptionIsEnabled )
+        {
+            code.AddLine( "}" );
+        }
     }
 
     // ~~
@@ -1356,6 +1375,46 @@ class SCRIPT
 
     // ~~
 
+    void WriteBaseFile(
+        string input_folder_path,
+        string output_folder_path,
+        string file_name
+        )
+    {
+        string
+            file_text,
+            input_file_path,
+            output_file_path;
+
+        input_file_path = GetExecutablePath( input_folder_path ~ file_name );
+        output_file_path = output_folder_path ~ file_name;
+
+        if ( input_file_path == output_file_path )
+        {
+            Abort( "Invalid output folder path" );
+        }
+
+        file_text = input_file_path.readText();
+
+        if ( CsOptionIsEnabled )
+        {
+            file_text = file_text.replace( "LINGUI", Namespace );
+        }
+        else if ( DOptionIsEnabled )
+        {
+            file_text = file_text.replace( "lingui", Namespace );
+        }
+
+        if ( VerboseOptionIsEnabled )
+        {
+            writeln( "Writing file : ", output_file_path );
+        }
+
+        output_file_path.write( file_text );
+    }
+
+    // ~~
+
     void WriteFiles(
         string output_folder_path
         )
@@ -1370,6 +1429,24 @@ class SCRIPT
         else
         {
             Abort( "Language not found" );
+        }
+
+        if ( BaseOptionIsEnabled )
+        {
+            if ( CsOptionIsEnabled )
+            {
+                WriteBaseFile( "CS/", output_folder_path, "genre.cs" );
+                WriteBaseFile( "CS/", output_folder_path, "language.cs" );
+                WriteBaseFile( "CS/", output_folder_path, "plurality.cs" );
+                WriteBaseFile( "CS/", output_folder_path, "translation.cs" );
+            }
+            else if ( DOptionIsEnabled )
+            {
+                WriteBaseFile( "D/", output_folder_path, "genre.d" );
+                WriteBaseFile( "D/", output_folder_path, "language.d" );
+                WriteBaseFile( "D/", output_folder_path, "plurality.d" );
+                WriteBaseFile( "D/", output_folder_path, "translation.d" );
+            }
         }
     }
 
@@ -1392,10 +1469,14 @@ class SCRIPT
 // -- VARIABLES
 
 bool
+    BaseOptionIsEnabled,
     CsOptionIsEnabled,
     DOptionIsEnabled,
     UpperCaseOptionIsEnabled,
     VerboseOptionIsEnabled;
+string
+    BaseNamespace,
+    Namespace;
 
 // -- FUNCTIONS
 
@@ -1471,6 +1552,9 @@ void main(
 
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
+    BaseOptionIsEnabled = false;
+    BaseNamespace = "";
+    Namespace = "";
     UpperCaseOptionIsEnabled = false;
     VerboseOptionIsEnabled = false;
 
@@ -1491,6 +1575,17 @@ void main(
         {
             DOptionIsEnabled = true;
         }
+        else if ( option == "--base" )
+        {
+            BaseOptionIsEnabled = true;
+        }
+        else if ( option == "--namespace"
+                  && argument_array.length >= 1 )
+        {
+            Namespace = argument_array[ 0 ];
+
+            argument_array = argument_array[ 1 .. $ ];
+        }
         else if ( option == "--uppercase" )
         {
             UpperCaseOptionIsEnabled = true;
@@ -1505,7 +1600,34 @@ void main(
         }
     }
 
-    if ( argument_array.length == 2 )
+    if ( Namespace == "" )
+    {
+        if ( CsOptionIsEnabled )
+        {
+            Namespace = "LINGUI";
+        }
+        else if ( DOptionIsEnabled )
+        {
+            Namespace = "lingui";
+        }
+    }
+
+    if ( BaseOptionIsEnabled )
+    {
+        BaseNamespace = Namespace;
+    }
+    else if ( CsOptionIsEnabled )
+    {
+        BaseNamespace = "LINGUI";
+    }
+    else if ( DOptionIsEnabled )
+    {
+        BaseNamespace = "lingui";
+    }
+
+    if ( argument_array.length == 2
+         && ( CsOptionIsEnabled || DOptionIsEnabled )
+         && CsOptionIsEnabled != DOptionIsEnabled )
     {
         script = new SCRIPT();
         script.ExecuteScript( argument_array[ 0 ], argument_array[ 1 ] );
@@ -1516,10 +1638,12 @@ void main(
         writeln( "Options :" );
         writeln( "    --cs" );
         writeln( "    --d" );
+        writeln( "    --base" );
+        writeln( "    --namespace LINGUI" );
         writeln( "    --uppercase" );
         writeln( "    --verbose" );
         writeln( "Examples :" );
-        writeln( "    lingui --cs --verbose test.lingui CS/" );
+        writeln( "    lingui --cs --base --namespace GAME --verbose test.lingui CS/" );
         writeln( "    lingui --d --verbose test.lingui D/" );
 
         Abort( "Invalid arguments : " ~ argument_array.to!string() );

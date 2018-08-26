@@ -1,31 +1,38 @@
+// -- IMPORTS
+
+using LINGUI;
+
 // -- TYPES
 
-public class GAME_LANGUAGE : LANGUAGE
+namespace LINGUI
 {
-    // -- INQUIRIES
-
-    public virtual string New_game(
-        )
+    public class GAME_LANGUAGE : LANGUAGE
     {
-        return "";
-    }
+        // -- INQUIRIES
 
-    // ~~
+        public virtual string New_game(
+            )
+        {
+            return "";
+        }
 
-    public virtual string Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
-        )
-    {
-        return "";
-    }
+        // ~~
 
-    // ~~
+        public virtual string Welcome(
+            TRANSLATION first_name_translation,
+            TRANSLATION last_name_translation
+            )
+        {
+            return "";
+        }
 
-    public virtual string Pears(
-        TRANSLATION count_translation
-        )
-    {
-        return "";
+        // ~~
+
+        public virtual string Pears(
+            TRANSLATION count_translation
+            )
+        {
+            return "";
+        }
     }
 }

@@ -1,181 +1,188 @@
+// -- IMPORTS
+
+using GAME;
+
 // -- TYPES
 
-public class FRENCH_LANGUAGE : GAME_LANGUAGE
+namespace GAME
 {
-    // -- CONSTRUCTORS
-
-    public FRENCH_LANGUAGE(
-        )
+    public class FRENCH_LANGUAGE : GAME_LANGUAGE
     {
-        Name = "French";
-    }
+        // -- CONSTRUCTORS
 
-    // -- INQUIRIES
-
-    public override string Main_menu(
-        )
-    {
-        return "Menu principal";
-    }
-
-    // ~~
-
-    public override TRANSLATION Chests(
-        TRANSLATION count_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        if ( count_translation.IntegerQuantity <= 1 )
+        public FRENCH_LANGUAGE(
+            )
         {
-            result_translation.AddText( "coffre" );
-        }
-        else
-        {
-            result_translation.AddText( "coffres" );
+            Name = "French";
         }
 
-        result_translation.SetQuantity( count_translation.Quantity );
-        result_translation.SetGenre( GENRE.Male );
+        // -- INQUIRIES
 
-        return result_translation;
-    }
-
-    // ~~
-
-    public override TRANSLATION Swords(
-        TRANSLATION count_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
+        public override string Main_menu(
+            )
         {
-            result_translation.AddText( "épée" );
-        }
-        else
-        {
-            result_translation.AddText( "épées" );
+            return "Menu principal";
         }
 
-        result_translation.SetQuantity( count_translation.Quantity );
-        result_translation.SetGenre( GENRE.Female );
+        // ~~
 
-        return result_translation;
-    }
-
-    // ~~
-
-    public override string The_items(
-        TRANSLATION items_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        if ( items_translation.IntegerQuantity == 0 )
+        public override TRANSLATION Chests(
+            TRANSLATION count_translation
+            )
         {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            if ( count_translation.IntegerQuantity <= 1 )
+            {
+                result_translation.AddText( "coffre" );
+            }
+            else
+            {
+                result_translation.AddText( "coffres" );
+            }
+
+            result_translation.SetQuantity( count_translation.Quantity );
+            result_translation.SetGenre( GENRE.Male );
+
+            return result_translation;
+        }
+
+        // ~~
+
+        public override TRANSLATION Swords(
+            TRANSLATION count_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
+            {
+                result_translation.AddText( "épée" );
+            }
+            else
+            {
+                result_translation.AddText( "épées" );
+            }
+
+            result_translation.SetQuantity( count_translation.Quantity );
+            result_translation.SetGenre( GENRE.Female );
+
+            return result_translation;
+        }
+
+        // ~~
+
+        public override string The_items(
+            TRANSLATION items_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            if ( items_translation.IntegerQuantity == 0 )
+            {
+                if ( items_translation.Genre == GENRE.Female )
+                {
+                    result_translation.AddText( "Aucune " );
+                }
+                else
+                {
+                    result_translation.AddText( "Aucun " );
+                }
+            }
+            else if ( items_translation.IntegerQuantity == 1 )
+            {
+                if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuûh" ) )
+                {
+                    result_translation.AddText( "L'" );
+                }
+                else if ( items_translation.Genre == GENRE.Female )
+                {
+                    result_translation.AddText( "La " );
+                }
+                else
+                {
+                    result_translation.AddText( "Le " );
+                }
+            }
+            else
+            {
+                result_translation.AddText( "Les " );
+                result_translation.AddText( items_translation.Quantity );
+                result_translation.AddText( " " );
+            }
+
+            result_translation.AddText( items_translation );
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
+        public virtual string Have(
+            TRANSLATION items_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            if ( items_translation.IntegerQuantity == 0 )
+            {
+                result_translation.AddText( " n'a" );
+            }
+            else if ( items_translation.IntegerQuantity <= 1 )
+            {
+                result_translation.AddText( " a" );
+            }
+            else
+            {
+                result_translation.AddText( " ont" );
+            }
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
+        public virtual string Been_found(
+            TRANSLATION items_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( " été trouvé" );
+
             if ( items_translation.Genre == GENRE.Female )
             {
-                result_translation.AddText( "Aucune " );
+                result_translation.AddText( "e" );
             }
-            else
+
+            if ( items_translation.IntegerQuantity > 1 )
             {
-                result_translation.AddText( "Aucun " );
+                result_translation.AddText( "s" );
             }
+
+            return result_translation.Text;
         }
-        else if ( items_translation.IntegerQuantity == 1 )
+
+        // ~~
+
+        public override string The_items_have_been_found(
+            TRANSLATION items_translation
+            )
         {
-            if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuûh" ) )
-            {
-                result_translation.AddText( "L'" );
-            }
-            else if ( items_translation.Genre == GENRE.Female )
-            {
-                result_translation.AddText( "La " );
-            }
-            else
-            {
-                result_translation.AddText( "Le " );
-            }
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( The_items( items_translation ) );
+            result_translation.AddText( Have( items_translation ) );
+            result_translation.AddText( Been_found( items_translation ) );
+            result_translation.AddText( ".\n" );
+
+            return result_translation.Text;
         }
-        else
-        {
-            result_translation.AddText( "Les " );
-            result_translation.AddText( items_translation.Quantity );
-            result_translation.AddText( " " );
-        }
-
-        result_translation.AddText( items_translation );
-
-        return result_translation.Text;
-    }
-
-    // ~~
-
-    public virtual string Have(
-        TRANSLATION items_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        if ( items_translation.IntegerQuantity == 0 )
-        {
-            result_translation.AddText( " n'a" );
-        }
-        else if ( items_translation.IntegerQuantity <= 1 )
-        {
-            result_translation.AddText( " a" );
-        }
-        else
-        {
-            result_translation.AddText( " ont" );
-        }
-
-        return result_translation.Text;
-    }
-
-    // ~~
-
-    public virtual string Been_found(
-        TRANSLATION items_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        result_translation.AddText( " été trouvé" );
-
-        if ( items_translation.Genre == GENRE.Female )
-        {
-            result_translation.AddText( "e" );
-        }
-
-        if ( items_translation.IntegerQuantity > 1 )
-        {
-            result_translation.AddText( "s" );
-        }
-
-        return result_translation.Text;
-    }
-
-    // ~~
-
-    public override string The_items_have_been_found(
-        TRANSLATION items_translation
-        )
-    {
-        TRANSLATION
-            result_translation = new TRANSLATION();
-
-        result_translation.AddText( The_items( items_translation ) );
-        result_translation.AddText( Have( items_translation ) );
-        result_translation.AddText( Been_found( items_translation ) );
-        result_translation.AddText( ".\n" );
-
-        return result_translation.Text;
     }
 }

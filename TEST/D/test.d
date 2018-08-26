@@ -1,9 +1,9 @@
 // -- IMPORTS
 
-import lingui.english_language;
-import lingui.french_language;
-import lingui.game_language;
-import lingui.translation;
+import game.english_language;
+import game.french_language;
+import game.game_language;
+import game.translation;
 import std.stdio : write, writeln;
 
 // -- FUNCTIONS

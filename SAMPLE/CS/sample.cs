@@ -1,6 +1,7 @@
 // -- IMPORTS
 
 using System;
+using LINGUI;
 
 // -- TYPES
 
