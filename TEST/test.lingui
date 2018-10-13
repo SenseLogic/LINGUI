@@ -16,16 +16,25 @@ Game
 
     TheItemsHaveBeenFound items
 
+    TestFunctions
+        GetText( -12 ) ~ " / " ~ GetText( -12.0, 0 ) ~ " / " ~ GetText( -12.0 ) ~ " / " ~ GetText( -12.0, 3, 3 ) ~ " \n"
+        GetText( -12.3, 3, 3, '_' ) ~ " / " ~ GetText( -12.345 ) ~ " / " ~ GetText( -12.3456789, 0, 3, DecimalSeparator ) ~ "\n"
+        GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n"
+        GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n"
+
     Test
         var no_chests one_chest
         no_chests = Chests( 0* )
         one_chest = Chests( 1* )
+
         TheItemsHaveBeenFound( no_chests )
         TheItemsHaveBeenFound( one_chest )
         TheItemsHaveBeenFound( Chests( 2* ) )
         TheItemsHaveBeenFound( NoSwords() )
         TheItemsHaveBeenFound( OneSword() )
         TheItemsHaveBeenFound( Swords( 2* ) )
+
+        TestFunctions()
 
 English : Game
 

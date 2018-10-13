@@ -17,7 +17,7 @@ namespace LINGUI
         public Dictionary<string, TRANSLATION>
             TranslationDictionary;
         public char
-            DotCharacter;
+            DecimalSeparator;
 
         // -- INQUIRIES
 
@@ -425,18 +425,30 @@ namespace LINGUI
             float real,
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
-            char dot_character = '\0'
+            char decimal_separator = '\0'
             )
         {
             int
-                dot_character_index,
+                decimal_separator_index,
                 fractional_digit_count;
             string
                 text;
 
             text = real.ToString();
-            dot_character_index = text.IndexOf( '.' );
-            fractional_digit_count = text.Length - dot_character_index;
+            decimal_separator_index = text.IndexOf( '.' );
+
+            if ( decimal_separator_index < 0 )
+            {
+                decimal_separator_index = text.IndexOf( ',' );
+            }
+
+            if ( decimal_separator_index < 0 )
+            {
+                text += '.';
+                decimal_separator_index = text.Length - 1;
+            }
+
+            fractional_digit_count = text.Length - decimal_separator_index - 1;
 
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
@@ -444,25 +456,29 @@ namespace LINGUI
             }
             else if ( fractional_digit_count > maximum_fractional_digit_count )
             {
-                text = text.Substring( 0, dot_character_index + maximum_fractional_digit_count );
+                text = text.Substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
             }
 
-            if ( dot_character == '\0' )
+            if ( decimal_separator == '\0' )
             {
-                dot_character = DotCharacter;
+                decimal_separator = DecimalSeparator;
             }
 
-            if ( text[ dot_character_index ] == dot_character )
+            if ( text[ decimal_separator_index ] == decimal_separator )
             {
-                return text;
+                text
+                    = text.Substring( 0, decimal_separator_index )
+                      + decimal_separator
+                      + text.Substring( decimal_separator_index + 1, text.Length - decimal_separator_index - 1 );
             }
-            else
+
+            if ( minimum_fractional_digit_count == 0
+                 && fractional_digit_count == 0 )
             {
-                return
-                    text.Substring( 0, dot_character_index )
-                    + dot_character
-                    + text.Substring( dot_character_index + 1, text.Length - dot_character_index - 1 );
+                text = text.Substring( 0, text.Length - 1 );
             }
+
+            return text;
         }
     }
 }

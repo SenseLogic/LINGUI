@@ -18,7 +18,7 @@ class LANGUAGE
     TRANSLATION[ string ]
         TranslationDictionary;
     char
-        DotCharacter;
+        DecimalSeparator;
 
     // -- INQUIRIES
 
@@ -404,18 +404,25 @@ class LANGUAGE
         float real_,
         int minimum_fractional_digit_count = 1,
         int maximum_fractional_digit_count = 20,
-        char dot_character = 0
+        char decimal_separator = 0
         )
     {
         long
-            dot_character_index,
+            decimal_separator_index,
             fractional_digit_count;
         string
             text;
-
+import std.stdio;
         text = real_.to!string();
-        dot_character_index = text.indexOf( '.' );
-        fractional_digit_count = text.length - dot_character_index;
+        decimal_separator_index = text.indexOf( '.' );
+
+        if ( decimal_separator_index < 0 )
+        {
+            text ~= '.';
+            decimal_separator_index = text.length - 1;
+        }
+
+        fractional_digit_count = text.length - decimal_separator_index - 1;
 
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
@@ -423,24 +430,28 @@ class LANGUAGE
         }
         else if ( fractional_digit_count > maximum_fractional_digit_count )
         {
-            text = text[ 0 .. dot_character_index + maximum_fractional_digit_count ];
+            text = text[ 0 .. decimal_separator_index + 1 + maximum_fractional_digit_count ];
         }
 
-        if ( dot_character == 0 )
+        if ( decimal_separator == 0 )
         {
-            dot_character = DotCharacter;
+            decimal_separator = DecimalSeparator;
         }
 
-        if ( text[ dot_character_index ] == dot_character )
+        if ( text[ decimal_separator_index ] != decimal_separator )
         {
-            return text;
+            text
+                = text[ 0 .. decimal_separator_index ]
+                  ~ decimal_separator
+                  ~ text[ decimal_separator_index + 1 .. $ ];
         }
-        else
+
+        if ( minimum_fractional_digit_count == 0
+             && fractional_digit_count == 0 )
         {
-            return
-                text[ 0 .. dot_character_index ]
-                ~ dot_character
-                ~ text[ dot_character_index + 1 .. $ ];
+            text = text[ 0 .. $ - 1 ];
         }
+
+        return text;
     }
 }

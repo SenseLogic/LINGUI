@@ -392,7 +392,7 @@ HasSuffix( translation, prefix )
 GetInteger( real )
 GetReal( integer )
 GetText( integer )
-GetText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, dot_character );
+GetText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, decimal_separator );
 ```
 
 ### Comments

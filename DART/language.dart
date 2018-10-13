@@ -16,7 +16,7 @@ class LANGUAGE
     Map<String, TRANSLATION>
         TranslationMap;
     String
-        DotCharacter;
+        DecimalSeparator;
 
     // -- INQUIRIES
 
@@ -315,7 +315,7 @@ class LANGUAGE
 
     // ~~
 
-    TRANSLATION GetLowerCase(
+    dynamic GetLowerCase(
         dynamic text
         )
     {
@@ -325,13 +325,13 @@ class LANGUAGE
         }
         else
         {
-            return TRANSLATION( GetLowerCaseText( text ) );
+            return GetLowerCaseText( text );
         }
     }
 
     // ~~
 
-    TRANSLATION GetUpperCase(
+    dynamic GetUpperCase(
         dynamic text
         )
     {
@@ -341,13 +341,13 @@ class LANGUAGE
         }
         else
         {
-            return TRANSLATION( GetUpperCaseText( text ) );
+            return GetUpperCaseText( text );
         }
     }
 
     // ~~
 
-    TRANSLATION GetTitleCase(
+    dynamic GetTitleCase(
         dynamic text
         )
     {
@@ -357,13 +357,13 @@ class LANGUAGE
         }
         else
         {
-            return TRANSLATION( GetTitleCaseText( text ) );
+            return GetTitleCaseText( text );
         }
     }
 
     // ~~
 
-    TRANSLATION GetSentenceCase(
+    dynamic GetSentenceCase(
         dynamic text
         )
     {
@@ -373,7 +373,7 @@ class LANGUAGE
         }
         else
         {
-            return TRANSLATION( GetSentenceCaseText( text ) );
+            return GetSentenceCaseText( text );
         }
     }
 
@@ -453,22 +453,29 @@ class LANGUAGE
         [
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
-            String dot_character = '\0'
+            String decimal_separator = '\0'
         ]
         )
     {
         int
-            dot_character_index,
+            decimal_separator_index,
             fractional_digit_count;
         String
             text;
 
         text = number.toString();
-
+print( "IN : " + text );
         if ( number is double )
         {
-            dot_character_index = text.indexOf( '.' );
-            fractional_digit_count = text.length - dot_character_index;
+            decimal_separator_index = text.indexOf( '.' );
+
+            if ( decimal_separator_index < 0 )
+            {
+                text += '.';
+                decimal_separator_index = text.length - 1;
+            }
+
+            fractional_digit_count = text.length - decimal_separator_index - 1;
 
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
@@ -476,27 +483,30 @@ class LANGUAGE
             }
             else if ( fractional_digit_count > maximum_fractional_digit_count )
             {
-                text = text.substring( 0, dot_character_index + maximum_fractional_digit_count );
+                text = text.substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
             }
 
-            if ( dot_character == '\0' )
+            if ( decimal_separator == '\0' )
             {
-                dot_character = DotCharacter;
+                decimal_separator = DecimalSeparator;
             }
 
-            if ( text[ dot_character_index ] == dot_character )
+            if ( text[ decimal_separator_index ] != decimal_separator )
             {
-                return text;
+                print( "TEXT : ", text );
+                text
+                    = text.substring( 0, decimal_separator_index )
+                      + decimal_separator
+                      + text.substring( decimal_separator_index + 1, text.length - decimal_separator_index - 1 );
             }
-            else
+
+            if ( minimum_fractional_digit_count == 0
+                 && fractional_digit_count == 0 )
             {
-                return
-                    text.substring( 0, dot_character_index )
-                    + dot_character
-                    + text.substring( dot_character_index + 1, text.length - dot_character_index - 1 );
+                text = text.substring( 0, text.length - 1 );
             }
         }
-
+print( "OUT : " + text );
         return text;
     }
 }

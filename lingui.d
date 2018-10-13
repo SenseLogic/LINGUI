@@ -235,6 +235,31 @@ class RULE
 
     // ~~
 
+    char GetDecimalSeparator(
+        )
+    {
+        if ( LanguageName == "German"
+             || LanguageName == "French"
+             || LanguageName == "Spanish"
+             || LanguageName == "Portuguese"
+             || LanguageName == "Russian"
+             || LanguageName == "Turquish"
+             || LanguageName == "Dutch"
+             || LanguageName == "Swedish"
+             || LanguageName == "Norwegian"
+             || LanguageName == "Danish"
+             || LanguageName == "Arabic" )
+        {
+            return ',';
+        }
+        else
+        {
+            return '.';
+        }
+    }
+
+    // ~~
+
     string GetClassName(
         )
     {
@@ -282,7 +307,8 @@ class RULE
         string text
         )
     {
-        if ( text.indexOf( '.' ) >= 0 )
+        if ( ( CsOptionIsEnabled || DOptionIsEnabled )
+             && text.indexOf( '.' ) >= 0 )
         {
             return text ~ "f";
         }
@@ -1010,6 +1036,7 @@ class RULE
             code.AddLine( "    )" );
             code.AddLine( "{" );
             code.AddLine( "Name = \"" ~ LanguageName ~ "\";" );
+            code.AddLine( "DecimalSeparator = '" ~ GetDecimalSeparator() ~ "';" );
             code.AddLine( "}" );
             code.AddLine( "" );
         }

@@ -70,6 +70,22 @@ namespace GAME
 
         // ~~
 
+        public virtual string TestFunctions(
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( GetText( -12 ) + " / " + GetText( -12.0f, 0 ) + " / " + GetText( -12.0f ) + " / " + GetText( -12.0f, 3, 3 ) + " \n" );
+            result_translation.AddText( GetText( -12.3f, 3, 3, '_' ) + " / " + GetText( -12.345f ) + " / " + GetText( -12.3456789f, 0, 3, DecimalSeparator ) + "\n" );
+            result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
+            result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
         public virtual string Test(
             )
         {
@@ -86,6 +102,7 @@ namespace GAME
             result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
             result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
             result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );
+            result_translation.AddText( TestFunctions() );
 
             return result_translation.Text;
         }

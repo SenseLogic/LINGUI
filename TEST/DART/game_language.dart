@@ -73,6 +73,22 @@ class GAME_LANGUAGE extends LANGUAGE
 
     // ~~
 
+    String TestFunctions(
+        )
+    {
+        TRANSLATION
+            result_translation = TRANSLATION();
+
+        result_translation.AddText( GetText( -12 ) + " / " + GetText( -12.0, 0 ) + " / " + GetText( -12.0 ) + " / " + GetText( -12.0, 3, 3 ) + " \n" );
+        result_translation.AddText( GetText( -12.3, 3, 3, '_' ) + " / " + GetText( -12.345 ) + " / " + GetText( -12.3456789, 0, 3, DecimalSeparator ) + "\n" );
+        result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
+        result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
+
+        return result_translation.Text;
+    }
+
+    // ~~
+
     String Test(
         )
     {
@@ -89,6 +105,7 @@ class GAME_LANGUAGE extends LANGUAGE
         result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
         result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
         result_translation.AddText( TheItemsHaveBeenFound( Swords( TRANSLATION( "", "2" ) ) ) );
+        result_translation.AddText( TestFunctions() );
 
         return result_translation.Text;
     }
