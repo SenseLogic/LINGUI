@@ -1,3 +1,5 @@
+library game;
+
 // -- TYPES
 
 enum PLURALITY

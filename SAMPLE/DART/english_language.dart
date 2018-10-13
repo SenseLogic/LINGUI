@@ -1,3 +1,5 @@
+library lingui;
+
 // -- IMPORTS
 
 import "genre.dart";

@@ -940,6 +940,8 @@ class RULE
         }
         else if ( DartOptionIsEnabled )
         {
+            code.AddLine( "library " ~ Namespace ~ ";" );
+            code.AddLine( "" );
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
             code.AddLine( "import \"genre.dart\";" );

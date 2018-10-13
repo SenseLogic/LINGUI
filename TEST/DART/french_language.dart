@@ -1,3 +1,5 @@
+library game;
+
 // -- IMPORTS
 
 import "genre.dart";

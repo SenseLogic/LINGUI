@@ -12,16 +12,16 @@ void TestLanguage(
     GAME_LANGUAGE game_language
     )
 {
-    Console.WriteLine( game_language.NewGame() );
-    Console.WriteLine( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    Console.WriteLine( game_language.Pears( TRANSLATION( 0 ) ) );
-    Console.WriteLine( game_language.Pears( TRANSLATION( 1 ) ) );
-    Console.WriteLine( game_language.Pears( TRANSLATION( 2 ) ) );
+    print( game_language.NewGame() );
+    print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 0 ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 1 ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 2 ) ) );
 }
 
 // ~~
 
-void Main(
+void main(
     List<String> argument_list
     )
 {
