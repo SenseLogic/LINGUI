@@ -12,6 +12,8 @@ Its minimalistic syntax is designed to allow professional translators to specify
 
 ## Sample
 
+### Lingui
+
 ```lua
 Game
     NewGame
@@ -111,6 +113,98 @@ public class TEST
     }
 }
 ```
+
+### D
+
+```d
+// -- IMPORTS
+
+import game.english_language;
+import game.french_language;
+import game.game_language;
+import game.translation;
+import std.stdio : write, writeln;
+
+// -- FUNCTIONS
+
+void TestLanguage(
+    GAME_LANGUAGE game_language
+    )
+{
+    TRANSLATION
+        swords_translation;
+
+    swords_translation = game_language.Swords( TRANSLATION( 3 ) );
+
+    write( game_language.Test() );
+    writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
+}
+
+// ~~
+
+void main(
+    string[] argument_array
+    )
+{
+    ENGLISH_LANGUAGE
+        english_language;
+    FRENCH_LANGUAGE
+        french_language;
+
+    english_language = new ENGLISH_LANGUAGE();
+    french_language = new FRENCH_LANGUAGE();
+
+    TestLanguage( english_language );
+    TestLanguage( french_language );
+}
+```
+
+### Dart
+
+```dart
+// -- IMPORTS
+
+import "dart:io";
+import "english_language.dart";
+import "french_language.dart";
+import "game_language.dart";
+import "translation.dart";
+
+// -- FUNCTIONS
+
+void TestLanguage(
+    GAME_LANGUAGE game_language
+    )
+{
+    TRANSLATION
+        swords_translation;
+
+    swords_translation = game_language.Swords( TRANSLATION.FromQuantity( 3 ) );
+
+    stdout.write( game_language.Test() );
+    stdout.writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
+}
+
+// ~~
+
+void main(
+    List<String> argument_list
+    )
+{
+    ENGLISH_LANGUAGE
+        english_language;
+    FRENCH_LANGUAGE
+        french_language;
+
+    english_language = ENGLISH_LANGUAGE();
+    french_language = FRENCH_LANGUAGE();
+
+    TestLanguage( english_language );
+    TestLanguage( french_language );
+}
+```
+
+### Result
 
 ```
 New game
