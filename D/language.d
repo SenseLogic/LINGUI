@@ -412,7 +412,7 @@ class LANGUAGE
             fractional_digit_count;
         string
             text;
-import std.stdio;
+
         text = real_.to!string();
         decimal_separator_index = text.indexOf( '.' );
 
