@@ -18,7 +18,7 @@ void TestLanguage(
     swords_translation = game_language.Swords( TRANSLATION( 3 ) );
 
     write( game_language.Test() );
-    writeln( game_language.The_items_have_been_found( swords_translation ) );
+    writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
 }
 
 // ~~

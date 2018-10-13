@@ -18,7 +18,7 @@ namespace GAME
 
         // -- INQUIRIES
 
-        public override string Main_menu(
+        public override string MainMenu(
             )
         {
             return "Menu principal";
@@ -74,7 +74,7 @@ namespace GAME
 
         // ~~
 
-        public override string The_items(
+        public override string TheItems(
             TRANSLATION items_translation
             )
         {
@@ -146,7 +146,7 @@ namespace GAME
 
         // ~~
 
-        public virtual string Been_found(
+        public virtual string BeenFound(
             TRANSLATION items_translation
             )
         {
@@ -170,16 +170,16 @@ namespace GAME
 
         // ~~
 
-        public override string The_items_have_been_found(
+        public override string TheItemsHaveBeenFound(
             TRANSLATION items_translation
             )
         {
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            result_translation.AddText( The_items( items_translation ) );
+            result_translation.AddText( TheItems( items_translation ) );
             result_translation.AddText( Have( items_translation ) );
-            result_translation.AddText( Been_found( items_translation ) );
+            result_translation.AddText( BeenFound( items_translation ) );
             result_translation.AddText( ".\n" );
 
             return result_translation.Text;

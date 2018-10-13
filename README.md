@@ -6,7 +6,7 @@ Internationalization code generator.
 
 ## Description
 
-Lingui converts human-readable translation scripts into compilable D/C# code which can be directly integrated into the localized application.
+Lingui converts human-readable translation scripts into compilable C#/D/Dart code which can be directly integrated into the localized application.
 
 Its minimalistic syntax is designed to allow professional translators to specify both static and parametric translations in a simple way.
 
@@ -410,13 +410,14 @@ lingui [options] script_file.lingui OUTPUT_FOLDER/
 ```
 --cs : generate C# files
 --d : generate D files
+--dart : generate Dart files
 --base : generate the base classes
 --namespace LINGUI : use this namespace
 --uppercase : generate uppercase filenames
 --verbose : show the processing messages
 ```
 
-The `--cs` and `--d` options are mutually exclusive.
+The `--cs`, `--d` and `--dart` options are mutually exclusive.
 
 ### Examples
 

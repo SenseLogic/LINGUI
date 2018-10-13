@@ -1,18 +1,15 @@
-module game.translation;
-
 // -- IMPORTS
 
-import game.genre;
-import game.plurality;
-import std.conv : to;
+import "genre.dart";
+import "plurality.dart";
 
 // -- TYPES
 
-struct TRANSLATION
+class TRANSLATION
 {
     // -- ATTRIBUTES
 
-    string
+    String
         Text,
         Quantity;
     bool
@@ -20,7 +17,7 @@ struct TRANSLATION
         HasRealQuantity;
     int
         IntegerQuantity;
-    float
+    double
         RealQuantity;
     GENRE
         Genre;
@@ -29,13 +26,20 @@ struct TRANSLATION
 
     // -- CONSTRUCTORS
 
-    this(
-        string text,
-        string quantity,
-        GENRE genre = GENRE.Neutral
+    TRANSLATION(
+        [
+            String text = "",
+            String quantity = "",
+            GENRE genre = GENRE.Neutral
+        ]
         )
     {
         Text = text;
+        Quantity = "";
+        HasIntegerQuantity = false;
+        HasRealQuantity = false;
+        IntegerQuantity = 0;
+        RealQuantity = 0.0;
         Genre = genre;
 
         if ( quantity.length > 0 )
@@ -46,38 +50,28 @@ struct TRANSLATION
 
     // ~~
 
-    this(
-        string text,
-        GENRE genre = GENRE.Neutral
-        )
-    {
-        Text = text;
-        Genre = genre;
-    }
-
-    // ~~
-
-    this(
+    TRANSLATION.FromQuantity(
         int integer_quantity,
-        GENRE genre = GENRE.Neutral
+        [ GENRE genre = GENRE.Neutral ]
         )
     {
-        Quantity = integer_quantity.to!string();
+        Text = "";
+        Quantity = integer_quantity.toString();
         HasIntegerQuantity = true;
         HasRealQuantity = false;
         IntegerQuantity = integer_quantity;
-        RealQuantity = integer_quantity.to!float();
+        RealQuantity = integer_quantity + 0.0;
         Genre = genre;
     }
 
     // -- INQUIRIES
 
-    public char GetQuantityFirstCharacter(
+    String GetQuantityFirstCharacter(
         )
     {
         if ( Quantity.length == 0 )
         {
-            return 0;
+            return '\0';
         }
         else
         {
@@ -209,8 +203,8 @@ struct TRANSLATION
     PLURALITY GetFrenchCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.0f
-             && RealQuantity <= 1.5f )
+        if ( RealQuantity >= 0.0
+             && RealQuantity <= 1.5 )
         {
             return PLURALITY.One;
         }
@@ -298,8 +292,8 @@ struct TRANSLATION
     PLURALITY GetPortugueseCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.0f
-             && RealQuantity <= 1.5f )
+        if ( RealQuantity >= 0.0
+             && RealQuantity <= 1.5 )
         {
             return PLURALITY.One;
         }
@@ -479,8 +473,8 @@ struct TRANSLATION
     PLURALITY GetDanishCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.1f
-             && RealQuantity <= 1.6f )
+        if ( RealQuantity >= 0.1
+             && RealQuantity <= 1.6 )
         {
             return PLURALITY.One;
         }
@@ -555,7 +549,7 @@ struct TRANSLATION
     // -- OPERATIONS
 
     void SetText(
-        string text
+        String text
         )
     {
         Text = text;
@@ -564,81 +558,95 @@ struct TRANSLATION
     // ~~
 
     void AddText(
-        string text
+        Object text_object
         )
     {
-        if ( Text.length == 0 )
+        String
+            text;
+        TRANSLATION
+            translation;
+
+        if ( text_object is TRANSLATION )
         {
-            Text = text;
+            translation = text_object;
+
+            if ( Text == null
+                 || Text.length == 0 )
+            {
+                Text = translation.Text;
+            }
+            else
+            {
+                Text = Text + translation.Text;
+            }
         }
         else
         {
-            Text ~= text;
-        }
-    }
+            text = text_object;
 
-    // ~~
-
-    void AddText(
-        TRANSLATION translation
-        )
-    {
-        if ( Text.length == 0 )
-        {
-            Text = translation.Text;
-        }
-        else
-        {
-            Text ~= translation.Text;
+            if ( Text == null
+                 || Text.length == 0 )
+            {
+                Text = text;
+            }
+            else
+            {
+                Text = Text + text;
+            }
         }
     }
 
     // ~~
 
     void SetQuantity(
-        string quantity
+        dynamic quantity
         )
     {
-        string
+        int
+            character_index;
+        String
+            character,
             integer_text;
 
-        Quantity = quantity;
-        HasIntegerQuantity = true;
-        HasRealQuantity = false;
-
-        integer_text = quantity;
-
-        foreach ( character_index, character; quantity )
+        if ( quantity is int )
         {
-            if ( character == '.'
-                 || character == ',' )
-            {
-                HasRealQuantity = true;
-                integer_text = quantity[ 0 .. character_index ];
-            }
-            else if ( HasRealQuantity
-                      && character >= '1'
-                      && character <= '9' )
-            {
-                HasIntegerQuantity = false;
-            }
+            Quantity = quantity.toString();
+            HasIntegerQuantity = true;
+            HasRealQuantity = false;
+            IntegerQuantity = quantity;
+            RealQuantity = quantity.toDouble();
         }
+        else
+        {
+            Quantity = quantity;
+            HasIntegerQuantity = true;
+            HasRealQuantity = false;
 
-        IntegerQuantity = integer_text.to!int();
-        RealQuantity = quantity.to!float();
-    }
+            integer_text = quantity;
 
-    // ~~
+            for ( character_index = 0;
+                  character_index < quantity.length;
+                  ++character_index )
+            {
+                character = quantity[ character_index ];
 
-    void SetQuantity(
-        int integer_quantity
-        )
-    {
-        Quantity = integer_quantity.to!string();
-        HasIntegerQuantity = true;
-        HasRealQuantity = false;
-        IntegerQuantity = integer_quantity;
-        RealQuantity = integer_quantity.to!float();
+                if ( character == '.'
+                     || character == ',' )
+                {
+                    HasRealQuantity = true;
+                    integer_text = quantity.substring( 0, character_index );
+                }
+                else if ( HasRealQuantity
+                          && character.compareTo( '1' ) >= 0
+                          && character.compareTo( '9' ) <= 0 )
+                {
+                    HasIntegerQuantity = false;
+                }
+            }
+
+            IntegerQuantity = int.parse( integer_text );
+            RealQuantity = double.parse( quantity );
+        }
     }
 
     // ~~

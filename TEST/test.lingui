@@ -1,35 +1,35 @@
 Game
 
-    Main_menu
+    MainMenu
 
     :Chests count
 
     :Swords count
 
-    :No_swords
+    :NoSwords
         Swords( 0* )
 
-    :One_sword
+    :OneSword
         Swords( 1* )
 
-    The_items items
+    TheItems items
 
-    The_items_have_been_found items
+    TheItemsHaveBeenFound items
 
     Test
         var no_chests one_chest
         no_chests = Chests( 0* )
         one_chest = Chests( 1* )
-        The_items_have_been_found( no_chests )
-        The_items_have_been_found( one_chest )
-        The_items_have_been_found( Chests( 2* ) )
-        The_items_have_been_found( No_swords() )
-        The_items_have_been_found( One_sword() )
-        The_items_have_been_found( Swords( 2* ) )
+        TheItemsHaveBeenFound( no_chests )
+        TheItemsHaveBeenFound( one_chest )
+        TheItemsHaveBeenFound( Chests( 2* ) )
+        TheItemsHaveBeenFound( NoSwords() )
+        TheItemsHaveBeenFound( OneSword() )
+        TheItemsHaveBeenFound( Swords( 2* ) )
 
 English : Game
 
-    Main_menu
+    MainMenu
         "Main menu"
 
     :Chests count
@@ -46,7 +46,7 @@ English : Game
             "swords"
         *result = *count
 
-    The_items items
+    TheItems items
         if #items = 0
             "No "
         elseif #items = 1
@@ -57,8 +57,8 @@ English : Game
             " "
         items
 
-    The_items_have_been_found items
-        The_items( items )
+    TheItemsHaveBeenFound items
+        TheItems( items )
         if #items = 1
             " has"
         else
@@ -67,7 +67,7 @@ English : Game
 
 French : Game
 
-    Main_menu
+    MainMenu
         "Menu principal"
 
     :Chests count
@@ -86,7 +86,7 @@ French : Game
         *result = *count
         &result = female
 
-    The_items items
+    TheItems items
         if #items = 0
             if &items = female
                 "Aucune "
@@ -113,15 +113,15 @@ French : Game
         else
             " ont"
 
-    Been_found items
+    BeenFound items
         " été trouvé"
         if &items = female
             "e"
         if #items > 1
             "s"
 
-    The_items_have_been_found items
-        The_items( items )
+    TheItemsHaveBeenFound items
+        TheItems( items )
         Have( items )
-        Been_found( items )
+        BeenFound( items )
         ".\n"

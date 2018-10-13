@@ -44,8 +44,9 @@ class LINE
 
 enum CODE_LANGUAGE
 {
+    Cs,
     D,
-    Cs
+    Dart
 }
 
 // ~~
@@ -576,7 +577,7 @@ class RULE
                 code_token = "||";
             }
             else if ( token == "~"
-                      && CsOptionIsEnabled )
+                      && ( CsOptionIsEnabled || DartOptionIsEnabled ) )
             {
                 code_token = "+";
             }
@@ -666,6 +667,10 @@ class RULE
             if ( CsOptionIsEnabled )
             {
                 code.AddText( " = new TRANSLATION()" );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddText( " = TRANSLATION()" );
             }
 
             if ( variable_name_index + 1 < VariableNameArray.length )
@@ -792,10 +797,21 @@ class RULE
                 code.AddLine( "override " );
             }
         }
+        else if ( DartOptionIsEnabled )
+        {
+            code.AddLine( "" );
+        }
 
         if ( IsStringFunction )
         {
-            code.AddText( "string " );
+            if ( CsOptionIsEnabled || DOptionIsEnabled )
+            {
+                code.AddText( "string " );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddText( "String " );
+            }
         }
         else
         {
@@ -839,7 +855,7 @@ class RULE
             {
                 code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].Text ~ " );" );
             }
-            else if ( DOptionIsEnabled )
+            else if ( DOptionIsEnabled || DartOptionIsEnabled )
             {
                 code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].Text ~ " );" );
             }
@@ -888,7 +904,20 @@ class RULE
         CODE code
         )
     {
-        if ( DOptionIsEnabled )
+        if ( CsOptionIsEnabled )
+        {
+            code.AddLine( "// -- IMPORTS" );
+            code.AddLine( "" );
+
+            if ( BaseNamespace != Namespace )
+            {
+                code.AddLine( "using " ~ BaseNamespace ~ ";" );
+            }
+
+            code.AddLine( "using " ~ Namespace ~ ";" );
+            code.AddLine( "" );
+        }
+        else if ( DOptionIsEnabled )
         {
             code.AddLine( "module " ~ Namespace ~ "." ~ GetClassName().toLower() ~ ";" );
             code.AddLine( "" );
@@ -906,19 +935,26 @@ class RULE
             {
                 code.AddLine( "import " ~ Namespace ~ "." ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
             }
+
             code.AddLine( "" );
         }
-        else if ( CsOptionIsEnabled )
+        else if ( DartOptionIsEnabled )
         {
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
+            code.AddLine( "import \"genre.dart\";" );
+            code.AddLine( "import \"plurality.dart\";" );
+            code.AddLine( "import \"translation.dart\";" );
 
-            if ( BaseNamespace != Namespace )
+            if ( IsBaseLanguage )
             {
-                code.AddLine( "using " ~ BaseNamespace ~ ";" );
+                code.AddLine( "import \"language.dart\";" );
+            }
+            else
+            {
+                code.AddLine( "import \"" ~ BaseLanguageRule.GetClassName().toLower() ~ ".dart\";" );
             }
 
-            code.AddLine( "using " ~ Namespace ~ ";" );
             code.AddLine( "" );
         }
 
@@ -934,6 +970,10 @@ class RULE
         else if ( DOptionIsEnabled )
         {
             code.AddLine( "class " ~ GetClassName() ~ " : " );
+        }
+        else if ( DartOptionIsEnabled )
+        {
+            code.AddLine( "class " ~ GetClassName() ~ " extends " );
         }
 
         if ( IsBaseLanguage )
@@ -959,6 +999,10 @@ class RULE
             else if ( DOptionIsEnabled )
             {
                 code.AddLine( "this(" );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddLine( GetClassName() ~ "(" );
             }
 
             code.AddLine( "    )" );
@@ -1017,6 +1061,10 @@ class RULE
         else if ( DOptionIsEnabled )
         {
             output_file_path ~= ".d";
+        }
+        else if ( DartOptionIsEnabled )
+        {
+            output_file_path ~= ".dart";
         }
 
         if ( VerboseOptionIsEnabled )
@@ -1399,6 +1447,10 @@ class SCRIPT
         {
             file_name ~= ".d";
         }
+        else if ( DartOptionIsEnabled )
+        {
+            file_name ~= ".dart";
+        }
 
         input_file_path = GetExecutablePath( input_folder_path ~ file_name );
         output_file_path = output_folder_path ~ file_name;
@@ -1414,7 +1466,7 @@ class SCRIPT
         {
             file_text = file_text.replace( "LINGUI", Namespace );
         }
-        else if ( DOptionIsEnabled )
+        else if ( DOptionIsEnabled || DartOptionIsEnabled )
         {
             file_text = file_text.replace( "lingui", Namespace );
         }
@@ -1458,6 +1510,10 @@ class SCRIPT
             {
                 input_folder_path = "D/";
             }
+            else if ( DartOptionIsEnabled )
+            {
+                input_folder_path = "DART/";
+            }
 
             WriteBaseFile( input_folder_path, output_folder_path, "genre" );
             WriteBaseFile( input_folder_path, output_folder_path, "language" );
@@ -1488,6 +1544,7 @@ bool
     BaseOptionIsEnabled,
     CsOptionIsEnabled,
     DOptionIsEnabled,
+    DartOptionIsEnabled,
     UpperCaseOptionIsEnabled,
     VerboseOptionIsEnabled;
 string
@@ -1568,6 +1625,7 @@ void main(
 
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
+    DartOptionIsEnabled = false;
     BaseOptionIsEnabled = false;
     BaseNamespace = "";
     Namespace = "";
@@ -1582,14 +1640,22 @@ void main(
         argument_array = argument_array[ 1 .. $ ];
 
         if ( option == "--cs"
-             && !DOptionIsEnabled )
+             && !DOptionIsEnabled
+             && !DartOptionIsEnabled )
         {
             CsOptionIsEnabled = true;
         }
         else if ( option == "--d"
-                  && !CsOptionIsEnabled )
+                  && !CsOptionIsEnabled
+                  && !DartOptionIsEnabled )
         {
             DOptionIsEnabled = true;
+        }
+        else if ( option == "--dart"
+                  && !CsOptionIsEnabled
+                  && !DOptionIsEnabled )
+        {
+            DartOptionIsEnabled = true;
         }
         else if ( option == "--base" )
         {
@@ -1622,7 +1688,7 @@ void main(
         {
             Namespace = "LINGUI";
         }
-        else if ( DOptionIsEnabled )
+        else if ( DOptionIsEnabled || DartOptionIsEnabled )
         {
             Namespace = "lingui";
         }
@@ -1636,14 +1702,15 @@ void main(
     {
         BaseNamespace = "LINGUI";
     }
-    else if ( DOptionIsEnabled )
+    else if ( DOptionIsEnabled || DartOptionIsEnabled )
     {
         BaseNamespace = "lingui";
     }
 
     if ( argument_array.length == 2
-         && ( CsOptionIsEnabled || DOptionIsEnabled )
-         && CsOptionIsEnabled != DOptionIsEnabled )
+         && ( CsOptionIsEnabled
+              || DOptionIsEnabled
+              || DartOptionIsEnabled ) )
     {
         script = new SCRIPT();
         script.ExecuteScript( argument_array[ 0 ], argument_array[ 1 ] );
@@ -1654,6 +1721,7 @@ void main(
         writeln( "Options :" );
         writeln( "    --cs" );
         writeln( "    --d" );
+        writeln( "    --dart" );
         writeln( "    --base" );
         writeln( "    --namespace LINGUI" );
         writeln( "    --uppercase" );

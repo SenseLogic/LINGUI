@@ -1,19 +1,17 @@
-module game.english_language;
-
 // -- IMPORTS
 
-import game.genre;
-import game.plurality;
-import game.translation;
-import game.game_language;
+import "genre.dart";
+import "plurality.dart";
+import "translation.dart";
+import "game_language.dart";
 
 // -- TYPES
 
-class ENGLISH_LANGUAGE : GAME_LANGUAGE
+class ENGLISH_LANGUAGE extends GAME_LANGUAGE
 {
     // -- CONSTRUCTORS
 
-    this(
+    ENGLISH_LANGUAGE(
         )
     {
         Name = "English";
@@ -21,7 +19,7 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // -- INQUIRIES
 
-    override string MainMenu(
+    String MainMenu(
         )
     {
         return "Main menu";
@@ -29,12 +27,12 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override TRANSLATION Chests(
+    TRANSLATION Chests(
         TRANSLATION count_translation
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
         if ( count_translation.IntegerQuantity == 1 )
         {
@@ -52,12 +50,12 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override TRANSLATION Swords(
+    TRANSLATION Swords(
         TRANSLATION count_translation
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
         if ( count_translation.GetEnglishCardinalPlurality() == PLURALITY.One )
         {
@@ -75,12 +73,12 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItems(
+    String TheItems(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
         if ( items_translation.IntegerQuantity == 0 )
         {
@@ -104,12 +102,12 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItemsHaveBeenFound(
+    String TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
         result_translation.AddText( TheItems( items_translation ) );
 

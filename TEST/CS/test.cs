@@ -19,7 +19,7 @@ public class TEST
         swords_translation = game_language.Swords( new TRANSLATION( 3 ) );
 
         Console.Write( game_language.Test() );
-        Console.WriteLine( game_language.The_items_have_been_found( swords_translation ) );
+        Console.WriteLine( game_language.TheItemsHaveBeenFound( swords_translation ) );
     }
 
     // ~~

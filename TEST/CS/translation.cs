@@ -308,7 +308,7 @@ namespace GAME
         public PLURALITY GetPortugueseCardinalPlurality(
             )
         {
-            if ( RealQuantity >= 0
+            if ( RealQuantity >= 0.0f
                  && RealQuantity <= 1.5f )
             {
                 return PLURALITY.One;

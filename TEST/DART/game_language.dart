@@ -1,19 +1,17 @@
-module game.game_language;
-
 // -- IMPORTS
 
-import game.genre;
-import game.plurality;
-import game.translation;
-import game.language;
+import "genre.dart";
+import "plurality.dart";
+import "translation.dart";
+import "language.dart";
 
 // -- TYPES
 
-class GAME_LANGUAGE : LANGUAGE
+class GAME_LANGUAGE extends LANGUAGE
 {
     // -- INQUIRIES
 
-    string MainMenu(
+    String MainMenu(
         )
     {
         return "";
@@ -55,7 +53,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string TheItems(
+    String TheItems(
         TRANSLATION items_translation
         )
     {
@@ -64,7 +62,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string TheItemsHaveBeenFound(
+    String TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {
@@ -73,13 +71,13 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string Test(
+    String Test(
         )
     {
         TRANSLATION
-            result_translation,
-            no_chests_translation,
-            one_chest_translation;
+            result_translation = TRANSLATION(),
+            no_chests_translation = TRANSLATION(),
+            one_chest_translation = TRANSLATION();
 
         no_chests_translation = Chests( TRANSLATION( "", "0" ) );
         one_chest_translation = Chests( TRANSLATION( "", "1" ) );

@@ -10,7 +10,7 @@ namespace GAME
     {
         // -- INQUIRIES
 
-        public virtual string Main_menu(
+        public virtual string MainMenu(
             )
         {
             return "";
@@ -36,7 +36,7 @@ namespace GAME
 
         // ~~
 
-        public virtual TRANSLATION No_swords(
+        public virtual TRANSLATION NoSwords(
             )
         {
             return Swords( new TRANSLATION( "", "0" ) );
@@ -44,7 +44,7 @@ namespace GAME
 
         // ~~
 
-        public virtual TRANSLATION One_sword(
+        public virtual TRANSLATION OneSword(
             )
         {
             return Swords( new TRANSLATION( "", "1" ) );
@@ -52,7 +52,7 @@ namespace GAME
 
         // ~~
 
-        public virtual string The_items(
+        public virtual string TheItems(
             TRANSLATION items_translation
             )
         {
@@ -61,7 +61,7 @@ namespace GAME
 
         // ~~
 
-        public virtual string The_items_have_been_found(
+        public virtual string TheItemsHaveBeenFound(
             TRANSLATION items_translation
             )
         {
@@ -80,12 +80,12 @@ namespace GAME
 
             no_chests_translation = Chests( new TRANSLATION( "", "0" ) );
             one_chest_translation = Chests( new TRANSLATION( "", "1" ) );
-            result_translation.AddText( The_items_have_been_found( no_chests_translation ) );
-            result_translation.AddText( The_items_have_been_found( one_chest_translation ) );
-            result_translation.AddText( The_items_have_been_found( Chests( new TRANSLATION( "", "2" ) ) ) );
-            result_translation.AddText( The_items_have_been_found( No_swords() ) );
-            result_translation.AddText( The_items_have_been_found( One_sword() ) );
-            result_translation.AddText( The_items_have_been_found( Swords( new TRANSLATION( "", "2" ) ) ) );
+            result_translation.AddText( TheItemsHaveBeenFound( no_chests_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( one_chest_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( Chests( new TRANSLATION( "", "2" ) ) ) );
+            result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
+            result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
+            result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );
 
             return result_translation.Text;
         }

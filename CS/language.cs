@@ -21,7 +21,7 @@ namespace LINGUI
 
         // -- INQUIRIES
 
-        public bool IsLowerCase(
+        public bool IsLowerCaseCharacter(
             char character
             )
         {
@@ -45,7 +45,7 @@ namespace LINGUI
 
         // ~~
 
-        public bool IsUpperCase(
+        public bool IsUpperCaseCharacter(
             char character
             )
         {
@@ -68,7 +68,7 @@ namespace LINGUI
 
         // ~~
 
-        public char GetLowerCase(
+        public char GetLowerCaseCharacter(
             char character
             )
         {
@@ -101,7 +101,7 @@ namespace LINGUI
 
         // ~~
 
-        public char GetUpperCase(
+        public char GetUpperCaseCharacter(
             char character
             )
         {
@@ -150,7 +150,7 @@ namespace LINGUI
                   character_index < text.Length;
                   ++character_index )
             {
-                lower_case_character_array[ character_index ] = GetLowerCase( text[ character_index ] );
+                lower_case_character_array[ character_index ] = GetLowerCaseCharacter( text[ character_index ] );
             }
 
             return new string( lower_case_character_array );
@@ -173,7 +173,7 @@ namespace LINGUI
                   character_index < text.Length;
                   ++character_index )
             {
-                upper_case_character_array[ character_index ] = GetUpperCase( text[ character_index ] );
+                upper_case_character_array[ character_index ] = GetUpperCaseCharacter( text[ character_index ] );
             }
 
             return new string( upper_case_character_array );
@@ -203,9 +203,9 @@ namespace LINGUI
                 character = text[ character_index ];
 
                 if ( prior_character == ' '
-                     && IsLowerCase( character ) )
+                     && IsLowerCaseCharacter( character ) )
                 {
-                    title_case_character_array[ character_index ] = GetUpperCase( character );
+                    title_case_character_array[ character_index ] = GetUpperCaseCharacter( character );
                 }
 
                 prior_character = character;
@@ -224,10 +224,10 @@ namespace LINGUI
                 capital_case_character_array;
 
             if ( text.Length > 0
-                 && !IsUpperCase( text[ 0 ] ) )
+                 && !IsUpperCaseCharacter( text[ 0 ] ) )
             {
                 capital_case_character_array = text.ToCharArray();
-                capital_case_character_array[ 0 ] = GetUpperCase( text[ 0 ] );
+                capital_case_character_array[ 0 ] = GetUpperCaseCharacter( text[ 0 ] );
 
                 return new string( capital_case_character_array );
             }

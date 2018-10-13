@@ -22,7 +22,7 @@ class LANGUAGE
 
     // -- INQUIRIES
 
-    bool IsLowerCase(
+    bool IsLowerCaseCharacter(
         dchar character
         )
     {
@@ -46,7 +46,7 @@ class LANGUAGE
 
     // ~~
 
-    bool IsUpperCase(
+    bool IsUpperCaseCharacter(
         dchar character
         )
     {
@@ -69,7 +69,7 @@ class LANGUAGE
 
     // ~~
 
-    dchar GetLowerCase(
+    dchar GetLowerCaseCharacter(
         dchar character
         )
     {
@@ -103,7 +103,7 @@ class LANGUAGE
 
     // ~~
 
-    dchar GetUpperCase(
+    dchar GetUpperCaseCharacter(
         dchar character
         )
     {
@@ -146,7 +146,7 @@ class LANGUAGE
 
         foreach ( dchar character; text )
         {
-            lower_case_text ~= GetLowerCase( character );
+            lower_case_text ~= GetLowerCaseCharacter( character );
         }
 
         return lower_case_text;
@@ -163,7 +163,7 @@ class LANGUAGE
 
         foreach ( dchar character; text )
         {
-            upper_case_text ~= GetUpperCase( character );
+            upper_case_text ~= GetUpperCaseCharacter( character );
         }
 
         return upper_case_text;
@@ -185,9 +185,9 @@ class LANGUAGE
         foreach ( dchar character; text )
         {
             if ( prior_character == ' '
-                 && IsLowerCase( character ) )
+                 && IsLowerCaseCharacter( character ) )
             {
-                title_case_text ~= GetUpperCase( character );
+                title_case_text ~= GetUpperCaseCharacter( character );
             }
             else
             {
@@ -207,7 +207,7 @@ class LANGUAGE
         )
     {
         if ( text.length > 0
-             && !IsUpperCase( text[ 0 ] ) )
+             && !IsUpperCaseCharacter( text[ 0 ] ) )
         {
             return GetUpperCase( text[ 0 .. 1 ] ) ~ text[ 1 .. $ ];
         }
