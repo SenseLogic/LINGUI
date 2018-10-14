@@ -394,7 +394,16 @@ namespace GAME
 
         // ~~
 
-        public int GetInteger(
+        public float GetIntegerReal(
+            int integer
+            )
+        {
+            return ( int )integer;
+        }
+
+        // ~~
+
+        public int GetRealInteger(
             float real
             )
         {
@@ -403,11 +412,20 @@ namespace GAME
 
         // ~~
 
-        public float GetReal(
-            int integer
+        public int GetTextInteger(
+            String text
             )
         {
-            return ( int )integer;
+            return int.Parse( text );
+        }
+
+        // ~~
+
+        public float GetTextReal(
+            String text
+            )
+        {
+            return float.Parse( text );
         }
 
         // ~~

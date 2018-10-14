@@ -374,7 +374,16 @@ class LANGUAGE
 
     // ~~
 
-    int GetInteger(
+    float GetIntegerReal(
+        int integer
+        )
+    {
+        return integer.to!float();
+    }
+
+    // ~~
+
+    int GetRealInteger(
         float real_
         )
     {
@@ -383,11 +392,20 @@ class LANGUAGE
 
     // ~~
 
-    float GetReal(
-        int integer
+    int GetTextInteger(
+        string text
         )
     {
-        return integer.to!float();
+        return text.to!int();
+    }
+
+    // ~~
+
+    float GetTextReal(
+        string text
+        )
+    {
+        return text.to!float();
     }
 
     // ~~

@@ -421,7 +421,16 @@ class LANGUAGE
 
     // ~~
 
-    int GetInteger(
+    double GetIntegerReal(
+        int integer
+        )
+    {
+        return integer.toDouble();
+    }
+
+    // ~~
+
+    int GetRealInteger(
         double real
         )
     {
@@ -430,11 +439,20 @@ class LANGUAGE
 
     // ~~
 
-    double GetReal(
-        int integer
+    int GetTextInteger(
+        String text
         )
     {
-        return integer.toDouble();
+        return int.parse( text );
+    }
+
+    // ~~
+
+    double GetTextReal(
+        String text
+        )
+    {
+        return double.parse( text );
     }
 
     // ~~
