@@ -17,6 +17,7 @@ class FRENCH_LANGUAGE extends GAME_LANGUAGE
         )
     {
         Name = "French";
+        DecimalSeparator = ',';
     }
 
     // -- INQUIRIES

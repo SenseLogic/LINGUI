@@ -17,6 +17,7 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
         )
     {
         Name = "English";
+        DecimalSeparator = '.';
     }
 
     // -- INQUIRIES

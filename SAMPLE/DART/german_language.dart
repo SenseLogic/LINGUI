@@ -17,6 +17,7 @@ class GERMAN_LANGUAGE extends GAME_LANGUAGE
         )
     {
         Name = "German";
+        DecimalSeparator = ',';
     }
 
     // -- INQUIRIES

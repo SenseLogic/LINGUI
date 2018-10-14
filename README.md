@@ -121,11 +121,12 @@ public class TEST
 ```d
 // -- IMPORTS
 
-import game.english_language;
-import game.french_language;
-import game.game_language;
-import game.translation;
-import std.stdio : write, writeln;
+import lingui.english_language;
+import lingui.french_language;
+import lingui.game_language;
+import lingui.german_language;
+import lingui.translation;
+import std.stdio : writeln;
 
 // -- FUNCTIONS
 
@@ -133,13 +134,11 @@ void TestLanguage(
     GAME_LANGUAGE game_language
     )
 {
-    TRANSLATION
-        swords_translation;
-
-    swords_translation = game_language.Swords( TRANSLATION( 3 ) );
-
-    write( game_language.Test() );
-    writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
+    writeln( game_language.NewGame() );
+    writeln( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    writeln( game_language.Pears( TRANSLATION( 0 ) ) );
+    writeln( game_language.Pears( TRANSLATION( 1 ) ) );
+    writeln( game_language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~
@@ -148,16 +147,9 @@ void main(
     string[] argument_array
     )
 {
-    ENGLISH_LANGUAGE
-        english_language;
-    FRENCH_LANGUAGE
-        french_language;
-
-    english_language = new ENGLISH_LANGUAGE();
-    french_language = new FRENCH_LANGUAGE();
-
-    TestLanguage( english_language );
-    TestLanguage( french_language );
+    TestLanguage( new ENGLISH_LANGUAGE() );
+    TestLanguage( new GERMAN_LANGUAGE() );
+    TestLanguage( new FRENCH_LANGUAGE() );
 }
 ```
 
@@ -166,10 +158,10 @@ void main(
 ```dart
 // -- IMPORTS
 
-import "dart:io";
 import "english_language.dart";
 import "french_language.dart";
 import "game_language.dart";
+import "german_language.dart";
 import "translation.dart";
 
 // -- FUNCTIONS
@@ -178,13 +170,11 @@ void TestLanguage(
     GAME_LANGUAGE game_language
     )
 {
-    TRANSLATION
-        swords_translation;
-
-    swords_translation = game_language.Swords( TRANSLATION.FromQuantity( 3 ) );
-
-    stdout.write( game_language.Test() );
-    stdout.writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
+    print( game_language.NewGame() );
+    print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 0 ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 1 ) ) );
+    print( game_language.Pears( TRANSLATION.FromQuantity( 2 ) ) );
 }
 
 // ~~
@@ -193,16 +183,9 @@ void main(
     List<String> argument_list
     )
 {
-    ENGLISH_LANGUAGE
-        english_language;
-    FRENCH_LANGUAGE
-        french_language;
-
-    english_language = ENGLISH_LANGUAGE();
-    french_language = FRENCH_LANGUAGE();
-
-    TestLanguage( english_language );
-    TestLanguage( french_language );
+    TestLanguage( ENGLISH_LANGUAGE() );
+    TestLanguage( GERMAN_LANGUAGE() );
+    TestLanguage( FRENCH_LANGUAGE() );
 }
 ```
 

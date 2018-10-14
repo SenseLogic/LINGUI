@@ -14,6 +14,7 @@ namespace LINGUI
             )
         {
             Name = "English";
+            DecimalSeparator = '.';
         }
 
         // -- INQUIRIES
