@@ -287,8 +287,8 @@ $    text
 ^    quantity first character
 #    quantity integer value
 %    quantity real value
-:    true if the quantity is integer
-.    true if the quantity is real
+:    has an integer quantity?
+.    has a real quantity?
 @    cardinal plurality (zero, one, two, few, many, other)
 °    ordinal plurality (zero, one, two, few, many, other)
 &    genre (neutral, male, female)
