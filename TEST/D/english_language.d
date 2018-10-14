@@ -127,4 +127,13 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
         return result_translation.Text;
     }
+
+    // ~~
+
+    override string DumpPlurality(
+        TRANSLATION this_translation
+        )
+    {
+        return GetPluralityText( this_translation.GetEnglishCardinalPlurality() ) ~ " / ";
+    }
 }

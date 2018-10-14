@@ -30,40 +30,44 @@ class TRANSLATION
 
     TRANSLATION(
         [
-            String text = "",
-            String quantity = "",
+            dynamic text = "",
+            dynamic quantity = "",
             GENRE genre = GENRE.Neutral
         ]
         )
     {
-        Text = text;
-        Quantity = "";
-        HasIntegerQuantity = false;
-        HasRealQuantity = false;
-        IntegerQuantity = 0;
-        RealQuantity = 0.0;
-        Genre = genre;
-
-        if ( quantity.length > 0 )
+        if ( text is int )
         {
-            SetQuantity( quantity );
+            Text = "";
+
+            SetQuantity( text );
+
+            if ( quantity is String )
+            {
+                Genre = GENRE.Neutral;
+            }
+            else
+            {
+                Genre = quantity;
+            }
         }
-    }
+        else
+        {
+            assert( text is String );
 
-    // ~~
+            Text = text;
+            Quantity = "";
+            HasIntegerQuantity = false;
+            HasRealQuantity = false;
+            IntegerQuantity = 0;
+            RealQuantity = 0.0;
+            Genre = genre;
 
-    TRANSLATION.FromQuantity(
-        int integer_quantity,
-        [ GENRE genre = GENRE.Neutral ]
-        )
-    {
-        Text = "";
-        Quantity = integer_quantity.toString();
-        HasIntegerQuantity = true;
-        HasRealQuantity = false;
-        IntegerQuantity = integer_quantity;
-        RealQuantity = integer_quantity + 0.0;
-        Genre = genre;
+            if ( quantity.length > 0 )
+            {
+                SetQuantity( quantity );
+            }
+        }
     }
 
     // -- INQUIRIES
@@ -620,6 +624,8 @@ class TRANSLATION
         }
         else
         {
+            assert( quantity is double );
+
             Quantity = quantity;
             HasIntegerQuantity = true;
             HasRealQuantity = false;

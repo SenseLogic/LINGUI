@@ -3,6 +3,7 @@ library lingui;
 // -- IMPORTS
 
 import "genre.dart";
+import "plurality.dart";
 import "translation.dart";
 
 // -- TYPES
@@ -275,24 +276,14 @@ class LANGUAGE
     // ~~
 
     TRANSLATION MakeTranslation(
-        String text,
+        dynamic text,
         [
-            String quantity = "",
+            dynamic quantity = "",
             GENRE genre = GENRE.Neutral
         ]
         )
     {
         return TRANSLATION( text, quantity, genre );
-    }
-
-    // ~~
-
-    TRANSLATION MakeQuantity(
-        int integer_quantity,
-        [ GENRE genre = GENRE.Neutral ]
-        )
-    {
-        return TRANSLATION.FromQuantity( integer_quantity, genre );
     }
 
     // ~~
@@ -448,8 +439,17 @@ class LANGUAGE
 
     // ~~
 
-    String GetText(
-        dynamic number,
+    String GetIntegerText(
+        int integer
+        )
+    {
+        return integer.toString();
+    }
+
+    // ~~
+
+    String GetRealText(
+        double real,
         [
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
@@ -463,46 +463,99 @@ class LANGUAGE
         String
             text;
 
-        text = number.toString();
+        text = real.toString();
 
-        if ( number is double )
+        if ( decimal_separator == '\0' )
         {
-            if ( decimal_separator == '\0' )
-            {
-                decimal_separator = DecimalSeparator;
-            }
+            decimal_separator = DecimalSeparator;
+        }
 
-            decimal_separator_index = text.indexOf( '.' );
+        decimal_separator_index = text.indexOf( '.' );
 
-            if ( decimal_separator_index < 0 )
-            {
-                text += decimal_separator;
-                decimal_separator_index = text.length - 1;
-            }
+        if ( decimal_separator_index < 0 )
+        {
+            text += decimal_separator;
+            decimal_separator_index = text.length - 1;
+        }
 
-            fractional_digit_count = text.length - decimal_separator_index - 1;
+        fractional_digit_count = text.length - decimal_separator_index - 1;
 
-            if ( fractional_digit_count < minimum_fractional_digit_count )
-            {
-                text = text + "00000000000000000000".substring( 0, minimum_fractional_digit_count - fractional_digit_count );
-            }
-            else if ( fractional_digit_count > maximum_fractional_digit_count )
-            {
-                text = text.substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
-            }
+        if ( fractional_digit_count < minimum_fractional_digit_count )
+        {
+            text = text + "00000000000000000000".substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+        }
+        else if ( fractional_digit_count > maximum_fractional_digit_count )
+        {
+            text = text.substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
+        }
 
-            if ( text[ decimal_separator_index ] != decimal_separator )
-            {
-                text = text.substring( 0, decimal_separator_index ) + decimal_separator + text.substring( decimal_separator_index + 1 );
-            }
+        if ( text[ decimal_separator_index ] != decimal_separator )
+        {
+            text = text.substring( 0, decimal_separator_index ) + decimal_separator + text.substring( decimal_separator_index + 1 );
+        }
 
-            if ( minimum_fractional_digit_count == 0
-                 && fractional_digit_count == 0 )
-            {
-                text = text.substring( 0, text.length - 1 );
-            }
+        if ( minimum_fractional_digit_count == 0
+             && fractional_digit_count == 0 )
+        {
+            text = text.substring( 0, text.length - 1 );
         }
 
         return text;
+    }
+
+    // ~~
+
+    String GetPluralityText(
+        PLURALITY plurality
+        )
+    {
+        if ( plurality == PLURALITY.Zero )
+        {
+            return "zero";
+        }
+        else if ( plurality == PLURALITY.One )
+        {
+            return "one";
+        }
+        else if ( plurality == PLURALITY.Two )
+        {
+            return "two";
+        }
+        else if ( plurality == PLURALITY.Few )
+        {
+            return "few";
+        }
+        else if ( plurality == PLURALITY.Many )
+        {
+            return "many";
+        }
+        else
+        {
+            assert( plurality == PLURALITY.Other );
+
+            return "other";
+        }
+    }
+
+    // ~~
+
+    String GetGenreText(
+        GENRE genre
+        )
+    {
+        if ( genre == GENRE.Male )
+        {
+            return "male";
+        }
+        else if ( genre == GENRE.Female )
+        {
+            return "female";
+        }
+        else
+        {
+            assert( genre == GENRE.Neutral );
+
+            return "neutral";
+        }
     }
 }

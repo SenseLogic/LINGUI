@@ -412,7 +412,7 @@ namespace GAME
 
         // ~~
 
-        public string GetText(
+        public string GetIntegerText(
             int integer
             )
         {
@@ -421,7 +421,7 @@ namespace GAME
 
         // ~~
 
-        public string GetText(
+        public string GetRealText(
             float real,
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
@@ -477,6 +477,58 @@ namespace GAME
             }
 
             return text;
+        }
+
+        // ~~
+
+        public string GetPluralityText(
+            PLURALITY plurality
+            )
+        {
+            if ( plurality == PLURALITY.Zero )
+            {
+                return "zero";
+            }
+            else if ( plurality == PLURALITY.One )
+            {
+                return "one";
+            }
+            else if ( plurality == PLURALITY.Two )
+            {
+                return "two";
+            }
+            else if ( plurality == PLURALITY.Few )
+            {
+                return "few";
+            }
+            else if ( plurality == PLURALITY.Many )
+            {
+                return "many";
+            }
+            else
+            {
+                return "other";
+            }
+        }
+
+        // ~~
+
+        public string GetGenreText(
+            GENRE genre
+            )
+        {
+            if ( genre == GENRE.Male )
+            {
+                return "male";
+            }
+            else if ( genre == GENRE.Female )
+            {
+                return "female";
+            }
+            else
+            {
+                return "neutral";
+            }
         }
     }
 }

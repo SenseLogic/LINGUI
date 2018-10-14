@@ -185,5 +185,14 @@ namespace GAME
 
             return result_translation.Text;
         }
+
+        // ~~
+
+        public override string DumpPlurality(
+            TRANSLATION this_translation
+            )
+        {
+            return GetPluralityText( this_translation.GetFrenchCardinalPlurality() ) + " / ";
+        }
     }
 }

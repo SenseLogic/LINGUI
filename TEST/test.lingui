@@ -16,11 +16,34 @@ Game
 
     TheItemsHaveBeenFound items
 
+    DumpPlurality this
+
+    Dump this
+        "\"" ~ $this ~ "\" / \"" ~ *this ~ "\" / '" ~ ^this ~ "' / "
+        if :this
+            GetIntegerText( #this ) ~ " / "
+        if .this
+            GetRealText( %this ) ~ " / "
+
+        DumpPlurality( this )
+        GetGenreText( &this ) ~ "\n"
+
     TestFunctions
-        GetText( -12 ) ~ " / " ~ GetText( -12.0, 0 ) ~ " / " ~ GetText( -12.0 ) ~ " / " ~ GetText( -12.0, 3, 3 ) ~ " \n"
-        GetText( -12.3, 3, 3, '_' ) ~ " / " ~ GetText( -12.345 ) ~ " / " ~ GetText( -12.3456789, 0, 3, DecimalSeparator ) ~ "\n"
+        GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, 0 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3, 3 ) ~ " \n"
+        GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DecimalSeparator ) ~ "\n"
         GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n"
         GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n"
+        Dump( MakeTranslation( "cm" ) )
+        Dump( MakeTranslation( "cm", "-12.345" ) )
+        Dump( MakeTranslation( "cm", "-12.345", male ) )
+        Dump( MakeTranslation( 12 ) )
+        Dump( MakeTranslation( 12, female ) )
+        Dump( 3* )
+        Dump( 4*"perros" )
+        Dump( 5*"fiestas":female )
+        Dump( 6.5* )
+        Dump( 7.5*"metros" )
+        Dump( 8.5*"vueltas":female )
 
     Test
         var no_chests one_chest
@@ -73,6 +96,9 @@ English : Game
         else
             " have"
         " been found.\n"
+
+    DumpPlurality this
+        GetPluralityText( @this ) ~ " / "
 
 French : Game
 
@@ -134,3 +160,6 @@ French : Game
         Have( items )
         BeenFound( items )
         ".\n"
+
+    DumpPlurality this
+        GetPluralityText( @this ) ~ " / "

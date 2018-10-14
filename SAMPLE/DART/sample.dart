@@ -14,9 +14,9 @@ void TestLanguage(
 {
     print( game_language.NewGame() );
     print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 0 ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 1 ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 2 ) ) );
+    print( game_language.Pears( TRANSLATION( 0 ) ) );
+    print( game_language.Pears( TRANSLATION( 1 ) ) );
+    print( game_language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~

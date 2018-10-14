@@ -188,4 +188,13 @@ class FRENCH_LANGUAGE extends GAME_LANGUAGE
 
         return result_translation.Text;
     }
+
+    // ~~
+
+    String DumpPlurality(
+        TRANSLATION this_translation
+        )
+    {
+        return GetPluralityText( this_translation.GetFrenchCardinalPlurality() ) + " / ";
+    }
 }

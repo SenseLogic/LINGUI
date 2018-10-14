@@ -73,16 +73,63 @@ class GAME_LANGUAGE extends LANGUAGE
 
     // ~~
 
+    String DumpPlurality(
+        TRANSLATION this_translation
+        )
+    {
+        return "";
+    }
+
+    // ~~
+
+    String Dump(
+        TRANSLATION this_translation
+        )
+    {
+        TRANSLATION
+            result_translation = TRANSLATION();
+
+        result_translation.AddText( "\"" + this_translation.Text + "\" / \"" + this_translation.Quantity + "\" / '" + this_translation.GetQuantityFirstCharacter() + "' / " );
+
+        if ( this_translation.HasIntegerQuantity )
+        {
+            result_translation.AddText( GetIntegerText( this_translation.IntegerQuantity ) + " / " );
+        }
+
+        if ( this_translation.HasRealQuantity )
+        {
+            result_translation.AddText( GetRealText( this_translation.RealQuantity ) + " / " );
+        }
+
+        result_translation.AddText( DumpPlurality( this_translation ) );
+        result_translation.AddText( GetGenreText( this_translation.Genre ) + "\n" );
+
+        return result_translation.Text;
+    }
+
+    // ~~
+
     String TestFunctions(
         )
     {
         TRANSLATION
             result_translation = TRANSLATION();
 
-        result_translation.AddText( GetText( -12 ) + " / " + GetText( -12.0, 0 ) + " / " + GetText( -12.0 ) + " / " + GetText( -12.0, 3, 3 ) + " \n" );
-        result_translation.AddText( GetText( -12.3, 3, 3, '_' ) + " / " + GetText( -12.345 ) + " / " + GetText( -12.3456789, 0, 3, DecimalSeparator ) + "\n" );
+        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, 0 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3, 3 ) + " \n" );
+        result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DecimalSeparator ) + "\n" );
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
         result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
+        result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );
+        result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345" ) ) );
+        result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345", GENRE.Male ) ) );
+        result_translation.AddText( Dump( MakeTranslation( 12 ) ) );
+        result_translation.AddText( Dump( MakeTranslation( 12, GENRE.Female ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "", "3" ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "perros", "4" ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "fiestas", "5", GENRE.Female ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "", "6.5" ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "metros", "7.5" ) ) );
+        result_translation.AddText( Dump( TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
 
         return result_translation.Text;
     }

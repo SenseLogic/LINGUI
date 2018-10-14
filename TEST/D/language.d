@@ -3,6 +3,7 @@ module game.language;
 // -- IMPORTS
 
 import game.genre;
+import game.plurality;
 import game.translation;
 import std.conv : to;
 import std.string : endsWith, indexOf, startsWith;
@@ -391,7 +392,7 @@ class LANGUAGE
 
     // ~~
 
-    string GetText(
+    string GetIntegerText(
         int integer
         )
     {
@@ -400,7 +401,7 @@ class LANGUAGE
 
     // ~~
 
-    string GetText(
+    string GetRealText(
         float real_,
         int minimum_fractional_digit_count = 1,
         int maximum_fractional_digit_count = 20,
@@ -451,5 +452,57 @@ class LANGUAGE
         }
 
         return text;
+    }
+
+    // ~~
+
+    public string GetPluralityText(
+        PLURALITY plurality
+        )
+    {
+        if ( plurality == PLURALITY.Zero )
+        {
+            return "zero";
+        }
+        else if ( plurality == PLURALITY.One )
+        {
+            return "one";
+        }
+        else if ( plurality == PLURALITY.Two )
+        {
+            return "two";
+        }
+        else if ( plurality == PLURALITY.Few )
+        {
+            return "few";
+        }
+        else if ( plurality == PLURALITY.Many )
+        {
+            return "many";
+        }
+        else
+        {
+            return "other";
+        }
+    }
+
+    // ~~
+
+    public string GetGenreText(
+        GENRE genre
+        )
+    {
+        if ( genre == GENRE.Male )
+        {
+            return "male";
+        }
+        else if ( genre == GENRE.Female )
+        {
+            return "female";
+        }
+        else
+        {
+            return "neutral";
+        }
     }
 }

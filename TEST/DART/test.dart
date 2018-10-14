@@ -15,7 +15,7 @@ void TestLanguage(
     TRANSLATION
         swords_translation;
 
-    swords_translation = game_language.Swords( TRANSLATION.FromQuantity( 3 ) );
+    swords_translation = game_language.Swords( TRANSLATION( 3 ) );
 
     stdout.write( game_language.Test() );
     stdout.writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );

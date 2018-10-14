@@ -172,9 +172,9 @@ void TestLanguage(
 {
     print( game_language.NewGame() );
     print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 0 ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 1 ) ) );
-    print( game_language.Pears( TRANSLATION.FromQuantity( 2 ) ) );
+    print( game_language.Pears( TRANSLATION( 0 ) ) );
+    print( game_language.Pears( TRANSLATION( 1 ) ) );
+    print( game_language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~
@@ -374,8 +374,10 @@ HasSuffix( text, prefix )
 HasSuffix( translation, prefix )
 GetInteger( real )
 GetReal( integer )
-GetText( integer )
-GetText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, decimal_separator );
+GetIntegerText( integer )
+GetRealText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, decimal_separator );
+GetPluralityText( plurality )
+GetGenreText( genre )
 ```
 
 ### Comments
@@ -438,6 +440,26 @@ lingui --d --verbose test.lingui D/
 ```
 
 Converts a Lingui script file to D source code files.
+
+## Limitations
+
+*   The supported language names are :
+    *   English
+    *   Japanese
+    *   Korean
+    *   Chinese
+    *   German
+    *   French
+    *   Italian
+    *   Spanish
+    *   Portuguese
+    *   Russian
+    *   Turquish
+    *   Dutch
+    *   Swedish
+    *   Norwegian
+    *   Danish
+    *   Arabic
 
 ## Version
 
