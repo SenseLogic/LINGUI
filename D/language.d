@@ -414,11 +414,17 @@ class LANGUAGE
             text;
 
         text = real_.to!string();
+
+        if ( decimal_separator == 0 )
+        {
+            decimal_separator = DecimalSeparator;
+        }
+
         decimal_separator_index = text.indexOf( '.' );
 
         if ( decimal_separator_index < 0 )
         {
-            text ~= '.';
+            text ~= decimal_separator;
             decimal_separator_index = text.length - 1;
         }
 
@@ -433,17 +439,9 @@ class LANGUAGE
             text = text[ 0 .. decimal_separator_index + 1 + maximum_fractional_digit_count ];
         }
 
-        if ( decimal_separator == 0 )
-        {
-            decimal_separator = DecimalSeparator;
-        }
-
         if ( text[ decimal_separator_index ] != decimal_separator )
         {
-            text
-                = text[ 0 .. decimal_separator_index ]
-                  ~ decimal_separator
-                  ~ text[ decimal_separator_index + 1 .. $ ];
+            text = text[ 0 .. decimal_separator_index ] ~ decimal_separator ~ text[ decimal_separator_index + 1 .. $ ];
         }
 
         if ( minimum_fractional_digit_count == 0

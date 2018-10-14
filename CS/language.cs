@@ -435,6 +435,12 @@ namespace LINGUI
                 text;
 
             text = real.ToString();
+
+            if ( decimal_separator == '\0' )
+            {
+                decimal_separator = DecimalSeparator;
+            }
+
             decimal_separator_index = text.IndexOf( '.' );
 
             if ( decimal_separator_index < 0 )
@@ -444,7 +450,7 @@ namespace LINGUI
 
             if ( decimal_separator_index < 0 )
             {
-                text += '.';
+                text += decimal_separator;
                 decimal_separator_index = text.Length - 1;
             }
 
@@ -459,17 +465,9 @@ namespace LINGUI
                 text = text.Substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
             }
 
-            if ( decimal_separator == '\0' )
+            if ( text[ decimal_separator_index ] != decimal_separator )
             {
-                decimal_separator = DecimalSeparator;
-            }
-
-            if ( text[ decimal_separator_index ] == decimal_separator )
-            {
-                text
-                    = text.Substring( 0, decimal_separator_index )
-                      + decimal_separator
-                      + text.Substring( decimal_separator_index + 1, text.Length - decimal_separator_index - 1 );
+                text = text.Substring( 0, decimal_separator_index ) + decimal_separator + text.Substring( decimal_separator_index + 1 );
             }
 
             if ( minimum_fractional_digit_count == 0

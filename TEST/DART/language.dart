@@ -464,14 +464,19 @@ class LANGUAGE
             text;
 
         text = number.toString();
-print( "IN : " + text );
+
         if ( number is double )
         {
+            if ( decimal_separator == '\0' )
+            {
+                decimal_separator = DecimalSeparator;
+            }
+
             decimal_separator_index = text.indexOf( '.' );
 
             if ( decimal_separator_index < 0 )
             {
-                text += '.';
+                text += decimal_separator;
                 decimal_separator_index = text.length - 1;
             }
 
@@ -486,17 +491,9 @@ print( "IN : " + text );
                 text = text.substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
             }
 
-            if ( decimal_separator == '\0' )
-            {
-                decimal_separator = DecimalSeparator;
-            }
-
             if ( text[ decimal_separator_index ] != decimal_separator )
             {
-                text
-                    = text.substring( 0, decimal_separator_index )
-                      + decimal_separator
-                      + text.substring( decimal_separator_index + 1, text.length - decimal_separator_index - 1 );
+                text = text.substring( 0, decimal_separator_index ) + decimal_separator + text.substring( decimal_separator_index + 1 );
             }
 
             if ( minimum_fractional_digit_count == 0
@@ -505,7 +502,7 @@ print( "IN : " + text );
                 text = text.substring( 0, text.length - 1 );
             }
         }
-print( "OUT : " + text );
+
         return text;
     }
 }
