@@ -1,5 +1,3 @@
-library lingui;
-
 // -- TYPES
 
 enum GENRE

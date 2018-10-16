@@ -1,5 +1,3 @@
-library game;
-
 // -- TYPES
 
 enum GENRE
