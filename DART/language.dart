@@ -521,6 +521,28 @@ class LANGUAGE
 
     // ~~
 
+    String GetGenreText(
+        GENRE genre
+        )
+    {
+        if ( genre == GENRE.Male )
+        {
+            return "male";
+        }
+        else if ( genre == GENRE.Female )
+        {
+            return "female";
+        }
+        else
+        {
+            assert( genre == GENRE.Neutral );
+
+            return "neutral";
+        }
+    }
+
+    // ~~
+
     String GetPluralityText(
         PLURALITY plurality
         )
@@ -555,23 +577,23 @@ class LANGUAGE
 
     // ~~
 
-    String GetGenreText(
-        GENRE genre
+    PLURALITY GetCardinalPlurality(
+        TRANSLATION translation
         )
     {
-        if ( genre == GENRE.Male )
-        {
-            return "male";
-        }
-        else if ( genre == GENRE.Female )
-        {
-            return "female";
-        }
-        else
-        {
-            assert( genre == GENRE.Neutral );
+        assert( false );
 
-            return "neutral";
-        }
+        return PLURALITY.Zero;
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        assert( false );
+
+        return PLURALITY.Zero;
     }
 }

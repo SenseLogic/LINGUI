@@ -453,7 +453,7 @@ namespace GAME
                 text;
 
             text = real.ToString();
-
+Console.WriteLine( "GetRealText" + text );
             if ( decimal_separator == '\0' )
             {
                 decimal_separator = DecimalSeparator;
@@ -499,6 +499,26 @@ namespace GAME
 
         // ~~
 
+        public string GetGenreText(
+            GENRE genre
+            )
+        {
+            if ( genre == GENRE.Male )
+            {
+                return "male";
+            }
+            else if ( genre == GENRE.Female )
+            {
+                return "female";
+            }
+            else
+            {
+                return "neutral";
+            }
+        }
+
+        // ~~
+
         public string GetPluralityText(
             PLURALITY plurality
             )
@@ -531,22 +551,20 @@ namespace GAME
 
         // ~~
 
-        public string GetGenreText(
-            GENRE genre
+        public virtual PLURALITY GetCardinalPlurality(
+            TRANSLATION translation
             )
         {
-            if ( genre == GENRE.Male )
-            {
-                return "male";
-            }
-            else if ( genre == GENRE.Female )
-            {
-                return "female";
-            }
-            else
-            {
-                return "neutral";
-            }
+            return PLURALITY.Zero;
+        }
+
+        // ~~
+
+        public virtual PLURALITY GetOrdinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return PLURALITY.Zero;
         }
     }
 }

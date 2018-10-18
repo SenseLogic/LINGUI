@@ -378,8 +378,10 @@ GetTextInteger( text )
 GetTextReal( text )
 GetIntegerText( integer )
 GetRealText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, decimal_separator );
-GetPluralityText( plurality )
 GetGenreText( genre )
+GetPluralityText( plurality )
+GetCardinalPlurality( translation )
+GetOrdinalPlurality( translation )
 ```
 
 ### Comments

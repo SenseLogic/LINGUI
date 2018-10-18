@@ -71,15 +71,6 @@ class GAME_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String DumpPlurality(
-        TRANSLATION this_translation
-        )
-    {
-        return "";
-    }
-
-    // ~~
-
     String Dump(
         TRANSLATION this_translation
         )
@@ -99,8 +90,7 @@ class GAME_LANGUAGE extends LANGUAGE
             result_translation.AddText( GetRealText( this_translation.RealQuantity ) + " / " );
         }
 
-        result_translation.AddText( DumpPlurality( this_translation ) );
-        result_translation.AddText( GetGenreText( this_translation.Genre ) + "\n" );
+        result_translation.AddText( GetPluralityText( GetCardinalPlurality( this_translation ) ) + " / " + GetPluralityText( GetOrdinalPlurality( this_translation ) ) + " / " + GetGenreText( this_translation.Genre ) + "\n" );
 
         return result_translation.Text;
     }
@@ -118,6 +108,9 @@ class GAME_LANGUAGE extends LANGUAGE
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
         result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
         result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );
+        result_translation.AddText( Dump( MakeTranslation( "cm", "0" ) ) );
+        result_translation.AddText( Dump( MakeTranslation( "cm", "1" ) ) );
+        result_translation.AddText( Dump( MakeTranslation( "cm", "2" ) ) );
         result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345" ) ) );
         result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345", GENRE.Male ) ) );
         result_translation.AddText( Dump( MakeTranslation( 12 ) ) );

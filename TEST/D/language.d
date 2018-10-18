@@ -474,7 +474,27 @@ class LANGUAGE
 
     // ~~
 
-    public string GetPluralityText(
+    string GetGenreText(
+        GENRE genre
+        )
+    {
+        if ( genre == GENRE.Male )
+        {
+            return "male";
+        }
+        else if ( genre == GENRE.Female )
+        {
+            return "female";
+        }
+        else
+        {
+            return "neutral";
+        }
+    }
+
+    // ~~
+
+    string GetPluralityText(
         PLURALITY plurality
         )
     {
@@ -500,27 +520,31 @@ class LANGUAGE
         }
         else
         {
+            assert( plurality == PLURALITY.Other );
+
             return "other";
         }
     }
 
     // ~~
 
-    public string GetGenreText(
-        GENRE genre
+    PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
         )
     {
-        if ( genre == GENRE.Male )
-        {
-            return "male";
-        }
-        else if ( genre == GENRE.Female )
-        {
-            return "female";
-        }
-        else
-        {
-            return "neutral";
-        }
+        assert( 0 );
+
+        return PLURALITY.Zero;
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        assert( 0 );
+
+        return PLURALITY.Zero;
     }
 }

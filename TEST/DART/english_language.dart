@@ -20,6 +20,24 @@ class ENGLISH_LANGUAGE extends GAME_LANGUAGE
 
     // -- INQUIRIES
 
+    PLURALITY GetCardinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishCardinalPlurality();
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishOrdinalPlurality();
+    }
+
+    // ~~
+
     String MainMenu(
         )
     {
@@ -124,14 +142,5 @@ class ENGLISH_LANGUAGE extends GAME_LANGUAGE
         result_translation.AddText( " been found.\n" );
 
         return result_translation.Text;
-    }
-
-    // ~~
-
-    String DumpPlurality(
-        TRANSLATION this_translation
-        )
-    {
-        return GetPluralityText( this_translation.GetEnglishCardinalPlurality() ) + " / ";
     }
 }

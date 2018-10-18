@@ -19,6 +19,24 @@ namespace GAME
 
         // -- INQUIRIES
 
+        public override PLURALITY GetCardinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetEnglishCardinalPlurality();
+        }
+
+        // ~~
+
+        public override PLURALITY GetOrdinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetEnglishOrdinalPlurality();
+        }
+
+        // ~~
+
         public override string MainMenu(
             )
         {
@@ -123,15 +141,6 @@ namespace GAME
             result_translation.AddText( " been found.\n" );
 
             return result_translation.Text;
-        }
-
-        // ~~
-
-        public override string DumpPlurality(
-            TRANSLATION this_translation
-            )
-        {
-            return GetPluralityText( this_translation.GetEnglishCardinalPlurality() ) + " / ";
         }
     }
 }

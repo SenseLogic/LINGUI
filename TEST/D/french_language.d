@@ -22,6 +22,24 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // -- INQUIRIES
 
+    override PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchCardinalPlurality();
+    }
+
+    // ~~
+
+    override PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchOrdinalPlurality();
+    }
+
+    // ~~
+
     override string MainMenu(
         )
     {
@@ -187,14 +205,5 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
         result_translation.AddText( ".\n" );
 
         return result_translation.Text;
-    }
-
-    // ~~
-
-    override string DumpPlurality(
-        TRANSLATION this_translation
-        )
-    {
-        return GetPluralityText( this_translation.GetFrenchCardinalPlurality() ) ~ " / ";
     }
 }

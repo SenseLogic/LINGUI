@@ -20,6 +20,24 @@ class FRENCH_LANGUAGE extends GAME_LANGUAGE
 
     // -- INQUIRIES
 
+    PLURALITY GetCardinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchCardinalPlurality();
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchOrdinalPlurality();
+    }
+
+    // ~~
+
     String MainMenu(
         )
     {
@@ -185,14 +203,5 @@ class FRENCH_LANGUAGE extends GAME_LANGUAGE
         result_translation.AddText( ".\n" );
 
         return result_translation.Text;
-    }
-
-    // ~~
-
-    String DumpPlurality(
-        TRANSLATION this_translation
-        )
-    {
-        return GetPluralityText( this_translation.GetFrenchCardinalPlurality() ) + " / ";
     }
 }

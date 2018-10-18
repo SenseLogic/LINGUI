@@ -36,7 +36,7 @@ class LINE
 
     long
         IndentationSpaceCount;
-    string
+    dstring
         Text;
 }
 
@@ -64,10 +64,10 @@ class CODE
 
     // -- INQUIRIES
 
-    string GetText(
+    dstring GetText(
         )
     {
-        string
+        dstring
             line_text,
             text;
 
@@ -77,7 +77,7 @@ class CODE
 
             if ( line_text.length > 0 )
             {
-                text ~= " ".replicate( line.IndentationSpaceCount ) ~ line.Text;
+                text ~= " "d.replicate( line.IndentationSpaceCount ) ~ line.Text;
             }
 
             text ~= '\n';
@@ -89,11 +89,11 @@ class CODE
     // -- OPERATIONS
 
     void AddLine(
-        string text,
+        dstring text,
         bool indentation_is_applied = true
         )
     {
-        string
+        dstring
             prior_text;
         LINE
             line;
@@ -139,7 +139,7 @@ class CODE
     // ~~
 
     void AddText(
-        string text
+        dstring text
         )
     {
         LineArray[ $ - 1 ].Text ~= text;
@@ -148,10 +148,10 @@ class CODE
     // ~~
 
     void AddFile(
-        string file_path
+        dstring file_path
         )
     {
-        string[]
+        dstring[]
             line_array;
 
         line_array = file_path.ReadLineArray();
@@ -186,12 +186,12 @@ class RULE
 {
     // -- ATTRIBUTES
 
-    string
+    dstring
         FilePath;
     long
         LineIndex,
         IndentationSpaceCount;
-    string
+    dstring
         Text;
     long
         Level;
@@ -201,18 +201,19 @@ class RULE
         SubRuleArray;
     RULE_TYPE
         Type;
-    string[]
+    dstring[]
         TokenArray;
-    string
+    dstring
         LanguageName;
     bool
-        IsBaseLanguage;
+        IsBaseLanguage,
+        IsDerivedLanguage;
     RULE
         LanguageRule,
         BaseLanguageRule;
-    string
+    dstring
         FunctionName;
-    string[]
+    dstring[]
         ParameterNameArray,
         VariableNameArray;
     bool
@@ -224,7 +225,7 @@ class RULE
     // -- INQUIRIES
 
     void Abort(
-        string message
+        dstring message
         )
     {
         writeln( FilePath, "(", ( LineIndex + 1 ), ") : ",Text );
@@ -235,7 +236,7 @@ class RULE
 
     // ~~
 
-    char GetDecimalSeparator(
+    dchar GetDecimalSeparator(
         )
     {
         if ( LanguageName == "German"
@@ -260,7 +261,7 @@ class RULE
 
     // ~~
 
-    string GetClassName(
+    dstring GetClassName(
         )
     {
         return LanguageName.toUpper() ~ "_LANGUAGE";
@@ -279,7 +280,7 @@ class RULE
     // ~~
 
     bool IsFunction(
-        string text
+        dstring text
         )
     {
         return
@@ -291,7 +292,7 @@ class RULE
     // ~~
 
     bool IsNumber(
-        string text
+        dstring text
         )
     {
         return
@@ -303,8 +304,8 @@ class RULE
 
     // ~~
 
-    string GetNumberCode(
-        string text
+    dstring GetNumberCode(
+        dstring text
         )
     {
         if ( ( CsOptionIsEnabled || DOptionIsEnabled )
@@ -321,7 +322,7 @@ class RULE
     // ~~
 
     bool IsQuantity(
-        string text
+        dstring text
         )
     {
         return
@@ -331,13 +332,13 @@ class RULE
 
     // ~~
 
-    string GetQuantityCode(
-        string text
+    dstring GetQuantityCode(
+        dstring text
         )
     {
         long
             asterisk_character_index;
-        string
+        dstring
             code,
             genre,
             quantity;
@@ -394,7 +395,7 @@ class RULE
     // ~~
 
     bool HasVariablePrefix(
-        string text
+        dstring text
         )
     {
         return
@@ -405,7 +406,7 @@ class RULE
     // ~~
 
     bool IsVariableName(
-        string text
+        dstring text
         )
     {
         return
@@ -417,7 +418,7 @@ class RULE
     // ~~
 
     bool IsVariable(
-        string text
+        dstring text
         )
     {
         return
@@ -428,8 +429,8 @@ class RULE
 
     // ~~
 
-    string GetVariableName(
-        string text
+    dstring GetVariableName(
+        dstring text
         )
     {
         if ( HasVariablePrefix( text ) )
@@ -445,7 +446,7 @@ class RULE
     // ~~
 
     void CheckVariableName(
-        string variable_name
+        dstring variable_name
         )
     {
         RULE
@@ -472,13 +473,13 @@ class RULE
 
     // ~~
 
-    string GetVariableCode(
-        string text
+    dstring GetVariableCode(
+        dstring text
         )
     {
-        char
+        dchar
             first_character;
-        string
+        dstring
             variable_name;
 
         first_character = text[ 0 ];
@@ -521,11 +522,27 @@ class RULE
         }
         else if ( first_character == '@' )
         {
-            return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "CardinalPlurality()";
+            if ( LanguageRule.IsBaseLanguage
+                 || LanguageRule.IsDerivedLanguage )
+            {
+                return "GetCardinalPlurality( " ~ variable_name ~ "_translation )";
+            }
+            else
+            {
+                return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "CardinalPlurality()";
+            }
         }
         else if ( first_character == '°' )
         {
-            return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "OrdinalPlurality()";
+            if ( LanguageRule.IsBaseLanguage
+                 || LanguageRule.IsDerivedLanguage )
+            {
+                return "GetOrdinalPlurality( " ~ variable_name ~ "_translation )";
+            }
+            else
+            {
+                return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "OrdinalPlurality()";
+            }
         }
         else if ( first_character == '&' )
         {
@@ -541,11 +558,11 @@ class RULE
 
     // ~~
 
-    string GetCode(
-        string[] code_token_array
+    dstring GetCode(
+        dstring[] code_token_array
         )
     {
-        string
+        dstring
             code;
 
         foreach ( code_token_index, code_token; code_token_array )
@@ -564,16 +581,16 @@ class RULE
 
     // ~~
 
-    string GetExpressionCode(
-        string[] token_array
+    dstring GetExpressionCode(
+        dstring[] token_array
         )
     {
         long
             token_index;
-        string
+        dstring
             code_token,
             token;
-        string[]
+        dstring[]
             code_token_array;
 
         for ( token_index = 0;
@@ -671,7 +688,7 @@ class RULE
 
     // ~~
 
-    string GetExpressionCode(
+    dstring GetExpressionCode(
         int token_index
         )
     {
@@ -718,7 +735,7 @@ class RULE
         CODE code
         )
     {
-        string
+        dstring
             variable_name;
 
         if ( TokenArray.length >= 3 )
@@ -1034,13 +1051,64 @@ class RULE
             code.AddLine( "    )" );
             code.AddLine( "{" );
             code.AddLine( "Name = \"" ~ LanguageName ~ "\";" );
-            code.AddLine( "DecimalSeparator = '" ~ GetDecimalSeparator() ~ "';" );
+            code.AddLine( "DecimalSeparator = '"d ~ GetDecimalSeparator() ~ "';" );
             code.AddLine( "}" );
             code.AddLine( "" );
         }
 
         code.AddLine( "// -- INQUIRIES" );
         code.AddLine( "" );
+
+        if ( !IsBaseLanguage )
+        {
+            if ( CsOptionIsEnabled )
+            {
+                code.AddLine( "public override PLURALITY GetCardinalPlurality(" );
+                code.AddLine( "    TRANSLATION translation" );
+            }
+            else if ( DOptionIsEnabled )
+            {
+                code.AddLine( "override PLURALITY GetCardinalPlurality(" );
+                code.AddLine( "    ref TRANSLATION translation" );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddLine( "PLURALITY GetCardinalPlurality(" );
+                code.AddLine( "    TRANSLATION translation" );
+            }
+
+            code.AddLine( "    )" );
+            code.AddLine( "{" );
+            code.AddLine( "return translation.Get" ~ LanguageName ~ "CardinalPlurality();" );
+            code.AddLine( "}" );
+            code.AddLine( "" );
+            code.AddLine( "// ~~" );
+            code.AddLine( "" );
+
+            if ( CsOptionIsEnabled )
+            {
+                code.AddLine( "public override PLURALITY GetOrdinalPlurality(" );
+                code.AddLine( "    TRANSLATION translation" );
+            }
+            else if ( DOptionIsEnabled )
+            {
+                code.AddLine( "override PLURALITY GetOrdinalPlurality(" );
+                code.AddLine( "    ref TRANSLATION translation" );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddLine( "PLURALITY GetOrdinalPlurality(" );
+                code.AddLine( "    TRANSLATION translation" );
+            }
+
+            code.AddLine( "    )" );
+            code.AddLine( "{" );
+            code.AddLine( "return translation.Get" ~ LanguageName ~ "OrdinalPlurality();" );
+            code.AddLine( "}" );
+            code.AddLine( "" );
+            code.AddLine( "// ~~" );
+            code.AddLine( "" );
+        }
 
         foreach ( sub_rule; SubRuleArray )
         {
@@ -1058,10 +1126,10 @@ class RULE
     // ~~
 
     void WriteFile(
-        string output_folder_path
+        dstring output_folder_path
         )
     {
-        string
+        dstring
             output_file_path;
         CODE
             code;
@@ -1099,7 +1167,7 @@ class RULE
             writeln( "Writing file : ", output_file_path );
         }
 
-        output_file_path.write( code.GetText() );
+        output_file_path.write( code.GetText().to!string() );
     }
 
     // ~~
@@ -1134,7 +1202,7 @@ class RULE
     {
         bool
             it_is_in_string_literal;
-        char
+        dchar
             character,
             delimiter_character;
         long
@@ -1199,7 +1267,7 @@ class RULE
     void ParseLanguage(
         )
     {
-        string
+        dstring
             base_langage_name;
 
         Type = RULE_TYPE.Language;
@@ -1221,6 +1289,7 @@ class RULE
                 if ( language_rule.LanguageName == base_langage_name )
                 {
                     BaseLanguageRule = language_rule;
+                    BaseLanguageRule.IsDerivedLanguage = true;
 
                     break;
                 }
@@ -1242,7 +1311,7 @@ class RULE
     void ParseFunction(
         )
     {
-        string
+        dstring
             first_token;
         RULE
             base_language_rule;
@@ -1295,7 +1364,7 @@ class RULE
     void Parse(
         )
     {
-        string
+        dstring
             first_token,
             second_token;
 
@@ -1388,12 +1457,12 @@ class SCRIPT
     // -- OPERATIONS
 
     void ReadFile(
-        string script_file_path
+        dstring script_file_path
         )
     {
-        string
+        dstring
             rule_text;
-        string[]
+        dstring[]
             line_array;
         RULE
             prior_rule,
@@ -1451,12 +1520,12 @@ class SCRIPT
     // ~~
 
     void WriteBaseFile(
-        string input_folder_path,
-        string output_folder_path,
-        string file_name
+        dstring input_folder_path,
+        dstring output_folder_path,
+        dstring file_name
         )
     {
-        string
+        dstring
             file_text,
             input_file_path,
             output_file_path;
@@ -1487,7 +1556,7 @@ class SCRIPT
             Abort( "Invalid output folder path" );
         }
 
-        file_text = input_file_path.readText();
+        file_text = input_file_path.readText().to!dstring();
 
         if ( CsOptionIsEnabled )
         {
@@ -1503,16 +1572,16 @@ class SCRIPT
             writeln( "Writing file : ", output_file_path );
         }
 
-        output_file_path.write( file_text );
+        output_file_path.write( file_text.to!string() );
     }
 
     // ~~
 
     void WriteFiles(
-        string output_folder_path
+        dstring output_folder_path
         )
     {
-        string
+        dstring
             input_folder_path;
 
         if ( Rule.SubRuleArray.length > 0 )
@@ -1552,8 +1621,8 @@ class SCRIPT
     // -- OPERATIONS
 
     void ExecuteScript(
-        string script_file_path,
-        string output_folder_path
+        dstring script_file_path,
+        dstring output_folder_path
         )
     {
         SCRIPT
@@ -1574,14 +1643,14 @@ bool
     DartOptionIsEnabled,
     UpperCaseOptionIsEnabled,
     VerboseOptionIsEnabled;
-string
+dstring
     BaseNamespace,
     Namespace;
 
 // -- FUNCTIONS
 
 void Abort(
-    string message
+    dstring message
     )
 {
     writeln( "*** ERROR : ", message );
@@ -1592,7 +1661,7 @@ void Abort(
 // ~~
 
 long GetIndentationSpaceCount(
-    string text
+    dstring text
     )
 {
     long
@@ -1611,11 +1680,11 @@ long GetIndentationSpaceCount(
 
 // ~~
 
-string[] ReadLineArray(
-    string file_path
+dstring[] ReadLineArray(
+    dstring file_path
     )
 {
-    string
+    dstring
         file_text;
 
     if ( VerboseOptionIsEnabled )
@@ -1623,18 +1692,18 @@ string[] ReadLineArray(
         writeln( "Reading file : ", file_path );
     }
 
-    file_text = file_path.readText();
+    file_text = file_path.readText().to!dstring();
 
     return file_text.replace( "\t", "    " ).replace( "\r", "" ).split( '\n' );
 }
 
 // ~~
 
-string GetExecutablePath(
-    string file_name
+dstring GetExecutablePath(
+    dstring file_name
     )
 {
-    return dirName( thisExePath() ) ~ "/" ~ file_name;
+    return dirName( thisExePath() ).to!dstring() ~ "/" ~ file_name;
 }
 
 // ~~
@@ -1643,7 +1712,7 @@ void main(
     string[] argument_array
     )
 {
-    string
+    dstring
         option;
     SCRIPT
         script;
@@ -1662,7 +1731,7 @@ void main(
     while ( argument_array.length >= 1
             && argument_array[ 0 ].startsWith( "--" ) )
     {
-        option = argument_array[ 0 ];
+        option = argument_array[ 0 ].to!dstring();
 
         argument_array = argument_array[ 1 .. $ ];
 
@@ -1691,7 +1760,7 @@ void main(
         else if ( option == "--namespace"
                   && argument_array.length >= 1 )
         {
-            Namespace = argument_array[ 0 ];
+            Namespace = argument_array[ 0 ].to!dstring();
 
             argument_array = argument_array[ 1 .. $ ];
         }
@@ -1740,7 +1809,7 @@ void main(
               || DartOptionIsEnabled ) )
     {
         script = new SCRIPT();
-        script.ExecuteScript( argument_array[ 0 ], argument_array[ 1 ] );
+        script.ExecuteScript( argument_array[ 0 ].to!dstring(), argument_array[ 1 ].to!dstring() );
     }
     else
     {
@@ -1757,6 +1826,6 @@ void main(
         writeln( "    lingui --cs --base --namespace GAME --verbose test.lingui CS/" );
         writeln( "    lingui --d --verbose test.lingui D/" );
 
-        Abort( "Invalid arguments : " ~ argument_array.to!string() );
+        Abort( "Invalid arguments : " ~ argument_array.to!dstring() );
     }
 }

@@ -22,6 +22,24 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // -- INQUIRIES
 
+    override PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishCardinalPlurality();
+    }
+
+    // ~~
+
+    override PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishOrdinalPlurality();
+    }
+
+    // ~~
+
     override string MainMenu(
         )
     {
@@ -126,14 +144,5 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
         result_translation.AddText( " been found.\n" );
 
         return result_translation.Text;
-    }
-
-    // ~~
-
-    override string DumpPlurality(
-        TRANSLATION this_translation
-        )
-    {
-        return GetPluralityText( this_translation.GetEnglishCardinalPlurality() ) ~ " / ";
     }
 }

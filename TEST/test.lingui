@@ -16,8 +16,6 @@ Game
 
     TheItemsHaveBeenFound items
 
-    DumpPlurality this
-
     Dump this
         "\"" ~ $this ~ "\" / \"" ~ *this ~ "\" / '" ~ ^this ~ "' / "
         if :this
@@ -25,19 +23,23 @@ Game
         if .this
             GetRealText( %this ) ~ " / "
 
-        DumpPlurality( this )
-        GetGenreText( &this ) ~ "\n"
+        GetPluralityText( @this ) ~ " / " ~ GetPluralityText( °this ) ~ " / " ~ GetGenreText( &this ) ~ "\n"
 
     TestFunctions
         GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, 0 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3, 3 ) ~ " \n"
         GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DecimalSeparator ) ~ "\n"
         GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n"
         GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n"
+
         Dump( MakeTranslation( "cm" ) )
+        Dump( MakeTranslation( "cm", "0" ) )
+        Dump( MakeTranslation( "cm", "1" ) )
+        Dump( MakeTranslation( "cm", "2" ) )
         Dump( MakeTranslation( "cm", "-12.345" ) )
         Dump( MakeTranslation( "cm", "-12.345", male ) )
         Dump( MakeTranslation( 12 ) )
         Dump( MakeTranslation( 12, female ) )
+
         Dump( 3* )
         Dump( 4*"perros" )
         Dump( 5*"fiestas":female )
@@ -96,9 +98,6 @@ English : Game
         else
             " have"
         " been found.\n"
-
-    DumpPlurality this
-        GetPluralityText( @this ) ~ " / "
 
 French : Game
 
@@ -160,6 +159,3 @@ French : Game
         Have( items )
         BeenFound( items )
         ".\n"
-
-    DumpPlurality this
-        GetPluralityText( @this ) ~ " / "
