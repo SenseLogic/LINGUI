@@ -103,8 +103,8 @@ class GAME_LANGUAGE extends LANGUAGE
         TRANSLATION
             result_translation = TRANSLATION();
 
-        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, 0 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3, 3 ) + " \n" );
-        result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DecimalSeparator ) + "\n" );
+        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, -1 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
+        result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
         result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
         result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );

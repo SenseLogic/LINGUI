@@ -17,7 +17,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
         )
     {
         Name = "French";
-        DecimalSeparator = ',';
+        DotCharacter = ',';
     }
 
     // -- INQUIRIES

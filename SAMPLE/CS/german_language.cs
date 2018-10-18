@@ -14,10 +14,28 @@ namespace LINGUI
             )
         {
             Name = "German";
-            DecimalSeparator = ',';
+            DotCharacter = ',';
         }
 
         // -- INQUIRIES
+
+        public override PLURALITY GetCardinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetGermanCardinalPlurality();
+        }
+
+        // ~~
+
+        public override PLURALITY GetOrdinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetGermanOrdinalPlurality();
+        }
+
+        // ~~
 
         public override string NewGame(
             )

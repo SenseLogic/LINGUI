@@ -1,6 +1,7 @@
 // -- IMPORTS
 
 using System;
+using System.Globalization;
 using GAME;
 
 // -- TYPES
@@ -645,7 +646,7 @@ namespace GAME
             }
 
             IntegerQuantity = int.Parse( integer_text );
-            RealQuantity = float.Parse( quantity );
+            RealQuantity = float.Parse( quantity.Replace( ',', '.' ), CultureInfo.InvariantCulture );
         }
 
         // ~~

@@ -17,10 +17,28 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
         )
     {
         Name = "English";
-        DecimalSeparator = '.';
+        DotCharacter = '.';
     }
 
     // -- INQUIRIES
+
+    override PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishCardinalPlurality();
+    }
+
+    // ~~
+
+    override PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishOrdinalPlurality();
+    }
+
+    // ~~
 
     override string NewGame(
         )

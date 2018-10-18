@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using LINGUI;
 
 // -- TYPES
@@ -17,7 +18,7 @@ namespace LINGUI
         public Dictionary<string, TRANSLATION>
             TranslationDictionary;
         public char
-            DecimalSeparator;
+            DotCharacter;
 
         // -- INQUIRIES
 
@@ -425,7 +426,7 @@ namespace LINGUI
             String text
             )
         {
-            return float.Parse( text );
+            return float.Parse( text.Replace( ',', '.' ), CultureInfo.InvariantCulture );
         }
 
         // ~~
@@ -443,58 +444,76 @@ namespace LINGUI
             float real,
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
-            char decimal_separator = '\0'
+            char dot_character = '\0'
             )
         {
+            bool
+                dot_character_is_optional;
             int
-                decimal_separator_index,
+                dot_character_index,
                 fractional_digit_count;
             string
                 text;
 
             text = real.ToString();
-Console.WriteLine( "GetRealText" + text );
-            if ( decimal_separator == '\0' )
+
+            if ( dot_character == '\0' )
             {
-                decimal_separator = DecimalSeparator;
+                dot_character = DotCharacter;
             }
 
-            decimal_separator_index = text.IndexOf( '.' );
+            dot_character_index = text.IndexOf( '.' );
 
-            if ( decimal_separator_index < 0 )
+            if ( dot_character_index < 0 )
             {
-                decimal_separator_index = text.IndexOf( ',' );
+                dot_character_index = text.IndexOf( ',' );
             }
 
-            if ( decimal_separator_index < 0 )
+            if ( dot_character_index < 0 )
             {
-                text += decimal_separator;
-                decimal_separator_index = text.Length - 1;
+                dot_character_index = text.Length;
+
+                text += dot_character;
+                text += '0';
             }
 
-            fractional_digit_count = text.Length - decimal_separator_index - 1;
+            dot_character_is_optional = ( minimum_fractional_digit_count < 0 );
+
+            if ( dot_character_is_optional )
+            {
+                minimum_fractional_digit_count = 0;
+            }
+
+            fractional_digit_count = text.Length - dot_character_index - 1;
 
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
-                text = text + "00000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+                text += "00000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+
+                fractional_digit_count = minimum_fractional_digit_count;
             }
             else if ( fractional_digit_count > maximum_fractional_digit_count )
             {
-                text = text.Substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
+                text = text.Substring( 0, dot_character_index + 1 + maximum_fractional_digit_count );
+
+                fractional_digit_count = maximum_fractional_digit_count;
             }
 
-            if ( text[ decimal_separator_index ] != decimal_separator )
+            if ( fractional_digit_count == 0
+                 || ( fractional_digit_count == 1
+                      && dot_character_is_optional
+                      && text.EndsWith( ".0" ) ) )
             {
-                text = text.Substring( 0, decimal_separator_index ) + decimal_separator + text.Substring( decimal_separator_index + 1 );
+                return text.Substring( 0, dot_character_index );
             }
-
-            if ( minimum_fractional_digit_count == 0
-                 && fractional_digit_count == 0 )
+            else if ( text[ dot_character_index ] != dot_character )
             {
-                text = text.Substring( 0, text.Length - 1 );
+                return text.Substring( 0, dot_character_index ) + dot_character + text.Substring( dot_character_index + 1 );
             }
-
-            return text;
+            else
+            {
+                return text;
+            }
         }
 
         // ~~

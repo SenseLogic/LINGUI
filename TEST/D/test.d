@@ -34,8 +34,7 @@ void main(
 
     english_language = new ENGLISH_LANGUAGE();
     french_language = new FRENCH_LANGUAGE();
-writeln( english_language.DecimalSeparator );
-writeln( french_language.DecimalSeparator );
+
     TestLanguage( english_language );
     TestLanguage( french_language );
 }

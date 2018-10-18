@@ -15,10 +15,28 @@ class FRENCH_LANGUAGE extends GAME_LANGUAGE
         )
     {
         Name = "French";
-        DecimalSeparator = ',';
+        DotCharacter = ',';
     }
 
     // -- INQUIRIES
+
+    PLURALITY GetCardinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchCardinalPlurality();
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchOrdinalPlurality();
+    }
+
+    // ~~
 
     String NewGame(
         )

@@ -14,10 +14,28 @@ namespace LINGUI
             )
         {
             Name = "French";
-            DecimalSeparator = ',';
+            DotCharacter = ',';
         }
 
         // -- INQUIRIES
+
+        public override PLURALITY GetCardinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetFrenchCardinalPlurality();
+        }
+
+        // ~~
+
+        public override PLURALITY GetOrdinalPlurality(
+            TRANSLATION translation
+            )
+        {
+            return translation.GetFrenchOrdinalPlurality();
+        }
+
+        // ~~
 
         public override string NewGame(
             )

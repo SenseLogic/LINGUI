@@ -15,7 +15,7 @@ class LANGUAGE
     Map<String, TRANSLATION>
         TranslationMap;
     String
-        DecimalSeparator;
+        DotCharacter;
 
     // -- INQUIRIES
 
@@ -469,54 +469,77 @@ class LANGUAGE
         [
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
-            String decimal_separator = '\0'
+            String dot_character = '\0'
         ]
         )
     {
+        bool
+            dot_character_is_optional;
         int
-            decimal_separator_index,
+            dot_character_index,
             fractional_digit_count;
         String
             text;
 
         text = real.toString();
 
-        if ( decimal_separator == '\0' )
+        if ( dot_character == '\0' )
         {
-            decimal_separator = DecimalSeparator;
+            dot_character = DotCharacter;
         }
 
-        decimal_separator_index = text.indexOf( '.' );
+        dot_character_index = text.indexOf( '.' );
 
-        if ( decimal_separator_index < 0 )
+        if ( dot_character_index < 0 )
         {
-            text += decimal_separator;
-            decimal_separator_index = text.length - 1;
+            dot_character_index = text.indexOf( ',' );
         }
 
-        fractional_digit_count = text.length - decimal_separator_index - 1;
+        if ( dot_character_index < 0 )
+        {
+            dot_character_index = text.length;
+
+            text += dot_character;
+            text += '0';
+        }
+
+        dot_character_is_optional = ( minimum_fractional_digit_count < 0 );
+
+        if ( dot_character_is_optional )
+        {
+            minimum_fractional_digit_count = 0;
+        }
+
+        fractional_digit_count = text.length - dot_character_index - 1;
 
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
-            text = text + "00000000000000000000".substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+            text += "00000000000000000000".substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+
+            fractional_digit_count = minimum_fractional_digit_count;
         }
         else if ( fractional_digit_count > maximum_fractional_digit_count )
         {
-            text = text.substring( 0, decimal_separator_index + 1 + maximum_fractional_digit_count );
+            text = text.substring( 0, dot_character_index + 1 + maximum_fractional_digit_count );
+
+            fractional_digit_count = maximum_fractional_digit_count;
         }
 
-        if ( text[ decimal_separator_index ] != decimal_separator )
+        if ( fractional_digit_count == 0
+             || ( fractional_digit_count == 1
+                  && dot_character_is_optional
+                  && text.endsWith( ".0" ) ) )
         {
-            text = text.substring( 0, decimal_separator_index ) + decimal_separator + text.substring( decimal_separator_index + 1 );
+            return text.substring( 0, dot_character_index );
         }
-
-        if ( minimum_fractional_digit_count == 0
-             && fractional_digit_count == 0 )
+        else if ( text[ dot_character_index ] != dot_character )
         {
-            text = text.substring( 0, text.length - 1 );
+            return text.substring( 0, dot_character_index ) + dot_character + text.substring( dot_character_index + 1 );
         }
-
-        return text;
+        else
+        {
+            return text;
+        }
     }
 
     // ~~

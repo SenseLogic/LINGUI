@@ -377,7 +377,7 @@ GetRealInteger( real )
 GetTextInteger( text )
 GetTextReal( text )
 GetIntegerText( integer )
-GetRealText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, decimal_separator );
+GetRealText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, dot_character );
 GetGenreText( genre )
 GetPluralityText( plurality )
 GetCardinalPlurality( translation )

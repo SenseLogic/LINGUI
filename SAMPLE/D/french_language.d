@@ -17,10 +17,28 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
         )
     {
         Name = "French";
-        DecimalSeparator = ',';
+        DotCharacter = ',';
     }
 
     // -- INQUIRIES
+
+    override PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchCardinalPlurality();
+    }
+
+    // ~~
+
+    override PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
+        )
+    {
+        return translation.GetFrenchOrdinalPlurality();
+    }
+
+    // ~~
 
     override string NewGame(
         )

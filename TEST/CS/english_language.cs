@@ -14,7 +14,7 @@ namespace GAME
             )
         {
             Name = "English";
-            DecimalSeparator = '.';
+            DotCharacter = '.';
         }
 
         // -- INQUIRIES

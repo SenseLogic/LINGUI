@@ -15,7 +15,7 @@ class ENGLISH_LANGUAGE extends GAME_LANGUAGE
         )
     {
         Name = "English";
-        DecimalSeparator = '.';
+        DotCharacter = '.';
     }
 
     // -- INQUIRIES

@@ -15,10 +15,28 @@ class ENGLISH_LANGUAGE extends GAME_LANGUAGE
         )
     {
         Name = "English";
-        DecimalSeparator = '.';
+        DotCharacter = '.';
     }
 
     // -- INQUIRIES
+
+    PLURALITY GetCardinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishCardinalPlurality();
+    }
+
+    // ~~
+
+    PLURALITY GetOrdinalPlurality(
+        TRANSLATION translation
+        )
+    {
+        return translation.GetEnglishOrdinalPlurality();
+    }
+
+    // ~~
 
     String NewGame(
         )

@@ -236,7 +236,7 @@ class RULE
 
     // ~~
 
-    dchar GetDecimalSeparator(
+    dchar GetDotCharacter(
         )
     {
         if ( LanguageName == "German"
@@ -1051,7 +1051,7 @@ class RULE
             code.AddLine( "    )" );
             code.AddLine( "{" );
             code.AddLine( "Name = \"" ~ LanguageName ~ "\";" );
-            code.AddLine( "DecimalSeparator = '"d ~ GetDecimalSeparator() ~ "';" );
+            code.AddLine( "DotCharacter = '"d ~ GetDotCharacter() ~ "';" );
             code.AddLine( "}" );
             code.AddLine( "" );
         }
