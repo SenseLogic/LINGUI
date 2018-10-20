@@ -2,14 +2,14 @@ module lingui.french_language;
 
 // -- IMPORTS
 
+import lingui.language;
 import lingui.genre;
 import lingui.plurality;
 import lingui.translation;
-import lingui.game_language;
 
 // -- TYPES
 
-class FRENCH_LANGUAGE : GAME_LANGUAGE
+class FRENCH_LANGUAGE : LANGUAGE
 {
     // -- CONSTRUCTORS
 
@@ -40,7 +40,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string NewGame(
+    override dstring NewGame(
         )
     {
         return "Nouveau jeu";
@@ -48,7 +48,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string Welcome(
+    override dstring Welcome(
         TRANSLATION first_name_translation,
         TRANSLATION last_name_translation
         )
@@ -67,7 +67,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string Pears(
+    override dstring Pears(
         TRANSLATION count_translation
         )
     {

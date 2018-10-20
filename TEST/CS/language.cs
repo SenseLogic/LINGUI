@@ -1,589 +1,150 @@
 // -- IMPORTS
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using GAME;
 
 // -- TYPES
 
 namespace GAME
 {
-    public class LANGUAGE
+    public class LANGUAGE : BASE_LANGUAGE
     {
-        // -- ATTRIBUTES
-
-        public string
-            Name;
-        public Dictionary<string, TRANSLATION>
-            TranslationDictionary;
-        public char
-            DotCharacter;
-
         // -- INQUIRIES
 
-        public bool IsLowerCaseCharacter(
-            char character
+        public virtual string MainMenu(
             )
         {
-            return
-                ( character >= 'a' && character <= 'z' )
-                || character == 'à'
-                || character == 'â'
-                || character == 'é'
-                || character == 'è'
-                || character == 'ê'
-                || character == 'ë'
-                || character == 'î'
-                || character == 'ï'
-                || character == 'ô'
-                || character == 'ö'
-                || character == 'û'
-                || character == 'ü'
-                || character == 'ç'
-                || character == 'ñ';
+            return "";
         }
 
         // ~~
 
-        public bool IsUpperCaseCharacter(
-            char character
+        public virtual TRANSLATION Chests(
+            TRANSLATION count_translation
             )
         {
-            return
-                ( character >= 'A' && character <= 'Z' )
-                || character == 'À'
-                || character == 'Â'
-                || character == 'É'
-                || character == 'È'
-                || character == 'Ê'
-                || character == 'Ë'
-                || character == 'Î'
-                || character == 'Ï'
-                || character == 'Ô'
-                || character == 'Ö'
-                || character == 'Û'
-                || character == 'Ü'
-                || character == 'Ñ';
+            return TRANSLATION.Null;
         }
 
         // ~~
 
-        public char GetLowerCaseCharacter(
-            char character
+        public virtual TRANSLATION Swords(
+            TRANSLATION count_translation
             )
         {
-            if ( character >= 'A' && character <= 'Z' )
-            {
-                return ( char )( ( int )character + 32 );
-            }
-            else
-            {
-                switch ( character )
-                {
-                    case 'À' : return 'à';
-                    case 'Â' : return 'â';
-                    case 'É' : return 'é';
-                    case 'È' : return 'è';
-                    case 'Ê' : return 'ê';
-                    case 'Ë' : return 'ë';
-                    case 'Î' : return 'î';
-                    case 'Ï' : return 'ï';
-                    case 'Ô' : return 'ô';
-                    case 'Ö' : return 'ö';
-                    case 'Û' : return 'û';
-                    case 'Ü' : return 'ü';
-                    case 'Ñ' : return 'ñ';
-
-                    default : return character;
-                }
-            }
+            return TRANSLATION.Null;
         }
 
         // ~~
 
-        public char GetUpperCaseCharacter(
-            char character
+        public virtual TRANSLATION NoSwords(
             )
         {
-            if ( character >= 'a' && character <= 'z' )
-            {
-                return ( char )( ( int )character - 32 );
-            }
-            else
-            {
-                switch ( character )
-                {
-                    case 'à' : return 'À';
-                    case 'â' : return 'Â';
-                    case 'é' : return 'É';
-                    case 'è' : return 'È';
-                    case 'ê' : return 'Ê';
-                    case 'ë' : return 'Ë';
-                    case 'î' : return 'Î';
-                    case 'ï' : return 'Ï';
-                    case 'ô' : return 'Ô';
-                    case 'ö' : return 'Ö';
-                    case 'û' : return 'Û';
-                    case 'ü' : return 'Ü';
-                    case 'ç' : return 'C';
-                    case 'ñ' : return 'Ñ';
-
-                    default : return character;
-                }
-            }
+            return Swords( new TRANSLATION( "", "0" ) );
         }
 
         // ~~
 
-        public string GetLowerCase(
-            string text
+        public virtual TRANSLATION OneSword(
             )
         {
-            char[]
-                lower_case_character_array;
-            int
-                character_index;
+            return Swords( new TRANSLATION( "", "1" ) );
+        }
 
-            lower_case_character_array = text.ToCharArray();
+        // ~~
 
-            for ( character_index = 0;
-                  character_index < text.Length;
-                  ++character_index )
+        public virtual string TheItems(
+            TRANSLATION items_translation
+            )
+        {
+            return "";
+        }
+
+        // ~~
+
+        public virtual string TheItemsHaveBeenFound(
+            TRANSLATION items_translation
+            )
+        {
+            return "";
+        }
+
+        // ~~
+
+        public virtual string Dump(
+            TRANSLATION this_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( "\"" + this_translation.Text + "\" / \"" + this_translation.Quantity + "\" / '" + this_translation.GetQuantityFirstCharacter() + "' / " );
+
+            if ( this_translation.HasIntegerQuantity )
             {
-                lower_case_character_array[ character_index ] = GetLowerCaseCharacter( text[ character_index ] );
+                result_translation.AddText( GetIntegerText( this_translation.IntegerQuantity ) + " / " );
             }
 
-            return new string( lower_case_character_array );
-        }
-
-        // ~~
-
-        public string GetUpperCase(
-            string text
-            )
-        {
-            char[]
-                upper_case_character_array;
-            int
-                character_index;
-
-            upper_case_character_array = text.ToCharArray();
-
-            for ( character_index = 0;
-                  character_index < text.Length;
-                  ++character_index )
+            if ( this_translation.HasRealQuantity )
             {
-                upper_case_character_array[ character_index ] = GetUpperCaseCharacter( text[ character_index ] );
+                result_translation.AddText( GetRealText( this_translation.RealQuantity ) + " / " );
             }
 
-            return new string( upper_case_character_array );
+            result_translation.AddText( GetPluralityText( GetCardinalPlurality( this_translation ) ) + " / " + GetPluralityText( GetOrdinalPlurality( this_translation ) ) + " / " + GetGenreText( this_translation.Genre ) + "\n" );
+
+            return result_translation.Text;
         }
 
         // ~~
 
-        public string GetTitleCase(
-            string text
+        public virtual string TestFunctions(
             )
         {
-            char
-                character,
-                prior_character;
-            char[]
-                title_case_character_array;
-            int
-                character_index;
+            TRANSLATION
+                result_translation = new TRANSLATION();
 
-            prior_character = ' ';
-            title_case_character_array = text.ToCharArray();
+            result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0f, -1 ) + " / " + GetRealText( -12.0f ) + " / " + GetRealText( -12.0f, 3 ) + " \n" );
+            result_translation.AddText( GetRealText( -12.3f, 3, 3, '_' ) + " / " + GetRealText( -12.345f ) + " / " + GetRealText( -12.3456789f, 0, 3, DotCharacter ) + "\n" );
+            result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
+            result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
+            result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );
+            result_translation.AddText( Dump( MakeTranslation( "cm", "0" ) ) );
+            result_translation.AddText( Dump( MakeTranslation( "cm", "1" ) ) );
+            result_translation.AddText( Dump( MakeTranslation( "cm", "2" ) ) );
+            result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345" ) ) );
+            result_translation.AddText( Dump( MakeTranslation( "cm", "-12.345", GENRE.Male ) ) );
+            result_translation.AddText( Dump( MakeTranslation( 12 ) ) );
+            result_translation.AddText( Dump( MakeTranslation( 12, GENRE.Female ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "", "3" ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "perros", "4" ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "fiestas", "5", GENRE.Female ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "", "6.5" ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "metros", "7.5" ) ) );
+            result_translation.AddText( Dump( new TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
 
-            for ( character_index = 0;
-                  character_index < text.Length;
-                  ++character_index )
-            {
-                character = text[ character_index ];
-
-                if ( prior_character == ' '
-                     && IsLowerCaseCharacter( character ) )
-                {
-                    title_case_character_array[ character_index ] = GetUpperCaseCharacter( character );
-                }
-
-                prior_character = character;
-            }
-
-            return new string( title_case_character_array );
+            return result_translation.Text;
         }
 
         // ~~
 
-        public string GetSentenceCase(
-            string text
+        public virtual string Test(
             )
         {
-            char[]
-                capital_case_character_array;
-
-            if ( text.Length > 0
-                 && !IsUpperCaseCharacter( text[ 0 ] ) )
-            {
-                capital_case_character_array = text.ToCharArray();
-                capital_case_character_array[ 0 ] = GetUpperCaseCharacter( text[ 0 ] );
-
-                return new string( capital_case_character_array );
-            }
-            else
-            {
-                return text;
-            }
-        }
-
-        // ~~
-
-        public bool HasFirstCharacter(
-            string text,
-            string first_characters
-            )
-        {
-            return
-                text.Length > 0
-                && first_characters.IndexOf( text[ 0 ] ) >= 0;
-        }
-
-        // ~~
-
-        public bool HasPrefix(
-            string text,
-            string prefix
-            )
-        {
-            return text.StartsWith( prefix );
-        }
-
-        // ~~
-
-        public bool HasSuffix(
-            string text,
-            string suffix
-            )
-        {
-            return text.EndsWith( suffix );
-        }
-
-        // ~~
-
-        public TRANSLATION MakeTranslation(
-            string text,
-            string quantity,
-            GENRE genre = GENRE.Neutral
-            )
-        {
-            return new TRANSLATION( text, quantity, genre );
-        }
-
-        // ~~
-
-        public TRANSLATION MakeTranslation(
-            string text,
-            GENRE genre = GENRE.Neutral
-            )
-        {
-            return new TRANSLATION( text, genre );
-        }
-
-        // ~~
-
-        public TRANSLATION MakeTranslation(
-            int integer_quantity,
-            GENRE genre = GENRE.Neutral
-            )
-        {
-            return new TRANSLATION( integer_quantity, genre );
-        }
-
-        // ~~
-
-        public bool HasTranslation(
-            string key
-            )
-        {
-            return TranslationDictionary.ContainsKey( key );
-        }
-
-        // ~~
-
-        public TRANSLATION GetTranslation(
-            string key
-            )
-        {
-            return TranslationDictionary[ key ];
-        }
-
-        // ~~
-
-        public TRANSLATION GetLowerCase(
-            TRANSLATION translation
-            )
-        {
-            translation.Text = GetLowerCase( translation.Text );
-
-            return translation;
-        }
-
-        // ~~
-
-        public TRANSLATION GetUpperCase(
-            TRANSLATION translation
-            )
-        {
-            translation.Text = GetUpperCase( translation.Text );
-
-            return translation;
-        }
-
-        // ~~
-
-        public TRANSLATION GetTitleCase(
-            TRANSLATION translation
-            )
-        {
-            translation.Text = GetTitleCase( translation.Text );
-
-            return translation;
-        }
-
-        // ~~
-
-        public TRANSLATION GetSentenceCase(
-            TRANSLATION translation
-            )
-        {
-            translation.Text = GetSentenceCase( translation.Text );
-
-            return translation;
-        }
-
-        // ~~
-
-        bool HasFirstCharacter(
-            TRANSLATION translation,
-            string first_characters
-            )
-        {
-            return HasFirstCharacter( translation.Text, first_characters );
-        }
-
-        // ~~
-
-        public bool HasPrefix(
-            TRANSLATION translation,
-            string prefix
-            )
-        {
-            return HasPrefix( translation.Text, prefix );
-        }
-
-        // ~~
-
-        public bool HasSuffix(
-            TRANSLATION translation,
-            string suffix
-            )
-        {
-            return HasSuffix( translation.Text, suffix );
-        }
-
-        // ~~
-
-        public float GetIntegerReal(
-            int integer
-            )
-        {
-            return ( int )integer;
-        }
-
-        // ~~
-
-        public int GetRealInteger(
-            float real
-            )
-        {
-            return ( int )real;
-        }
-
-        // ~~
-
-        public int GetTextInteger(
-            String text
-            )
-        {
-            return int.Parse( text );
-        }
-
-        // ~~
-
-        public float GetTextReal(
-            String text
-            )
-        {
-            return float.Parse( text.Replace( ',', '.' ), CultureInfo.InvariantCulture );
-        }
-
-        // ~~
-
-        public string GetIntegerText(
-            int integer
-            )
-        {
-            return integer.ToString();
-        }
-
-        // ~~
-
-        public string GetRealText(
-            float real,
-            int minimum_fractional_digit_count = 1,
-            int maximum_fractional_digit_count = 20,
-            char dot_character = '\0'
-            )
-        {
-            bool
-                dot_character_is_optional;
-            int
-                dot_character_index,
-                fractional_digit_count;
-            string
-                text;
-
-            text = real.ToString();
-
-            if ( dot_character == '\0' )
-            {
-                dot_character = DotCharacter;
-            }
-
-            dot_character_index = text.IndexOf( '.' );
-
-            if ( dot_character_index < 0 )
-            {
-                dot_character_index = text.IndexOf( ',' );
-            }
-
-            if ( dot_character_index < 0 )
-            {
-                dot_character_index = text.Length;
-
-                text += dot_character;
-                text += '0';
-            }
-
-            dot_character_is_optional = ( minimum_fractional_digit_count < 0 );
-
-            if ( dot_character_is_optional )
-            {
-                minimum_fractional_digit_count = 0;
-            }
-
-            fractional_digit_count = text.Length - dot_character_index - 1;
-
-            if ( fractional_digit_count < minimum_fractional_digit_count )
-            {
-                text += "00000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
-
-                fractional_digit_count = minimum_fractional_digit_count;
-            }
-            else if ( fractional_digit_count > maximum_fractional_digit_count )
-            {
-                text = text.Substring( 0, dot_character_index + 1 + maximum_fractional_digit_count );
-
-                fractional_digit_count = maximum_fractional_digit_count;
-            }
-
-            if ( fractional_digit_count == 0
-                 || ( fractional_digit_count == 1
-                      && dot_character_is_optional
-                      && text.EndsWith( ".0" ) ) )
-            {
-                return text.Substring( 0, dot_character_index );
-            }
-            else if ( text[ dot_character_index ] != dot_character )
-            {
-                return text.Substring( 0, dot_character_index ) + dot_character + text.Substring( dot_character_index + 1 );
-            }
-            else
-            {
-                return text;
-            }
-        }
-
-        // ~~
-
-        public string GetGenreText(
-            GENRE genre
-            )
-        {
-            if ( genre == GENRE.Male )
-            {
-                return "male";
-            }
-            else if ( genre == GENRE.Female )
-            {
-                return "female";
-            }
-            else
-            {
-                return "neutral";
-            }
-        }
-
-        // ~~
-
-        public string GetPluralityText(
-            PLURALITY plurality
-            )
-        {
-            if ( plurality == PLURALITY.Zero )
-            {
-                return "zero";
-            }
-            else if ( plurality == PLURALITY.One )
-            {
-                return "one";
-            }
-            else if ( plurality == PLURALITY.Two )
-            {
-                return "two";
-            }
-            else if ( plurality == PLURALITY.Few )
-            {
-                return "few";
-            }
-            else if ( plurality == PLURALITY.Many )
-            {
-                return "many";
-            }
-            else
-            {
-                return "other";
-            }
-        }
-
-        // ~~
-
-        public virtual PLURALITY GetCardinalPlurality(
-            TRANSLATION translation
-            )
-        {
-            return PLURALITY.Zero;
-        }
-
-        // ~~
-
-        public virtual PLURALITY GetOrdinalPlurality(
-            TRANSLATION translation
-            )
-        {
-            return PLURALITY.Zero;
+            TRANSLATION
+                result_translation = new TRANSLATION(),
+                no_chests_translation = new TRANSLATION(),
+                one_chest_translation = new TRANSLATION();
+
+            no_chests_translation = Chests( new TRANSLATION( "", "0" ) );
+            one_chest_translation = Chests( new TRANSLATION( "", "1" ) );
+            result_translation.AddText( TheItemsHaveBeenFound( no_chests_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( one_chest_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( Chests( new TRANSLATION( "", "2" ) ) ) );
+            result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
+            result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
+            result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );
+            result_translation.AddText( TestFunctions() );
+
+            return result_translation.Text;
         }
     }
 }

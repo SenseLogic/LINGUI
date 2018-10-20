@@ -6,7 +6,7 @@ import "translation.dart";
 
 // -- TYPES
 
-class LANGUAGE
+class BASE_LANGUAGE
 {
     // -- ATTRIBUTES
 

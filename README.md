@@ -15,12 +15,16 @@ Its minimalistic syntax is designed to allow professional translators to specify
 ### Lingui
 
 ```lua
-Game
+LANGUAGE
+
     NewGame
+
     Welcome first_name last_name
+
     Pears count
 
-English : Game
+ENGLISH_LANGUAGE : LANGUAGE
+
     NewGame
         "New game"
 
@@ -39,7 +43,8 @@ English : Game
         else
             "pears"
 
-German : Game
+GERMAN_LANGUAGE : LANGUAGE
+
     NewGame
         "Neues Spiel"
 
@@ -58,7 +63,8 @@ German : Game
         else
             "Birnen"
 
-French : Game
+FRENCH_LANGUAGE : LANGUAGE
+
     NewGame
         "Nouveau jeu"
 
@@ -93,14 +99,14 @@ public class TEST
     // -- OPERATIONS
 
     public static void TestLanguage(
-        GAME_LANGUAGE game_language
+        LANGUAGE language
         )
     {
-        Console.WriteLine( game_language.NewGame() );
-        Console.WriteLine( game_language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
-        Console.WriteLine( game_language.Pears( new TRANSLATION( 0 ) ) );
-        Console.WriteLine( game_language.Pears( new TRANSLATION( 1 ) ) );
-        Console.WriteLine( game_language.Pears( new TRANSLATION( 2 ) ) );
+        Console.WriteLine( language.NewGame() );
+        Console.WriteLine( language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
+        Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
+        Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );
+        Console.WriteLine( language.Pears( new TRANSLATION( 2 ) ) );
     }
 
     // ~~
@@ -123,22 +129,22 @@ public class TEST
 
 import lingui.english_language;
 import lingui.french_language;
-import lingui.game_language;
 import lingui.german_language;
+import lingui.language;
 import lingui.translation;
 import std.stdio : writeln;
 
 // -- FUNCTIONS
 
 void TestLanguage(
-    GAME_LANGUAGE game_language
+    LANGUAGE language
     )
 {
-    writeln( game_language.NewGame() );
-    writeln( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    writeln( game_language.Pears( TRANSLATION( 0 ) ) );
-    writeln( game_language.Pears( TRANSLATION( 1 ) ) );
-    writeln( game_language.Pears( TRANSLATION( 2 ) ) );
+    writeln( language.NewGame() );
+    writeln( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    writeln( language.Pears( TRANSLATION( 0 ) ) );
+    writeln( language.Pears( TRANSLATION( 1 ) ) );
+    writeln( language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~
@@ -160,21 +166,21 @@ void main(
 
 import "english_language.dart";
 import "french_language.dart";
-import "game_language.dart";
 import "german_language.dart";
+import "language.dart";
 import "translation.dart";
 
 // -- FUNCTIONS
 
 void TestLanguage(
-    GAME_LANGUAGE game_language
+    LANGUAGE language
     )
 {
-    print( game_language.NewGame() );
-    print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    print( game_language.Pears( TRANSLATION( 0 ) ) );
-    print( game_language.Pears( TRANSLATION( 1 ) ) );
-    print( game_language.Pears( TRANSLATION( 2 ) ) );
+    print( language.NewGame() );
+    print( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    print( language.Pears( TRANSLATION( 0 ) ) );
+    print( language.Pears( TRANSLATION( 1 ) ) );
+    print( language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~
@@ -215,17 +221,17 @@ Bienvenue, Jack Sparrow !
 
 Lingui scripts are indentation-based.
 
-The first level contains the localization languages, and the second level contains the translation functions.
+The first level contains the language class names, and the second level contains the translation functions.
 
-### Languages
+### Language classes
 
-A language can extend another language, by specifying the base language after a colon (`:`).
+A language class can extend another one, by specifying the base language after a colon (`:`).
 
-The first language generally enumerates the translation functions available to the localized application.
+The base language generally enumerates the translation functions available to the localized application.
 
 The other languages then provide language-specific implementations for all these functions.
 
-### Functions
+### Translation functions
 
 A function can have parameters, which are translation variables with the following properties :
 
@@ -241,7 +247,7 @@ They are automatically accumulated inside an implicit `result` translation varia
 
 If the function name is prefixed by a colon (`:`), the function returns the `result` translation variable itself, instead of just its text property.
 
-### Statements
+### Function statements
 
 *   Textual expressions
 
@@ -392,7 +398,8 @@ GetOrdinalPlurality( translation )
 
 ### Conventions
 
-*   Language and function names start by an upper case letter.
+*   Class names are written in upper case.
+*   Function names start by an upper case letter.
 *   Parameter and variable names start by a lower case letter.
 
 ### Limitations
@@ -467,7 +474,7 @@ Converts a Lingui script file to D source code files.
 
 ## Version
 
-1.0
+2.1
 
 ## Author
 

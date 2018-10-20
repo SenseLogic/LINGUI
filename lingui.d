@@ -204,6 +204,7 @@ class RULE
     dstring[]
         TokenArray;
     dstring
+        ClassName,
         LanguageName;
     bool
         IsBaseLanguage,
@@ -257,14 +258,6 @@ class RULE
         {
             return '.';
         }
-    }
-
-    // ~~
-
-    dstring GetClassName(
-        )
-    {
-        return LanguageName.toUpper() ~ "_LANGUAGE";
     }
 
     // ~~
@@ -529,7 +522,7 @@ class RULE
             }
             else
             {
-                return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "CardinalPlurality()";
+                return variable_name ~ "_translation.Get" ~ LanguageRule.LanguageName ~ "CardinalPlurality()";
             }
         }
         else if ( first_character == '°' )
@@ -541,7 +534,7 @@ class RULE
             }
             else
             {
-                return variable_name ~ "_translation.Get" ~ LanguageRule.TokenArray[ 0 ] ~ "OrdinalPlurality()";
+                return variable_name ~ "_translation.Get" ~ LanguageRule.LanguageName ~ "OrdinalPlurality()";
             }
         }
         else if ( first_character == '&' )
@@ -847,9 +840,13 @@ class RULE
 
         if ( IsStringFunction )
         {
-            if ( CsOptionIsEnabled || DOptionIsEnabled )
+            if ( CsOptionIsEnabled )
             {
                 code.AddText( "string " );
+            }
+            else if ( DOptionIsEnabled )
+            {
+                code.AddText( "dstring " );
             }
             else if ( DartOptionIsEnabled )
             {
@@ -962,22 +959,23 @@ class RULE
         }
         else if ( DOptionIsEnabled )
         {
-            code.AddLine( "module " ~ Namespace ~ "." ~ GetClassName().toLower() ~ ";" );
+            code.AddLine( "module " ~ Namespace ~ "." ~ ClassName.toLower() ~ ";" );
             code.AddLine( "" );
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
-            code.AddLine( "import " ~ BaseNamespace ~ ".genre;" );
-            code.AddLine( "import " ~ BaseNamespace ~ ".plurality;" );
-            code.AddLine( "import " ~ BaseNamespace ~ ".translation;" );
 
             if ( IsBaseLanguage )
             {
-                code.AddLine( "import " ~ BaseNamespace ~ ".language;" );
+                code.AddLine( "import " ~ BaseNamespace ~ ".base_language;" );
             }
             else
             {
-                code.AddLine( "import " ~ Namespace ~ "." ~ BaseLanguageRule.GetClassName().toLower() ~ ";" );
+                code.AddLine( "import " ~ Namespace ~ "." ~ BaseLanguageRule.ClassName.toLower() ~ ";" );
             }
+
+            code.AddLine( "import " ~ BaseNamespace ~ ".genre;" );
+            code.AddLine( "import " ~ BaseNamespace ~ ".plurality;" );
+            code.AddLine( "import " ~ BaseNamespace ~ ".translation;" );
 
             code.AddLine( "" );
         }
@@ -985,19 +983,19 @@ class RULE
         {
             code.AddLine( "// -- IMPORTS" );
             code.AddLine( "" );
-            code.AddLine( "import \"genre.dart\";" );
-            code.AddLine( "import \"plurality.dart\";" );
-            code.AddLine( "import \"translation.dart\";" );
 
             if ( IsBaseLanguage )
             {
-                code.AddLine( "import \"language.dart\";" );
+                code.AddLine( "import \"base_language.dart\";" );
             }
             else
             {
-                code.AddLine( "import \"" ~ BaseLanguageRule.GetClassName().toLower() ~ ".dart\";" );
+                code.AddLine( "import \"" ~ BaseLanguageRule.ClassName.toLower() ~ ".dart\";" );
             }
 
+            code.AddLine( "import \"genre.dart\";" );
+            code.AddLine( "import \"plurality.dart\";" );
+            code.AddLine( "import \"translation.dart\";" );
             code.AddLine( "" );
         }
 
@@ -1008,24 +1006,24 @@ class RULE
         {
             code.AddLine( "namespace " ~ Namespace );
             code.AddLine( "{" );
-            code.AddLine( "public class " ~ GetClassName() ~ " : " );
+            code.AddLine( "public class " ~ ClassName ~ " : " );
         }
         else if ( DOptionIsEnabled )
         {
-            code.AddLine( "class " ~ GetClassName() ~ " : " );
+            code.AddLine( "class " ~ ClassName ~ " : " );
         }
         else if ( DartOptionIsEnabled )
         {
-            code.AddLine( "class " ~ GetClassName() ~ " extends " );
+            code.AddLine( "class " ~ ClassName ~ " extends " );
         }
 
         if ( IsBaseLanguage )
         {
-            code.AddText( "LANGUAGE" );
+            code.AddText( "BASE_LANGUAGE" );
         }
         else
         {
-            code.AddText( BaseLanguageRule.GetClassName() );
+            code.AddText( BaseLanguageRule.ClassName );
         }
 
         code.AddLine( "{" );
@@ -1037,7 +1035,7 @@ class RULE
 
             if ( CsOptionIsEnabled )
             {
-                code.AddLine( "public " ~ GetClassName() ~ "(" );
+                code.AddLine( "public " ~ ClassName ~ "(" );
             }
             else if ( DOptionIsEnabled )
             {
@@ -1045,7 +1043,7 @@ class RULE
             }
             else if ( DartOptionIsEnabled )
             {
-                code.AddLine( GetClassName() ~ "(" );
+                code.AddLine( ClassName ~ "(" );
             }
 
             code.AddLine( "    )" );
@@ -1142,11 +1140,11 @@ class RULE
 
         if ( UpperCaseOptionIsEnabled )
         {
-            output_file_path ~= GetClassName();
+            output_file_path ~= ClassName;
         }
         else
         {
-            output_file_path ~= GetClassName().toLower();
+            output_file_path ~= ClassName.toLower();
         }
 
         if ( CsOptionIsEnabled )
@@ -1268,10 +1266,13 @@ class RULE
         )
     {
         dstring
-            base_langage_name;
+            base_class_name;
 
         Type = RULE_TYPE.Language;
-        LanguageName = TokenArray[ 0 ];
+
+        ClassName = TokenArray[ 0 ];
+        LanguageName = ClassName.split( "_" )[ 0 ];
+        LanguageName = LanguageName[ 0 ] ~ LanguageName[ 1 .. $ ].toLower();
 
         if ( TokenArray.length == 1 )
         {
@@ -1282,11 +1283,11 @@ class RULE
         {
             IsBaseLanguage = false;
 
-            base_langage_name = TokenArray[ 2 ];
+            base_class_name = TokenArray[ 2 ];
 
             foreach ( language_rule; SuperRule.SubRuleArray )
             {
-                if ( language_rule.LanguageName == base_langage_name )
+                if ( language_rule.ClassName == base_class_name )
                 {
                     BaseLanguageRule = language_rule;
                     BaseLanguageRule.IsDerivedLanguage = true;
@@ -1297,7 +1298,7 @@ class RULE
 
             if ( BaseLanguageRule is null )
             {
-                Abort( "Invalid base language : " ~ base_langage_name );
+                Abort( "Invalid base language : " ~ base_class_name );
             }
         }
         else
@@ -1611,8 +1612,8 @@ class SCRIPT
                 input_folder_path = "DART/";
             }
 
+            WriteBaseFile( input_folder_path, output_folder_path, "base_language" );
             WriteBaseFile( input_folder_path, output_folder_path, "genre" );
-            WriteBaseFile( input_folder_path, output_folder_path, "language" );
             WriteBaseFile( input_folder_path, output_folder_path, "plurality" );
             WriteBaseFile( input_folder_path, output_folder_path, "translation" );
         }

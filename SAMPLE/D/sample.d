@@ -2,22 +2,22 @@
 
 import lingui.english_language;
 import lingui.french_language;
-import lingui.game_language;
 import lingui.german_language;
+import lingui.language;
 import lingui.translation;
 import std.stdio : writeln;
 
 // -- FUNCTIONS
 
 void TestLanguage(
-    GAME_LANGUAGE game_language
+    LANGUAGE language
     )
 {
-    writeln( game_language.NewGame() );
-    writeln( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    writeln( game_language.Pears( TRANSLATION( 0 ) ) );
-    writeln( game_language.Pears( TRANSLATION( 1 ) ) );
-    writeln( game_language.Pears( TRANSLATION( 2 ) ) );
+    writeln( language.NewGame() );
+    writeln( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    writeln( language.Pears( TRANSLATION( 0 ) ) );
+    writeln( language.Pears( TRANSLATION( 1 ) ) );
+    writeln( language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~

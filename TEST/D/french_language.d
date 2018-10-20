@@ -2,14 +2,14 @@ module game.french_language;
 
 // -- IMPORTS
 
+import game.language;
 import game.genre;
 import game.plurality;
 import game.translation;
-import game.game_language;
 
 // -- TYPES
 
-class FRENCH_LANGUAGE : GAME_LANGUAGE
+class FRENCH_LANGUAGE : LANGUAGE
 {
     // -- CONSTRUCTORS
 
@@ -40,7 +40,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string MainMenu(
+    override dstring MainMenu(
         )
     {
         return "Menu principal";
@@ -96,7 +96,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItems(
+    override dstring TheItems(
         TRANSLATION items_translation
         )
     {
@@ -143,7 +143,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    string Have(
+    dstring Have(
         TRANSLATION items_translation
         )
     {
@@ -168,7 +168,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    string BeenFound(
+    dstring BeenFound(
         TRANSLATION items_translation
         )
     {
@@ -192,7 +192,7 @@ class FRENCH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItemsHaveBeenFound(
+    override dstring TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {

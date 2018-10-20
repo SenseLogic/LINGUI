@@ -9,7 +9,7 @@ using LINGUI;
 
 namespace LINGUI
 {
-    public class LANGUAGE
+    public class BASE_LANGUAGE
     {
         // -- ATTRIBUTES
 

@@ -1,9 +1,13 @@
-Game
+LANGUAGE
+
     NewGame
+
     Welcome first_name last_name
+
     Pears count
 
-English : Game
+ENGLISH_LANGUAGE : LANGUAGE
+
     NewGame
         "New game"
 
@@ -22,7 +26,8 @@ English : Game
         else
             "pears"
 
-German : Game
+GERMAN_LANGUAGE : LANGUAGE
+
     NewGame
         "Neues Spiel"
 
@@ -41,7 +46,8 @@ German : Game
         else
             "Birnen"
 
-French : Game
+FRENCH_LANGUAGE : LANGUAGE
+
     NewGame
         "Nouveau jeu"
 

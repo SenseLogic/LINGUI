@@ -6,7 +6,7 @@ using GAME;
 
 namespace GAME
 {
-    public class ENGLISH_LANGUAGE : GAME_LANGUAGE
+    public class ENGLISH_LANGUAGE : LANGUAGE
     {
         // -- CONSTRUCTORS
 

@@ -1,19 +1,19 @@
-module lingui.game_language;
+module lingui.language;
 
 // -- IMPORTS
 
+import lingui.base_language;
 import lingui.genre;
 import lingui.plurality;
 import lingui.translation;
-import lingui.language;
 
 // -- TYPES
 
-class GAME_LANGUAGE : LANGUAGE
+class LANGUAGE : BASE_LANGUAGE
 {
     // -- INQUIRIES
 
-    string NewGame(
+    dstring NewGame(
         )
     {
         return "";
@@ -21,7 +21,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string Welcome(
+    dstring Welcome(
         TRANSLATION first_name_translation,
         TRANSLATION last_name_translation
         )
@@ -31,7 +31,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string Pears(
+    dstring Pears(
         TRANSLATION count_translation
         )
     {

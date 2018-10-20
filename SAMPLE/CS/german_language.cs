@@ -6,7 +6,7 @@ using LINGUI;
 
 namespace LINGUI
 {
-    public class GERMAN_LANGUAGE : GAME_LANGUAGE
+    public class GERMAN_LANGUAGE : LANGUAGE
     {
         // -- CONSTRUCTORS
 

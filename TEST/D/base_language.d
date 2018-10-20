@@ -1,24 +1,24 @@
-module lingui.language;
+module game.base_language;
 
 // -- IMPORTS
 
-import lingui.genre;
-import lingui.plurality;
-import lingui.translation;
+import game.genre;
+import game.plurality;
+import game.translation;
 import std.conv : to;
 import std.string : endsWith, indexOf, startsWith;
 
 // -- TYPES
 
-class LANGUAGE
+class BASE_LANGUAGE
 {
     // -- ATTRIBUTES
 
-    string
+    dstring
         Name;
-    TRANSLATION[ string ]
+    TRANSLATION[ dstring ]
         TranslationDictionary;
-    char
+    dchar
         DotCharacter;
 
     // -- INQUIRIES
@@ -138,11 +138,11 @@ class LANGUAGE
 
     // ~~
 
-    string GetLowerCase(
-        string text
+    dstring GetLowerCase(
+        dstring text
         )
     {
-        string
+        dstring
             lower_case_text;
 
         foreach ( dchar character; text )
@@ -155,11 +155,11 @@ class LANGUAGE
 
     // ~~
 
-    string GetUpperCase(
-        string text
+    dstring GetUpperCase(
+        dstring text
         )
     {
-        string
+        dstring
             upper_case_text;
 
         foreach ( dchar character; text )
@@ -172,13 +172,13 @@ class LANGUAGE
 
     // ~~
 
-    string GetTitleCase(
-        string text
+    dstring GetTitleCase(
+        dstring text
         )
     {
         dchar
             prior_character;
-        string
+        dstring
             title_case_text;
 
         prior_character = ' ';
@@ -203,8 +203,8 @@ class LANGUAGE
 
     // ~~
 
-    string GetSentenceCase(
-        string text
+    dstring GetSentenceCase(
+        dstring text
         )
     {
         if ( text.length > 0
@@ -221,8 +221,8 @@ class LANGUAGE
     // ~~
 
     bool HasPrefix(
-        string text,
-        string prefix
+        dstring text,
+        dstring prefix
         )
     {
         return text.startsWith( prefix );
@@ -231,8 +231,8 @@ class LANGUAGE
     // ~~
 
     bool HasSuffix(
-        string text,
-        string suffix
+        dstring text,
+        dstring suffix
         )
     {
         return text.endsWith( suffix );
@@ -241,8 +241,8 @@ class LANGUAGE
     // ~~
 
     bool HasFirstCharacter(
-        string text,
-        string first_characters
+        dstring text,
+        dstring first_characters
         )
     {
         return
@@ -253,8 +253,8 @@ class LANGUAGE
     // ~~
 
     TRANSLATION MakeTranslation(
-        string text,
-        string quantity,
+        dstring text,
+        dstring quantity,
         GENRE genre = GENRE.Neutral
         )
     {
@@ -264,7 +264,7 @@ class LANGUAGE
     // ~~
 
     TRANSLATION MakeTranslation(
-        string text,
+        dstring text,
         GENRE genre = GENRE.Neutral
         )
     {
@@ -283,7 +283,7 @@ class LANGUAGE
     // ~~
 
     bool HasTranslation(
-        string key
+        dstring key
         )
     {
         return ( key in TranslationDictionary ) !is null;
@@ -292,7 +292,7 @@ class LANGUAGE
     // ~~
 
     TRANSLATION GetTranslation(
-        string key
+        dstring key
         )
     {
         return TranslationDictionary[ key ];
@@ -346,7 +346,7 @@ class LANGUAGE
 
     bool HasFirstCharacter(
         TRANSLATION translation,
-        string first_characters
+        dstring first_characters
         )
     {
         return HasFirstCharacter( translation.Text, first_characters );
@@ -356,7 +356,7 @@ class LANGUAGE
 
     bool HasPrefix(
         TRANSLATION translation,
-        string prefix
+        dstring prefix
         )
     {
         return HasPrefix( translation.Text, prefix );
@@ -366,7 +366,7 @@ class LANGUAGE
 
     bool HasSuffix(
         TRANSLATION translation,
-        string suffix
+        dstring suffix
         )
     {
         return HasSuffix( translation.Text, suffix );
@@ -393,7 +393,7 @@ class LANGUAGE
     // ~~
 
     int GetTextInteger(
-        string text
+        dstring text
         )
     {
         return text.to!int();
@@ -402,7 +402,7 @@ class LANGUAGE
     // ~~
 
     float GetTextReal(
-        string text
+        dstring text
         )
     {
         return text.to!float();
@@ -410,20 +410,20 @@ class LANGUAGE
 
     // ~~
 
-    string GetIntegerText(
+    dstring GetIntegerText(
         int integer
         )
     {
-        return integer.to!string();
+        return integer.to!dstring();
     }
 
     // ~~
 
-    string GetRealText(
+    dstring GetRealText(
         float real_,
         int minimum_fractional_digit_count = 1,
         int maximum_fractional_digit_count = 20,
-        char dot_character = 0
+        dchar dot_character = 0
         )
     {
         bool
@@ -431,10 +431,10 @@ class LANGUAGE
         long
             dot_character_index,
             fractional_digit_count;
-        string
+        dstring
             text;
 
-        text = real_.to!string();
+        text = real_.to!dstring();
 
         if ( dot_character == 0 )
         {
@@ -467,7 +467,7 @@ class LANGUAGE
 
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
-            text ~= "00000000000000000000"[ 0 .. minimum_fractional_digit_count - fractional_digit_count ];
+            text ~= "00000000000000000000"d[ 0 .. minimum_fractional_digit_count - fractional_digit_count ];
 
             fractional_digit_count = minimum_fractional_digit_count;
         }
@@ -497,7 +497,7 @@ class LANGUAGE
 
     // ~~
 
-    string GetGenreText(
+    dstring GetGenreText(
         GENRE genre
         )
     {
@@ -517,7 +517,7 @@ class LANGUAGE
 
     // ~~
 
-    string GetPluralityText(
+    dstring GetPluralityText(
         PLURALITY plurality
         )
     {

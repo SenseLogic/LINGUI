@@ -3,14 +3,14 @@ lingui
 SAMPLE/CS/sample.exe
 SAMPLE/D/sample
 SAMPLE/D/sample.o
+SAMPLE/DART/base_language.dart
 SAMPLE/DART/genre.dart
-SAMPLE/DART/language.dart
 SAMPLE/DART/plurality.dart
 SAMPLE/DART/translation.dart
 TEST/CS/test.exe
 TEST/D/test
 TEST/D/test.o
+TEST/DART/base_language.dart
 TEST/DART/genre.dart
-TEST/DART/language.dart
 TEST/DART/plurality.dart
 TEST/DART/translation.dart

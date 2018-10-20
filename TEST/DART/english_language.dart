@@ -1,13 +1,13 @@
 // -- IMPORTS
 
+import "language.dart";
 import "genre.dart";
 import "plurality.dart";
 import "translation.dart";
-import "game_language.dart";
 
 // -- TYPES
 
-class ENGLISH_LANGUAGE extends GAME_LANGUAGE
+class ENGLISH_LANGUAGE extends LANGUAGE
 {
     // -- CONSTRUCTORS
 

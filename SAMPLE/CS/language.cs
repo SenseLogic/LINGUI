@@ -6,7 +6,7 @@ using LINGUI;
 
 namespace LINGUI
 {
-    public class GAME_LANGUAGE : LANGUAGE
+    public class LANGUAGE : BASE_LANGUAGE
     {
         // -- INQUIRIES
 

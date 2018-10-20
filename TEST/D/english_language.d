@@ -2,14 +2,14 @@ module game.english_language;
 
 // -- IMPORTS
 
+import game.language;
 import game.genre;
 import game.plurality;
 import game.translation;
-import game.game_language;
 
 // -- TYPES
 
-class ENGLISH_LANGUAGE : GAME_LANGUAGE
+class ENGLISH_LANGUAGE : LANGUAGE
 {
     // -- CONSTRUCTORS
 
@@ -40,7 +40,7 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string MainMenu(
+    override dstring MainMenu(
         )
     {
         return "Main menu";
@@ -94,7 +94,7 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItems(
+    override dstring TheItems(
         TRANSLATION items_translation
         )
     {
@@ -123,7 +123,7 @@ class ENGLISH_LANGUAGE : GAME_LANGUAGE
 
     // ~~
 
-    override string TheItemsHaveBeenFound(
+    override dstring TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {

@@ -3,22 +3,22 @@
 import "dart:io";
 import "english_language.dart";
 import "french_language.dart";
-import "game_language.dart";
+import "language.dart";
 import "translation.dart";
 
 // -- FUNCTIONS
 
 void TestLanguage(
-    GAME_LANGUAGE game_language
+    LANGUAGE language
     )
 {
     TRANSLATION
         swords_translation;
 
-    swords_translation = game_language.Swords( TRANSLATION( 3 ) );
+    swords_translation = language.Swords( TRANSLATION( 3 ) );
 
-    stdout.write( game_language.Test() );
-    stdout.writeln( game_language.TheItemsHaveBeenFound( swords_translation ) );
+    stdout.write( language.Test() );
+    stdout.writeln( language.TheItemsHaveBeenFound( swords_translation ) );
 }
 
 // ~~

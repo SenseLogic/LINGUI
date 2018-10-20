@@ -2,21 +2,21 @@
 
 import "english_language.dart";
 import "french_language.dart";
-import "game_language.dart";
 import "german_language.dart";
+import "language.dart";
 import "translation.dart";
 
 // -- FUNCTIONS
 
 void TestLanguage(
-    GAME_LANGUAGE game_language
+    LANGUAGE language
     )
 {
-    print( game_language.NewGame() );
-    print( game_language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
-    print( game_language.Pears( TRANSLATION( 0 ) ) );
-    print( game_language.Pears( TRANSLATION( 1 ) ) );
-    print( game_language.Pears( TRANSLATION( 2 ) ) );
+    print( language.NewGame() );
+    print( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    print( language.Pears( TRANSLATION( 0 ) ) );
+    print( language.Pears( TRANSLATION( 1 ) ) );
+    print( language.Pears( TRANSLATION( 2 ) ) );
 }
 
 // ~~

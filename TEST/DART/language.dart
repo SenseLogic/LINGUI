@@ -1,19 +1,17 @@
-module game.game_language;
-
 // -- IMPORTS
 
-import game.genre;
-import game.plurality;
-import game.translation;
-import game.language;
+import "base_language.dart";
+import "genre.dart";
+import "plurality.dart";
+import "translation.dart";
 
 // -- TYPES
 
-class GAME_LANGUAGE : LANGUAGE
+class LANGUAGE extends BASE_LANGUAGE
 {
     // -- INQUIRIES
 
-    string MainMenu(
+    String MainMenu(
         )
     {
         return "";
@@ -55,7 +53,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string TheItems(
+    String TheItems(
         TRANSLATION items_translation
         )
     {
@@ -64,7 +62,7 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string TheItemsHaveBeenFound(
+    String TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {
@@ -73,42 +71,42 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string Dump(
+    String Dump(
         TRANSLATION this_translation
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
-        result_translation.AddText( "\"" ~ this_translation.Text ~ "\" / \"" ~ this_translation.Quantity ~ "\" / '" ~ this_translation.GetQuantityFirstCharacter() ~ "' / " );
+        result_translation.AddText( "\"" + this_translation.Text + "\" / \"" + this_translation.Quantity + "\" / '" + this_translation.GetQuantityFirstCharacter() + "' / " );
 
         if ( this_translation.HasIntegerQuantity )
         {
-            result_translation.AddText( GetIntegerText( this_translation.IntegerQuantity ) ~ " / " );
+            result_translation.AddText( GetIntegerText( this_translation.IntegerQuantity ) + " / " );
         }
 
         if ( this_translation.HasRealQuantity )
         {
-            result_translation.AddText( GetRealText( this_translation.RealQuantity ) ~ " / " );
+            result_translation.AddText( GetRealText( this_translation.RealQuantity ) + " / " );
         }
 
-        result_translation.AddText( GetPluralityText( GetCardinalPlurality( this_translation ) ) ~ " / " ~ GetPluralityText( GetOrdinalPlurality( this_translation ) ) ~ " / " ~ GetGenreText( this_translation.Genre ) ~ "\n" );
+        result_translation.AddText( GetPluralityText( GetCardinalPlurality( this_translation ) ) + " / " + GetPluralityText( GetOrdinalPlurality( this_translation ) ) + " / " + GetGenreText( this_translation.Genre ) + "\n" );
 
         return result_translation.Text;
     }
 
     // ~~
 
-    string TestFunctions(
+    String TestFunctions(
         )
     {
         TRANSLATION
-            result_translation;
+            result_translation = TRANSLATION();
 
-        result_translation.AddText( GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0f, -1 ) ~ " / " ~ GetRealText( -12.0f ) ~ " / " ~ GetRealText( -12.0f, 3 ) ~ " \n" );
-        result_translation.AddText( GetRealText( -12.3f, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345f ) ~ " / " ~ GetRealText( -12.3456789f, 0, 3, DotCharacter ) ~ "\n" );
-        result_translation.AddText( GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n" );
-        result_translation.AddText( GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n" );
+        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, -1 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
+        result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );
+        result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
+        result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
         result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );
         result_translation.AddText( Dump( MakeTranslation( "cm", "0" ) ) );
         result_translation.AddText( Dump( MakeTranslation( "cm", "1" ) ) );
@@ -129,13 +127,13 @@ class GAME_LANGUAGE : LANGUAGE
 
     // ~~
 
-    string Test(
+    String Test(
         )
     {
         TRANSLATION
-            result_translation,
-            no_chests_translation,
-            one_chest_translation;
+            result_translation = TRANSLATION(),
+            no_chests_translation = TRANSLATION(),
+            one_chest_translation = TRANSLATION();
 
         no_chests_translation = Chests( TRANSLATION( "", "0" ) );
         one_chest_translation = Chests( TRANSLATION( "", "1" ) );

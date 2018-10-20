@@ -1,4 +1,4 @@
-Game
+LANGUAGE
 
     MainMenu
 
@@ -61,7 +61,7 @@ Game
 
         TestFunctions()
 
-English : Game
+ENGLISH_LANGUAGE : LANGUAGE
 
     MainMenu
         "Main menu"
@@ -99,7 +99,7 @@ English : Game
             " have"
         " been found.\n"
 
-French : Game
+FRENCH_LANGUAGE : LANGUAGE
 
     MainMenu
         "Menu principal"

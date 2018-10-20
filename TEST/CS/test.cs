@@ -10,16 +10,16 @@ public class TEST
     // -- OPERATIONS
 
     public static void TestLanguage(
-        GAME_LANGUAGE game_language
+        LANGUAGE language
         )
     {
         TRANSLATION
             swords_translation;
 
-        swords_translation = game_language.Swords( new TRANSLATION( 3 ) );
+        swords_translation = language.Swords( new TRANSLATION( 3 ) );
 
-        Console.Write( game_language.Test() );
-        Console.WriteLine( game_language.TheItemsHaveBeenFound( swords_translation ) );
+        Console.Write( language.Test() );
+        Console.WriteLine( language.TheItemsHaveBeenFound( swords_translation ) );
     }
 
     // ~~

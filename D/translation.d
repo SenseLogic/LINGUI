@@ -12,7 +12,7 @@ struct TRANSLATION
 {
     // -- ATTRIBUTES
 
-    string
+    dstring
         Text,
         Quantity;
     bool
@@ -30,8 +30,8 @@ struct TRANSLATION
     // -- CONSTRUCTORS
 
     this(
-        string text,
-        string quantity,
+        dstring text,
+        dstring quantity,
         GENRE genre = GENRE.Neutral
         )
     {
@@ -47,7 +47,7 @@ struct TRANSLATION
     // ~~
 
     this(
-        string text,
+        dstring text,
         GENRE genre = GENRE.Neutral
         )
     {
@@ -62,7 +62,7 @@ struct TRANSLATION
         GENRE genre = GENRE.Neutral
         )
     {
-        Quantity = integer_quantity.to!string();
+        Quantity = integer_quantity.to!dstring();
         HasIntegerQuantity = true;
         HasRealQuantity = false;
         IntegerQuantity = integer_quantity;
@@ -72,7 +72,7 @@ struct TRANSLATION
 
     // -- INQUIRIES
 
-    public char GetQuantityFirstCharacter(
+    public dchar GetQuantityFirstCharacter(
         )
     {
         if ( Quantity.length == 0 )
@@ -555,7 +555,7 @@ struct TRANSLATION
     // -- OPERATIONS
 
     void SetText(
-        string text
+        dstring text
         )
     {
         Text = text;
@@ -564,7 +564,7 @@ struct TRANSLATION
     // ~~
 
     void AddText(
-        string text
+        dstring text
         )
     {
         if ( Text.length == 0 )
@@ -596,10 +596,10 @@ struct TRANSLATION
     // ~~
 
     void SetQuantity(
-        string quantity
+        dstring quantity
         )
     {
-        string
+        dstring
             integer_text;
 
         Quantity = quantity;
@@ -634,7 +634,7 @@ struct TRANSLATION
         int integer_quantity
         )
     {
-        Quantity = integer_quantity.to!string();
+        Quantity = integer_quantity.to!dstring();
         HasIntegerQuantity = true;
         HasRealQuantity = false;
         IntegerQuantity = integer_quantity;
