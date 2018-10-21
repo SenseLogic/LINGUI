@@ -217,7 +217,7 @@ Bienvenue, Jack Sparrow !
 
 ## Syntax
 
-### Scripts
+### Indentation
 
 Lingui scripts are indentation-based.
 
