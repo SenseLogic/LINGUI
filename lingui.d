@@ -1124,7 +1124,6 @@ class RULE
     // ~~
 
     void WriteFile(
-        dstring output_folder_path
         )
     {
         dstring
@@ -1136,7 +1135,7 @@ class RULE
 
         AddLanguageCode( code );
 
-        output_file_path = output_folder_path;
+        output_file_path = OutputFolderPath;
 
         if ( UpperCaseOptionIsEnabled )
         {
@@ -1457,8 +1456,7 @@ class SCRIPT
 
     // -- OPERATIONS
 
-    void ReadFile(
-        dstring script_file_path
+    void ReadFiles(
         )
     {
         dstring
@@ -1472,47 +1470,51 @@ class SCRIPT
         Rule = new RULE();
 
         prior_rule = null;
-        line_array = script_file_path.ReadLineArray();
 
-        foreach ( line_index, line; line_array )
+        foreach ( input_file_path; InputFilePathArray )
         {
-            if ( !line.startsWith( "#" ) )
+            line_array = input_file_path.ReadLineArray();
+
+            foreach ( line_index, line; line_array )
             {
-                rule_text = line.strip();
-
-                if ( rule_text.length > 0 )
+                if ( !line.startsWith( "#" ) )
                 {
-                    rule = new RULE();
-                    rule.FilePath = script_file_path;
-                    rule.LineIndex = line_index;
-                    rule.Text = rule_text;
-                    rule.IndentationSpaceCount = line.GetIndentationSpaceCount();
+                    rule_text = line.strip();
 
-                    if ( prior_rule is null )
+                    if ( rule_text.length > 0 )
                     {
-                        Rule.AddSubRule( rule );
-                    }
-                    else
-                    {
-                        while ( rule.IndentationSpaceCount < prior_rule.IndentationSpaceCount )
-                        {
-                            prior_rule = prior_rule.SuperRule;
-                        }
+                        rule = new RULE();
+                        rule.FilePath = input_file_path;
+                        rule.LineIndex = line_index;
+                        rule.Text = rule_text;
+                        rule.IndentationSpaceCount = line.GetIndentationSpaceCount();
 
-                        if ( rule.IndentationSpaceCount == prior_rule.IndentationSpaceCount )
+                        if ( prior_rule is null )
                         {
-                            prior_rule.SuperRule.AddSubRule( rule );
+                            Rule.AddSubRule( rule );
                         }
                         else
                         {
-                            prior_rule.AddSubRule( rule );
+                            while ( rule.IndentationSpaceCount < prior_rule.IndentationSpaceCount )
+                            {
+                                prior_rule = prior_rule.SuperRule;
+                            }
+
+                            if ( rule.IndentationSpaceCount == prior_rule.IndentationSpaceCount )
+                            {
+                                prior_rule.SuperRule.AddSubRule( rule );
+                            }
+                            else
+                            {
+                                prior_rule.AddSubRule( rule );
+                            }
                         }
+
+                        rule.Tokenize();
+                        rule.Parse();
+
+                        prior_rule = rule;
                     }
-
-                    rule.Tokenize();
-                    rule.Parse();
-
-                    prior_rule = rule;
                 }
             }
         }
@@ -1579,7 +1581,6 @@ class SCRIPT
     // ~~
 
     void WriteFiles(
-        dstring output_folder_path
         )
     {
         dstring
@@ -1589,7 +1590,7 @@ class SCRIPT
         {
             foreach( language_rule; Rule.SubRuleArray )
             {
-                language_rule.WriteFile( output_folder_path );
+                language_rule.WriteFile();
             }
         }
         else
@@ -1612,26 +1613,24 @@ class SCRIPT
                 input_folder_path = "DART/";
             }
 
-            WriteBaseFile( input_folder_path, output_folder_path, "base_language" );
-            WriteBaseFile( input_folder_path, output_folder_path, "genre" );
-            WriteBaseFile( input_folder_path, output_folder_path, "plurality" );
-            WriteBaseFile( input_folder_path, output_folder_path, "translation" );
+            WriteBaseFile( input_folder_path, OutputFolderPath, "base_language" );
+            WriteBaseFile( input_folder_path, OutputFolderPath, "genre" );
+            WriteBaseFile( input_folder_path, OutputFolderPath, "plurality" );
+            WriteBaseFile( input_folder_path, OutputFolderPath, "translation" );
         }
     }
 
     // -- OPERATIONS
 
     void ExecuteScript(
-        dstring script_file_path,
-        dstring output_folder_path
         )
     {
         SCRIPT
             script;
 
         script = new SCRIPT();
-        script.ReadFile( script_file_path );
-        script.WriteFiles( output_folder_path );
+        script.ReadFiles();
+        script.WriteFiles();
     }
 }
 
@@ -1646,7 +1645,10 @@ bool
     VerboseOptionIsEnabled;
 dstring
     BaseNamespace,
-    Namespace;
+    Namespace,
+    OutputFolderPath;
+dstring[]
+    InputFilePathArray;
 
 // -- FUNCTIONS
 
@@ -1728,6 +1730,8 @@ void main(
     Namespace = "";
     UpperCaseOptionIsEnabled = false;
     VerboseOptionIsEnabled = false;
+    InputFilePathArray = [];
+    OutputFolderPath = "";
 
     while ( argument_array.length >= 1
             && argument_array[ 0 ].startsWith( "--" ) )
@@ -1804,17 +1808,30 @@ void main(
         BaseNamespace = "lingui";
     }
 
-    if ( argument_array.length == 2
-         && ( CsOptionIsEnabled
-              || DOptionIsEnabled
-              || DartOptionIsEnabled ) )
+    while ( argument_array.length >= 1
+            && argument_array[ 0 ].endsWith( ".lingui" ) )
+    {
+        InputFilePathArray ~= argument_array[ 0 ].to!dstring();
+
+        argument_array = argument_array[ 1 .. $ ];
+    }
+
+    if ( argument_array.length >= 1
+         && argument_array[ 0 ].endsWith( "/" ) )
+    {
+        OutputFolderPath = argument_array[ 0 ].to!dstring();
+
+        argument_array = argument_array[ 1 .. $ ];
+    }
+
+    if ( argument_array.length == 0 )
     {
         script = new SCRIPT();
-        script.ExecuteScript( argument_array[ 0 ].to!dstring(), argument_array[ 1 ].to!dstring() );
+        script.ExecuteScript();
     }
     else
     {
-        writeln( "Usage : lingui [options] script_file.lingui OUTPUT_FOLDER/" );
+        writeln( "Usage : lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/" );
         writeln( "Options :" );
         writeln( "    --cs" );
         writeln( "    --d" );

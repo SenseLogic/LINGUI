@@ -227,9 +227,11 @@ The first level contains the language class names, and the second level contains
 
 A language class can extend another one, by specifying the base language after a colon (`:`).
 
-The base language generally enumerates the translation functions available to the localized application.
+A base language must be declared before its derived languages.
 
-The other languages then provide language-specific implementations for all these functions.
+The first language generally defines the application interface,
+by declaring the translation functions available to the localized application,
+while the next languages provide their language-specific implementations.
 
 ### Translation functions
 
@@ -421,7 +423,7 @@ dmd -m64 lingui.d
 ### Command line
 
 ```bash
-lingui [options] script_file.lingui OUTPUT_FOLDER/
+lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/
 ```
 
 ### Options
@@ -441,20 +443,20 @@ The `--cs`, `--d` and `--dart` options are mutually exclusive.
 ### Examples
 
 ```bash
-lingui --cs --base --namespace GAME --verbose test.lingui CS/
+lingui --dart --base --namespace game --verbose language.lingui english_language.lingui german_language.lingui DART/
 ```
 
-Converts a Lingui script file to C# source code files, generating the base classes too and using "GAME" as namespace.
+Converts Lingui files to Dart source code files, generating the base classes too and using "game" as namespace.
 
 ```bash
-lingui --d --verbose test.lingui D/
+lingui --cs --verbose language.lingui english_language.lingui german_language.lingui CS/
 ```
 
-Converts a Lingui script file to D source code files.
+Converts Lingui files to C# source code files.
 
 ## Limitations
 
-*   The supported language names are :
+*   The supported languages are :
     *   English
     *   Japanese
     *   Korean
@@ -471,6 +473,7 @@ Converts a Lingui script file to D source code files.
     *   Norwegian
     *   Danish
     *   Arabic
+
 
 ## Version
 

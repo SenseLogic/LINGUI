@@ -1,0 +1,19 @@
+GERMAN_LANGUAGE : LANGUAGE
+
+    NewGame
+        "Neues Spiel"
+
+    Welcome first_name last_name
+        "Willkommen, "
+        first_name
+        " "
+        last_name
+        "!"
+
+    Pears count
+        *count
+        " "
+        if @count = one
+            "Birne"
+        else
+            "Birnen"

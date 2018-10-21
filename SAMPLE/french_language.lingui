@@ -1,0 +1,19 @@
+FRENCH_LANGUAGE : LANGUAGE
+
+    NewGame
+        "Nouveau jeu"
+
+    Welcome first_name last_name
+        "Bienvenue, "
+        first_name
+        " "
+        last_name
+        " !"
+
+    Pears count
+        *count
+        " "
+        if @count = one
+            "poire"
+        else
+            "poires"
