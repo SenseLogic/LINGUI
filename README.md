@@ -12,7 +12,7 @@ Its minimalistic syntax is designed to allow professional translators to specify
 
 ## Sample
 
-### language.lingui
+### Lingui
 
 ```lua
 LANGUAGE
@@ -22,11 +22,7 @@ LANGUAGE
     Welcome first_name last_name
 
     Pears count
-```
 
-### english_language.lingui
-
-```lua
 ENGLISH_LANGUAGE : LANGUAGE
 
     NewGame
@@ -46,11 +42,7 @@ ENGLISH_LANGUAGE : LANGUAGE
             "pear"
         else
             "pears"
-```
 
-### german_language.lingui
-
-```lua
 GERMAN_LANGUAGE : LANGUAGE
 
     NewGame
@@ -70,11 +62,7 @@ GERMAN_LANGUAGE : LANGUAGE
             "Birne"
         else
             "Birnen"
-```
 
-### french_language.lingui
-
-```lua
 FRENCH_LANGUAGE : LANGUAGE
 
     NewGame
