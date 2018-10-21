@@ -236,7 +236,7 @@ Bienvenue, Jack Sparrow !
 
 Lingui scripts are indentation-based.
 
-The first level contains the language class names, and the second level contains the translation functions.
+The first level contains the language class names, and the second level contains the translation constants and functions.
 
 ### Language classes
 
