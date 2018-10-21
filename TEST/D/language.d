@@ -42,7 +42,12 @@ class LANGUAGE : BASE_LANGUAGE
     TRANSLATION NoSwords(
         )
     {
-        return TRANSLATION( Swords( TRANSLATION( "", "0" ) ) );
+        TRANSLATION
+            result_translation;
+
+        result_translation.AddText( Swords( TRANSLATION( "", "0" ) ) );
+
+        return result_translation;
     }
 
     // ~~
@@ -50,7 +55,12 @@ class LANGUAGE : BASE_LANGUAGE
     TRANSLATION OneSword(
         )
     {
-        return TRANSLATION( Swords( TRANSLATION( "", "1" ) ) );
+        TRANSLATION
+            result_translation;
+
+        result_translation.AddText( Swords( TRANSLATION( "", "1" ) ) );
+
+        return result_translation;
     }
 
     // ~~

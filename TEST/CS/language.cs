@@ -39,7 +39,12 @@ namespace GAME
         public virtual TRANSLATION NoSwords(
             )
         {
-            return new TRANSLATION( Swords( new TRANSLATION( "", "0" ) ) );
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( Swords( new TRANSLATION( "", "0" ) ) );
+
+            return result_translation;
         }
 
         // ~~
@@ -47,7 +52,12 @@ namespace GAME
         public virtual TRANSLATION OneSword(
             )
         {
-            return new TRANSLATION( Swords( new TRANSLATION( "", "1" ) ) );
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( Swords( new TRANSLATION( "", "1" ) ) );
+
+            return result_translation;
         }
 
         // ~~

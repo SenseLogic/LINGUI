@@ -687,6 +687,14 @@ class RULE
 
     // ~~
 
+    bool IsStringExpression(
+        )
+    {
+        return Text.startsWith( '"' );
+    }
+
+    // -- OPERATIONS
+
     void AddVarCode(
         CODE code
         )
@@ -882,7 +890,8 @@ class RULE
             }
         }
         else if ( SubRuleArray.length == 1
-                  && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression )
+                  && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression
+                  && SubRuleArray[ 0 ].IsStringExpression() )
         {
             if ( IsStringFunction )
             {
