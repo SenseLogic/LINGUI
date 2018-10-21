@@ -456,7 +456,7 @@ Converts Lingui files to C# source code files.
 
 ## Limitations
 
-*   The supported languages are :
+*   The cardinal and ordinaly pluralities are provided only for the following languages :
     *   English
     *   Japanese
     *   Korean
@@ -473,7 +473,6 @@ Converts Lingui files to C# source code files.
     *   Norwegian
     *   Danish
     *   Arabic
-
 
 ## Version
 
