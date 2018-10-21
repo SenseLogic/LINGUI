@@ -16,8 +16,11 @@ class FRENCH_LANGUAGE : LANGUAGE
     this(
         )
     {
+        super();
         Name = "French";
         DotCharacter = ',';
+        TranslationMap[ "princess" ] = TRANSLATION( "princesse", "1", GENRE.Female );
+        TranslationMap[ "NewGame" ] = TRANSLATION( "Nouveau jeu" );
     }
 
     // -- INQUIRIES
@@ -40,10 +43,10 @@ class FRENCH_LANGUAGE : LANGUAGE
 
     // ~~
 
-    override dstring NewGame(
+    override dstring GameOver(
         )
     {
-        return "Nouveau jeu";
+        return "Fin du jeu!";
     }
 
     // ~~

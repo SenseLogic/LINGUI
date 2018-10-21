@@ -1,5 +1,11 @@
 FRENCH_LANGUAGE : LANGUAGE
 
+    "English"
+        "Anglais"
+
+    "French"
+        "Français"
+
     MainMenu
         "Menu principal"
 

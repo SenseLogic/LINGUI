@@ -12,10 +12,12 @@ class ENGLISH_LANGUAGE extends LANGUAGE
     // -- CONSTRUCTORS
 
     ENGLISH_LANGUAGE(
-        )
+        ) : super()
     {
         Name = "English";
         DotCharacter = '.';
+        TranslationMap[ "princess" ] = TRANSLATION( "princess", "1", GENRE.Female );
+        TranslationMap[ "NewGame" ] = TRANSLATION( "New game" );
     }
 
     // -- INQUIRIES
@@ -38,10 +40,10 @@ class ENGLISH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String NewGame(
+    String GameOver(
         )
     {
-        return "New game";
+        return "Game over!";
     }
 
     // ~~

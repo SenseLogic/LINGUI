@@ -687,6 +687,16 @@ class RULE
 
     // ~~
 
+    bool IsStringConstant(
+        )
+    {
+        return
+            Text.startsWith( '"' )
+            && Text.endsWith( '"' );
+    }
+
+    // ~~
+
     bool IsStringExpression(
         )
     {
@@ -807,6 +817,46 @@ class RULE
         else if ( Type != RULE_TYPE.Var )
         {
             code.AddLine( "result_translation.AddText( " ~ GetExpressionCode( 0 ) ~ " );" );
+        }
+    }
+
+    // ~~
+
+    void AddConstantCode(
+        CODE code
+        )
+    {
+        if ( CsOptionIsEnabled )
+        {
+            code.AddLine( "TranslationDictionary[ " ~ Text ~ " ] = " );
+        }
+        else if ( DOptionIsEnabled || DartOptionIsEnabled )
+        {
+            code.AddLine( "TranslationMap[ " ~ Text ~ " ] = " );
+        }
+
+        if ( SubRuleArray.length == 1
+             && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression)
+        {
+            if ( SubRuleArray[ 0 ].IsStringExpression() )
+            {
+                if ( CsOptionIsEnabled )
+                {
+                    code.AddText( "new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                }
+                else if ( DOptionIsEnabled || DartOptionIsEnabled )
+                {
+                    code.AddText( "TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                }
+            }
+            else
+            {
+                code.AddText( SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
+            }
+        }
+        else
+        {
+            Abort( "Invalid constant definition : " ~ Text );
         }
     }
 
@@ -1026,33 +1076,57 @@ class RULE
         }
 
         code.AddLine( "{" );
+        code.AddLine( "// -- CONSTRUCTORS" );
+        code.AddLine( "" );
+
+        if ( CsOptionIsEnabled )
+        {
+            code.AddLine( "public " ~ ClassName ~ "(" );
+        }
+        else if ( DOptionIsEnabled )
+        {
+            code.AddLine( "this(" );
+        }
+        else if ( DartOptionIsEnabled )
+        {
+            code.AddLine( ClassName ~ "(" );
+        }
+
+        code.AddLine( "    )" );
+
+
+        if ( CsOptionIsEnabled )
+        {
+            code.AddText( " : base()" );
+        }
+        else if ( DartOptionIsEnabled )
+        {
+            code.AddText( " : super()" );
+        }
+
+        code.AddLine( "{" );
+
+        if ( DOptionIsEnabled )
+        {
+            code.AddLine( "super();" );
+        }
 
         if ( !IsBaseLanguage )
         {
-            code.AddLine( "// -- CONSTRUCTORS" );
-            code.AddLine( "" );
-
-            if ( CsOptionIsEnabled )
-            {
-                code.AddLine( "public " ~ ClassName ~ "(" );
-            }
-            else if ( DOptionIsEnabled )
-            {
-                code.AddLine( "this(" );
-            }
-            else if ( DartOptionIsEnabled )
-            {
-                code.AddLine( ClassName ~ "(" );
-            }
-
-            code.AddLine( "    )" );
-            code.AddLine( "{" );
             code.AddLine( "Name = \"" ~ LanguageName ~ "\";" );
             code.AddLine( "DotCharacter = '"d ~ GetDotCharacter() ~ "';" );
-            code.AddLine( "}" );
-            code.AddLine( "" );
         }
 
+        foreach ( sub_rule; SubRuleArray )
+        {
+            if ( sub_rule.IsStringConstant() )
+            {
+                sub_rule.AddConstantCode( code );
+            }
+        }
+
+        code.AddLine( "}" );
+        code.AddLine( "" );
         code.AddLine( "// -- INQUIRIES" );
         code.AddLine( "" );
 
@@ -1109,7 +1183,10 @@ class RULE
 
         foreach ( sub_rule; SubRuleArray )
         {
-            sub_rule.AddFunctionCode( code );
+            if ( !sub_rule.IsStringConstant() )
+            {
+                sub_rule.AddFunctionCode( code );
+            }
         }
 
         code.AddLine( "}" );

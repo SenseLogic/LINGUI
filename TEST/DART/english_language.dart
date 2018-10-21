@@ -12,10 +12,12 @@ class ENGLISH_LANGUAGE extends LANGUAGE
     // -- CONSTRUCTORS
 
     ENGLISH_LANGUAGE(
-        )
+        ) : super()
     {
         Name = "English";
         DotCharacter = '.';
+        TranslationMap[ "English" ] = TRANSLATION( "English" );
+        TranslationMap[ "French" ] = TRANSLATION( "French" );
     }
 
     // -- INQUIRIES

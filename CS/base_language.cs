@@ -20,6 +20,14 @@ namespace LINGUI
         public char
             DotCharacter;
 
+        // -- CONSTRUCTORS
+
+        public BASE_LANGUAGE(
+            )
+        {
+            TranslationDictionary = new Dictionary<string, TRANSLATION>();
+        }
+
         // -- INQUIRIES
 
         public bool IsLowerCaseCharacter(

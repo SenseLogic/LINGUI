@@ -8,6 +8,13 @@ namespace GAME
 {
     public class LANGUAGE : BASE_LANGUAGE
     {
+        // -- CONSTRUCTORS
+
+        public LANGUAGE(
+            ) : base()
+        {
+        }
+
         // -- INQUIRIES
 
         public virtual string MainMenu(
@@ -130,6 +137,9 @@ namespace GAME
             result_translation.AddText( Dump( new TRANSLATION( "", "6.5" ) ) );
             result_translation.AddText( Dump( new TRANSLATION( "metros", "7.5" ) ) );
             result_translation.AddText( Dump( new TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
+            result_translation.AddText( GetTranslation( "English" ) );
+            result_translation.AddText( " / " );
+            result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
 
             return result_translation.Text;
         }

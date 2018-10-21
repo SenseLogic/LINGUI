@@ -11,10 +11,12 @@ namespace GAME
         // -- CONSTRUCTORS
 
         public ENGLISH_LANGUAGE(
-            )
+            ) : base()
         {
             Name = "English";
             DotCharacter = '.';
+            TranslationDictionary[ "English" ] = new TRANSLATION( "English" );
+            TranslationDictionary[ "French" ] = new TRANSLATION( "French" );
         }
 
         // -- INQUIRIES

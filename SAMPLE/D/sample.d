@@ -13,7 +13,9 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    writeln( language.NewGame() );
+    writeln( language.GetTranslation( "princess" ).Text );
+    writeln( language.GetTranslation( "NewGame" ).Text );
+    writeln( language.GameOver() );
     writeln( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
     writeln( language.Pears( TRANSLATION( 0 ) ) );
     writeln( language.Pears( TRANSLATION( 1 ) ) );

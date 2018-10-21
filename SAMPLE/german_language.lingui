@@ -1,7 +1,13 @@
 GERMAN_LANGUAGE : LANGUAGE
 
-    NewGame
+    "princess"
+        1*"Prinzessin":female
+
+    "NewGame"
         "Neues Spiel"
+
+    GameOver
+        "Spiel vorbei!"
 
     Welcome first_name last_name
         "Willkommen, " ~ $first_name ~ " " ~ $last_name ~ "!"

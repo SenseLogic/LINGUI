@@ -1,7 +1,13 @@
 FRENCH_LANGUAGE : LANGUAGE
 
-    NewGame
+    "princess"
+        1*"princesse":female
+
+    "NewGame"
         "Nouveau jeu"
+
+    GameOver
+        "Fin du jeu!"
 
     Welcome first_name last_name
         "Bienvenue, " ~ $first_name ~ " " ~ $last_name ~ " !"

@@ -13,7 +13,9 @@ public class TEST
         LANGUAGE language
         )
     {
-        Console.WriteLine( language.NewGame() );
+        Console.WriteLine( language.GetTranslation( "princess" ).Text );
+        Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
+        Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );

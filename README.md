@@ -17,7 +17,7 @@ Its minimalistic syntax is designed to allow professional translators to specify
 ```lua
 LANGUAGE
 
-    NewGame
+    GameOver
 
     Welcome first_name last_name
 
@@ -25,8 +25,14 @@ LANGUAGE
 
 ENGLISH_LANGUAGE : LANGUAGE
 
-    NewGame
+    "princess"
+        1*"princess":female
+
+    "NewGame"
         "New game"
+
+    GameOver
+        "Game over!"
 
     Welcome first_name last_name
         "Welcome, " ~ $first_name ~ " " ~ $last_name ~ "!"
@@ -40,8 +46,14 @@ ENGLISH_LANGUAGE : LANGUAGE
 
 GERMAN_LANGUAGE : LANGUAGE
 
-    NewGame
+    "princess"
+        1*"Prinzessin":female
+
+    "NewGame"
         "Neues Spiel"
+
+    GameOver
+        "Spiel vorbei!"
 
     Welcome first_name last_name
         "Willkommen, " ~ $first_name ~ " " ~ $last_name ~ "!"
@@ -55,8 +67,14 @@ GERMAN_LANGUAGE : LANGUAGE
 
 FRENCH_LANGUAGE : LANGUAGE
 
-    NewGame
+    "princess"
+        1*"princesse":female
+
+    "NewGame"
         "Nouveau jeu"
+
+    GameOver
+        "Fin du jeu!"
 
     Welcome first_name last_name
         "Bienvenue, " ~ $first_name ~ " " ~ $last_name ~ " !"
@@ -87,7 +105,9 @@ public class TEST
         LANGUAGE language
         )
     {
-        Console.WriteLine( language.NewGame() );
+        Console.WriteLine( language.GetTranslation( "princess" ).Text );
+        Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
+        Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );
@@ -125,7 +145,9 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    writeln( language.NewGame() );
+    writeln( language.GetTranslation( "princess" ).Text );
+    writeln( language.GetTranslation( "NewGame" ).Text );
+    writeln( language.GameOver() );
     writeln( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
     writeln( language.Pears( TRANSLATION( 0 ) ) );
     writeln( language.Pears( TRANSLATION( 1 ) ) );
@@ -161,7 +183,9 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    print( language.NewGame() );
+    print( language.GetTranslation( "princess" ).Text );
+    print( language.GetTranslation( "NewGame" ).Text );
+    print( language.GameOver() );
     print( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
     print( language.Pears( TRANSLATION( 0 ) ) );
     print( language.Pears( TRANSLATION( 1 ) ) );
@@ -183,17 +207,23 @@ void main(
 ### Result
 
 ```
+princess
 New game
+Game over!
 Welcome, Jack Sparrow!
 0 pears
 1 pear
 2 pears
+Prinzessin
 Neues Spiel
+Spiel vorbei!
 Willkommen, Jack Sparrow!
 0 Birnen
 1 Birne
 2 Birnen
+princesse
 Nouveau jeu
+Fin du jeu!
 Bienvenue, Jack Sparrow !
 0 poire
 1 poire
@@ -217,6 +247,12 @@ A base language must be declared before its derived languages.
 The first language generally defines the application interface,
 by declaring the translation functions available to the localized application,
 while the next languages provide their language-specific implementations.
+
+### Translation constants
+
+A translation constant has a quoted name, and is defined by a single line expression.
+
+Its translation will be evaluated once, and stored inside the translation dictionary of each language.
 
 ### Translation functions
 

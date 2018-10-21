@@ -11,6 +11,14 @@ import game.translation;
 
 class LANGUAGE : BASE_LANGUAGE
 {
+    // -- CONSTRUCTORS
+
+    this(
+        )
+    {
+        super();
+    }
+
     // -- INQUIRIES
 
     dstring MainMenu(
@@ -133,6 +141,9 @@ class LANGUAGE : BASE_LANGUAGE
         result_translation.AddText( Dump( TRANSLATION( "", "6.5" ) ) );
         result_translation.AddText( Dump( TRANSLATION( "metros", "7.5" ) ) );
         result_translation.AddText( Dump( TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
+        result_translation.AddText( GetTranslation( "English" ) );
+        result_translation.AddText( " / " );
+        result_translation.AddText( GetTranslation( "French" ).Text ~ "\n" );
 
         return result_translation.Text;
     }

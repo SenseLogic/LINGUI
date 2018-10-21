@@ -16,8 +16,11 @@ class GERMAN_LANGUAGE : LANGUAGE
     this(
         )
     {
+        super();
         Name = "German";
         DotCharacter = ',';
+        TranslationMap[ "princess" ] = TRANSLATION( "Prinzessin", "1", GENRE.Female );
+        TranslationMap[ "NewGame" ] = TRANSLATION( "Neues Spiel" );
     }
 
     // -- INQUIRIES
@@ -40,10 +43,10 @@ class GERMAN_LANGUAGE : LANGUAGE
 
     // ~~
 
-    override dstring NewGame(
+    override dstring GameOver(
         )
     {
-        return "Neues Spiel";
+        return "Spiel vorbei!";
     }
 
     // ~~

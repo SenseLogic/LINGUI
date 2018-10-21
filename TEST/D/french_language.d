@@ -16,8 +16,11 @@ class FRENCH_LANGUAGE : LANGUAGE
     this(
         )
     {
+        super();
         Name = "French";
         DotCharacter = ',';
+        TranslationMap[ "English" ] = TRANSLATION( "Anglais" );
+        TranslationMap[ "French" ] = TRANSLATION( "Français" );
     }
 
     // -- INQUIRIES

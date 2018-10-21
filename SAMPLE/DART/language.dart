@@ -9,9 +9,16 @@ import "translation.dart";
 
 class LANGUAGE extends BASE_LANGUAGE
 {
+    // -- CONSTRUCTORS
+
+    LANGUAGE(
+        ) : super()
+    {
+    }
+
     // -- INQUIRIES
 
-    String NewGame(
+    String GameOver(
         )
     {
         return "";

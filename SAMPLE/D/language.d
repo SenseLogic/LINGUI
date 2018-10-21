@@ -11,9 +11,17 @@ import lingui.translation;
 
 class LANGUAGE : BASE_LANGUAGE
 {
+    // -- CONSTRUCTORS
+
+    this(
+        )
+    {
+        super();
+    }
+
     // -- INQUIRIES
 
-    dstring NewGame(
+    dstring GameOver(
         )
     {
         return "";

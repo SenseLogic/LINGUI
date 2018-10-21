@@ -8,9 +8,16 @@ namespace LINGUI
 {
     public class LANGUAGE : BASE_LANGUAGE
     {
+        // -- CONSTRUCTORS
+
+        public LANGUAGE(
+            ) : base()
+        {
+        }
+
         // -- INQUIRIES
 
-        public virtual string NewGame(
+        public virtual string GameOver(
             )
         {
             return "";

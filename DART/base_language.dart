@@ -17,6 +17,14 @@ class BASE_LANGUAGE
     String
         DotCharacter;
 
+    // -- CONSTRUCTORS
+
+    BASE_LANGUAGE(
+        )
+    {
+        TranslationMap = Map<String, TRANSLATION>();
+    }
+
     // -- INQUIRIES
 
     bool IsLowerCaseCharacter(

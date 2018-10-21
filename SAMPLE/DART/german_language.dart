@@ -12,10 +12,12 @@ class GERMAN_LANGUAGE extends LANGUAGE
     // -- CONSTRUCTORS
 
     GERMAN_LANGUAGE(
-        )
+        ) : super()
     {
         Name = "German";
         DotCharacter = ',';
+        TranslationMap[ "princess" ] = TRANSLATION( "Prinzessin", "1", GENRE.Female );
+        TranslationMap[ "NewGame" ] = TRANSLATION( "Neues Spiel" );
     }
 
     // -- INQUIRIES
@@ -38,10 +40,10 @@ class GERMAN_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String NewGame(
+    String GameOver(
         )
     {
-        return "Neues Spiel";
+        return "Spiel vorbei!";
     }
 
     // ~~

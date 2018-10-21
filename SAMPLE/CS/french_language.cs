@@ -11,10 +11,12 @@ namespace LINGUI
         // -- CONSTRUCTORS
 
         public FRENCH_LANGUAGE(
-            )
+            ) : base()
         {
             Name = "French";
             DotCharacter = ',';
+            TranslationDictionary[ "princess" ] = new TRANSLATION( "princesse", "1", GENRE.Female );
+            TranslationDictionary[ "NewGame" ] = new TRANSLATION( "Nouveau jeu" );
         }
 
         // -- INQUIRIES
@@ -37,10 +39,10 @@ namespace LINGUI
 
         // ~~
 
-        public override string NewGame(
+        public override string GameOver(
             )
         {
-            return "Nouveau jeu";
+            return "Fin du jeu!";
         }
 
         // ~~

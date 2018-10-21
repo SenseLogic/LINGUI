@@ -12,7 +12,9 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    print( language.NewGame() );
+    print( language.GetTranslation( "princess" ).Text );
+    print( language.GetTranslation( "NewGame" ).Text );
+    print( language.GameOver() );
     print( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
     print( language.Pears( TRANSLATION( 0 ) ) );
     print( language.Pears( TRANSLATION( 1 ) ) );

@@ -47,6 +47,10 @@ LANGUAGE
         Dump( 7.5*"metros" )
         Dump( 8.5*"vueltas":female )
 
+        GetTranslation( "English" )
+        " / "
+        GetTranslation( "French" ).Text ~ "\n"
+
     Test
         var no_chests one_chest
         no_chests = Chests( 0* )

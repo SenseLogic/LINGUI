@@ -17,9 +17,16 @@ class BASE_LANGUAGE
     dstring
         Name;
     TRANSLATION[ dstring ]
-        TranslationDictionary;
+        TranslationMap;
     dchar
         DotCharacter;
+
+    // -- CONSTRUCTORS
+
+    this(
+        )
+    {
+    }
 
     // -- INQUIRIES
 
@@ -286,7 +293,7 @@ class BASE_LANGUAGE
         dstring key
         )
     {
-        return ( key in TranslationDictionary ) !is null;
+        return ( key in TranslationMap ) !is null;
     }
 
     // ~~
@@ -295,7 +302,7 @@ class BASE_LANGUAGE
         dstring key
         )
     {
-        return TranslationDictionary[ key ];
+        return TranslationMap[ key ];
     }
 
     // ~~

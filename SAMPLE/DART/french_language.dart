@@ -12,10 +12,12 @@ class FRENCH_LANGUAGE extends LANGUAGE
     // -- CONSTRUCTORS
 
     FRENCH_LANGUAGE(
-        )
+        ) : super()
     {
         Name = "French";
         DotCharacter = ',';
+        TranslationMap[ "princess" ] = TRANSLATION( "princesse", "1", GENRE.Female );
+        TranslationMap[ "NewGame" ] = TRANSLATION( "Nouveau jeu" );
     }
 
     // -- INQUIRIES
@@ -38,10 +40,10 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String NewGame(
+    String GameOver(
         )
     {
-        return "Nouveau jeu";
+        return "Fin du jeu!";
     }
 
     // ~~
