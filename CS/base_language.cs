@@ -448,7 +448,7 @@ namespace LINGUI
             )
         {
             bool
-                dot_character_is_optional;
+                trailing_zeros_are_removed;
             int
                 dot_character_index,
                 fractional_digit_count;
@@ -477,14 +477,17 @@ namespace LINGUI
                 text += '0';
             }
 
-            dot_character_is_optional = ( minimum_fractional_digit_count < 0 );
+            fractional_digit_count = text.Length - dot_character_index - 1;
 
-            if ( dot_character_is_optional )
+            if ( minimum_fractional_digit_count < 0 )
             {
+                trailing_zeros_are_removed = true;
                 minimum_fractional_digit_count = 0;
             }
-
-            fractional_digit_count = text.Length - dot_character_index - 1;
+            else
+            {
+                trailing_zeros_are_removed = false;
+            }
 
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
@@ -499,10 +502,18 @@ namespace LINGUI
                 fractional_digit_count = maximum_fractional_digit_count;
             }
 
-            if ( fractional_digit_count == 0
-                 || ( fractional_digit_count == 1
-                      && dot_character_is_optional
-                      && text.EndsWith( ".0" ) ) )
+            if ( trailing_zeros_are_removed )
+            {
+                while ( fractional_digit_count > 0
+                        && text[ dot_character_index + fractional_digit_count ] == '0' )
+                {
+                    --fractional_digit_count;
+                }
+
+                text = text.Substring( 0, dot_character_index + fractional_digit_count );
+            }
+
+            if ( fractional_digit_count == 0 )
             {
                 return text.Substring( 0, dot_character_index );
             }

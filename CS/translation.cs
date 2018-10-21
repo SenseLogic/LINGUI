@@ -30,6 +30,21 @@ namespace LINGUI
         // -- CONSTRUCTORS
 
         public TRANSLATION(
+            TRANSLATION translation
+            )
+        {
+            Text = translation.Text;
+            Quantity = translation.Quantity;
+            HasIntegerQuantity = translation.HasIntegerQuantity;
+            HasRealQuantity = translation.HasRealQuantity;
+            IntegerQuantity = translation.IntegerQuantity;
+            RealQuantity = translation.RealQuantity;
+            Genre = translation.Genre;
+        }
+
+        // ~~
+
+        public TRANSLATION(
             string text,
             string quantity,
             GENRE genre = GENRE.Neutral

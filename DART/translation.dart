@@ -34,7 +34,17 @@ class TRANSLATION
         ]
         )
     {
-        if ( text is int )
+        if ( text is TRANSLATION )
+        {
+            Text = text.Text;
+            Quantity = text.Quantity;
+            HasIntegerQuantity = text.HasIntegerQuantity;
+            HasRealQuantity = text.HasRealQuantity;
+            IntegerQuantity = text.IntegerQuantity;
+            RealQuantity = text.RealQuantity;
+            Genre = text.Genre;
+        }
+        else if ( text is int )
         {
             Text = "";
 

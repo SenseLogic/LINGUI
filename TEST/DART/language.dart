@@ -40,7 +40,7 @@ class LANGUAGE extends BASE_LANGUAGE
     TRANSLATION NoSwords(
         )
     {
-        return Swords( TRANSLATION( "", "0" ) );
+        return TRANSLATION( Swords( TRANSLATION( "", "0" ) ) );
     }
 
     // ~~
@@ -48,7 +48,7 @@ class LANGUAGE extends BASE_LANGUAGE
     TRANSLATION OneSword(
         )
     {
-        return Swords( TRANSLATION( "", "1" ) );
+        return TRANSLATION( Swords( TRANSLATION( "", "1" ) ) );
     }
 
     // ~~

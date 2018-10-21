@@ -30,6 +30,21 @@ struct TRANSLATION
     // -- CONSTRUCTORS
 
     this(
+        TRANSLATION translation
+        )
+    {
+        Text = translation.Text;
+        Quantity = translation.Quantity;
+        HasIntegerQuantity = translation.HasIntegerQuantity;
+        HasRealQuantity = translation.HasRealQuantity;
+        IntegerQuantity = translation.IntegerQuantity;
+        RealQuantity = translation.RealQuantity;
+        Genre = translation.Genre;
+    }
+
+    // ~~
+
+    this(
         dstring text,
         dstring quantity,
         GENRE genre = GENRE.Neutral

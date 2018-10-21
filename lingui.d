@@ -174,10 +174,7 @@ enum RULE_TYPE
     Elseif,
     Else,
     Assignment,
-    Call,
-    Quantity,
-    Variable,
-    Text
+    Expression
 }
 
 // ~~
@@ -885,27 +882,20 @@ class RULE
             }
         }
         else if ( SubRuleArray.length == 1
-                  && SubRuleArray[ 0 ].Type == RULE_TYPE.Text )
+                  && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression )
         {
             if ( IsStringFunction )
             {
-                code.AddLine( "return " ~ SubRuleArray[ 0 ].Text ~ ";" );
+                code.AddLine( "return " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
             }
             else if ( CsOptionIsEnabled )
             {
-                code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].Text ~ " );" );
+                code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
             }
             else if ( DOptionIsEnabled || DartOptionIsEnabled )
             {
-                code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].Text ~ " );" );
+                code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
             }
-        }
-        else if ( SubRuleArray.length == 1
-                  && ( SubRuleArray[ 0 ].Type == RULE_TYPE.Call
-                       || ( SubRuleArray[ 0 ].Type == RULE_TYPE.Quantity
-                            && !IsStringFunction ) ) )
-        {
-            code.AddLine( "return " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
         }
         else
         {
@@ -1399,25 +1389,9 @@ class RULE
         {
             Type = RULE_TYPE.Assignment;
         }
-        else if ( IsFunction( first_token ) )
-        {
-            Type = RULE_TYPE.Call;
-        }
-        else if ( IsQuantity( first_token ) )
-        {
-            Type = RULE_TYPE.Quantity;
-        }
-        else if ( IsVariable( first_token ) )
-        {
-            Type = RULE_TYPE.Variable;
-        }
-        else if ( first_token.startsWith( "\"" ) )
-        {
-            Type = RULE_TYPE.Text;
-        }
         else
         {
-            Abort( "Invalid statement : " ~ Text );
+            Type = RULE_TYPE.Expression;
         }
 
         if ( Type == RULE_TYPE.Language )

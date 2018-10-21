@@ -4,15 +4,10 @@ ENGLISH_LANGUAGE : LANGUAGE
         "New game"
 
     Welcome first_name last_name
-        "Welcome, "
-        first_name
-        " "
-        last_name
-        "!"
+        "Welcome, " ~ $first_name ~ " " ~ $last_name ~ "!"
 
     Pears count
-        *count
-        " "
+        *count ~ " "
         if @count = one
             "pear"
         else

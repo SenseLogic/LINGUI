@@ -51,16 +51,7 @@ class FRENCH_LANGUAGE extends LANGUAGE
         TRANSLATION last_name_translation
         )
     {
-        TRANSLATION
-            result_translation = TRANSLATION();
-
-        result_translation.AddText( "Bienvenue, " );
-        result_translation.AddText( first_name_translation );
-        result_translation.AddText( " " );
-        result_translation.AddText( last_name_translation );
-        result_translation.AddText( " !" );
-
-        return result_translation.Text;
+        return "Bienvenue, " + first_name_translation.Text + " " + last_name_translation.Text + " !";
     }
 
     // ~~
@@ -72,8 +63,7 @@ class FRENCH_LANGUAGE extends LANGUAGE
         TRANSLATION
             result_translation = TRANSLATION();
 
-        result_translation.AddText( count_translation.Quantity );
-        result_translation.AddText( " " );
+        result_translation.AddText( count_translation.Quantity + " " );
 
         if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
         {
