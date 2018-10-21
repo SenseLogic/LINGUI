@@ -29,15 +29,10 @@ ENGLISH_LANGUAGE : LANGUAGE
         "New game"
 
     Welcome first_name last_name
-        "Welcome, "
-        first_name
-        " "
-        last_name
-        "!"
+        "Welcome, " ~ $first_name ~ " " ~ $last_name ~ "!"
 
     Pears count
-        *count
-        " "
+        *count ~ " "
         if @count = one
             "pear"
         else
@@ -49,15 +44,10 @@ GERMAN_LANGUAGE : LANGUAGE
         "Neues Spiel"
 
     Welcome first_name last_name
-        "Willkommen, "
-        first_name
-        " "
-        last_name
-        "!"
+        "Willkommen, " ~ $first_name ~ " " ~ $last_name ~ "!"
 
     Pears count
-        *count
-        " "
+        *count ~ " "
         if @count = one
             "Birne"
         else
@@ -69,15 +59,10 @@ FRENCH_LANGUAGE : LANGUAGE
         "Nouveau jeu"
 
     Welcome first_name last_name
-        "Bienvenue, "
-        first_name
-        " "
-        last_name
-        " !"
+        "Bienvenue, " ~ $first_name ~ " " ~ $last_name ~ " !"
 
     Pears count
-        *count
-        " "
+        *count ~ " "
         if @count = one
             "poire"
         else
