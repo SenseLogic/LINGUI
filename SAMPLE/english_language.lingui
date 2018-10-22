@@ -10,9 +10,9 @@ ENGLISH_LANGUAGE : LANGUAGE
         "Game over!"
 
     Welcome first_name last_name
-        "Welcome, " ~ $first_name ~ " " ~ $last_name ~ "!"
+        "Welcome, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "pear"

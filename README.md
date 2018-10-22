@@ -21,7 +21,7 @@ LANGUAGE
 
     Welcome first_name last_name
 
-    Pears count
+    Pears :count
 
 ENGLISH_LANGUAGE : LANGUAGE
 
@@ -35,9 +35,9 @@ ENGLISH_LANGUAGE : LANGUAGE
         "Game over!"
 
     Welcome first_name last_name
-        "Welcome, " ~ $first_name ~ " " ~ $last_name ~ "!"
+        "Welcome, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "pear"
@@ -56,9 +56,9 @@ GERMAN_LANGUAGE : LANGUAGE
         "Spiel vorbei!"
 
     Welcome first_name last_name
-        "Willkommen, " ~ $first_name ~ " " ~ $last_name ~ "!"
+        "Willkommen, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "Birne"
@@ -77,9 +77,9 @@ FRENCH_LANGUAGE : LANGUAGE
         "Fin du jeu!"
 
     Welcome first_name last_name
-        "Bienvenue, " ~ $first_name ~ " " ~ $last_name ~ " !"
+        "Bienvenue, " ~ first_name ~ " " ~ last_name ~ " !"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "poire"
@@ -108,7 +108,7 @@ public class TEST
         Console.WriteLine( language.GetTranslation( "princess" ).Text );
         Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
         Console.WriteLine( language.GameOver() );
-        Console.WriteLine( language.Welcome( new TRANSLATION( "Jack" ), new TRANSLATION( "Sparrow" ) ) );
+        Console.WriteLine( language.Welcome( "Jack", "Sparrow" ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );
         Console.WriteLine( language.Pears( new TRANSLATION( 2 ) ) );
@@ -148,7 +148,7 @@ void TestLanguage(
     writeln( language.GetTranslation( "princess" ).Text );
     writeln( language.GetTranslation( "NewGame" ).Text );
     writeln( language.GameOver() );
-    writeln( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    writeln( language.Welcome( "Jack", "Sparrow" ) );
     writeln( language.Pears( TRANSLATION( 0 ) ) );
     writeln( language.Pears( TRANSLATION( 1 ) ) );
     writeln( language.Pears( TRANSLATION( 2 ) ) );
@@ -186,7 +186,7 @@ void TestLanguage(
     print( language.GetTranslation( "princess" ).Text );
     print( language.GetTranslation( "NewGame" ).Text );
     print( language.GameOver() );
-    print( language.Welcome( TRANSLATION( "Jack" ), TRANSLATION( "Sparrow" ) ) );
+    print( language.Welcome( "Jack", "Sparrow" ) );
     print( language.Pears( TRANSLATION( 0 ) ) );
     print( language.Pears( TRANSLATION( 1 ) ) );
     print( language.Pears( TRANSLATION( 2 ) ) );
@@ -248,6 +248,18 @@ The first language generally defines the application interface,
 by declaring the translation functions available to the localized application,
 while the next languages provide their language-specific implementations.
 
+### Translation values
+
+A translation value has one or several of the following properties :
+
+*   a text (`$`);
+*   a quantity text (`*`), with an integer (`#`) or real (`%`) value;
+*   a genre (`&`).
+
+Functions declared with a `:` prefix return a translation value instead of a string.
+
+Function parameters and variables declared with a `:` prefix store a translation value instead of a string.
+
 ### Translation constants
 
 A translation constant has a quoted name, and is defined by a single line expression.
@@ -256,19 +268,15 @@ Its translation will be evaluated once, and stored inside the translation dictio
 
 ### Translation functions
 
-A function can have parameters, which are translation variables with the following properties :
+Translation functions :
 
-*   a text (`$`);
-*   a quantity text (`*`), with an integer (`#`) or real (`%`) value;
-*   a genre (`&`).
+*   can have one or several parameter variables;
+*   can declare local variables;
+*   return a translation.
 
-A function can declare local translation variables, which can be used to temporarily store partial translations.
+A function returns the concatenation of the function textual expressions, stored inside an implicit `result` translation variable.
 
-A function returns a translated text which is the concatenation of the function textual expressions.
-
-They are automatically accumulated inside an implicit `result` translation variable, unless the function has a single-line definition.
-
-If the function name is prefixed by a colon (`:`), the function returns the `result` translation variable itself, instead of just its text property.
+If the function has a single-line definition starting with `"` or `(`, it immediately returns its result without storing it inside a `result` variable.
 
 ### Function statements
 
@@ -298,7 +306,7 @@ If the function name is prefixed by a colon (`:`), the function returns the `res
 *   Variable declarations and assignments
 
     ```lua
-    var kings queens princes
+    var :kings :queens :princes
     kings = Kings( 1* )
     $queens = "reinas"
     *queens = "2"
@@ -316,8 +324,8 @@ $    text
 ^    quantity first character
 #    quantity integer value
 %    quantity real value
-:    has an integer quantity?
-.    has a real quantity?
+!    quantity is integer
+.    quantity is real
 @    cardinal plurality (zero, one, two, few, many, other)
 °    ordinal plurality (zero, one, two, few, many, other)
 &    genre (neutral, male, female)
@@ -497,7 +505,7 @@ Converts Lingui files to C# source code files.
 
 ## Version
 
-2.1
+2.2
 
 ## Author
 

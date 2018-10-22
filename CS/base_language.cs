@@ -440,7 +440,8 @@ namespace LINGUI
         // ~~
 
         public string GetIntegerText(
-            int integer
+            int integer,
+            int minimum_digit_count = 1
             )
         {
             return integer.ToString();
@@ -512,7 +513,7 @@ namespace LINGUI
 
             if ( trailing_zeros_are_removed )
             {
-                while ( fractional_digit_count > 0
+                while ( fractional_digit_count > minimum_fractional_digit_count
                         && text[ dot_character_index + fractional_digit_count ] == '0' )
                 {
                     --fractional_digit_count;

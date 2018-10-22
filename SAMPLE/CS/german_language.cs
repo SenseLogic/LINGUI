@@ -48,11 +48,11 @@ namespace LINGUI
         // ~~
 
         public override string Welcome(
-            TRANSLATION first_name_translation,
-            TRANSLATION last_name_translation
+            string first_name,
+            string last_name
             )
         {
-            return "Willkommen, " + first_name_translation.Text + " " + last_name_translation.Text + "!";
+            return "Willkommen, " + first_name + " " + last_name + "!";
         }
 
         // ~~

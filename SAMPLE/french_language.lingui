@@ -10,9 +10,9 @@ FRENCH_LANGUAGE : LANGUAGE
         "Fin du jeu!"
 
     Welcome first_name last_name
-        "Bienvenue, " ~ $first_name ~ " " ~ $last_name ~ " !"
+        "Bienvenue, " ~ first_name ~ " " ~ last_name ~ " !"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "poire"

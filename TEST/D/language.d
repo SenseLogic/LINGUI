@@ -29,6 +29,17 @@ class LANGUAGE : BASE_LANGUAGE
 
     // ~~
 
+    dstring Date(
+        dstring day,
+        dstring month,
+        dstring year
+        )
+    {
+        return ( day ~ "/" ~ month ~ "/" ~ year );
+    }
+
+    // ~~
+
     TRANSLATION Chests(
         TRANSLATION count_translation
         )
@@ -144,8 +155,25 @@ class LANGUAGE : BASE_LANGUAGE
         result_translation.AddText( GetTranslation( "English" ) );
         result_translation.AddText( " / " );
         result_translation.AddText( GetTranslation( "French" ).Text ~ "\n" );
+        result_translation.AddText( Date( "18", "2", "2018" ) ~ "\n" );
 
         return result_translation.Text;
+    }
+
+    // ~~
+
+    TRANSLATION Kings(
+        TRANSLATION count_translation
+        )
+    {
+        TRANSLATION
+            result_translation;
+
+        result_translation.SetText( "reyes" );
+        result_translation.SetQuantity( count_translation.Quantity );
+        result_translation.SetGenre( GENRE.Male );
+
+        return result_translation;
     }
 
     // ~~
@@ -156,7 +184,10 @@ class LANGUAGE : BASE_LANGUAGE
         TRANSLATION
             result_translation,
             no_chests_translation,
-            one_chest_translation;
+            one_chest_translation,
+            kings_translation,
+            queens_translation,
+            princes_translation;
 
         no_chests_translation = Chests( TRANSLATION( "", "0" ) );
         one_chest_translation = Chests( TRANSLATION( "", "1" ) );
@@ -167,6 +198,12 @@ class LANGUAGE : BASE_LANGUAGE
         result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
         result_translation.AddText( TheItemsHaveBeenFound( Swords( TRANSLATION( "", "2" ) ) ) );
         result_translation.AddText( TestFunctions() );
+        kings_translation = Kings( TRANSLATION( "", "1" ) );
+        queens_translation.SetText( "reinas" );
+        queens_translation.SetQuantity( "2" );
+        queens_translation.SetGenre( GENRE.Female );
+        princes_translation = TRANSLATION( "príncipes", "3", GENRE.Male );
+        result_translation.AddText( kings_translation.Text ~ " " ~ queens_translation.Text ~ " " ~ princes_translation.Text ~ "\n" );
 
         return result_translation.Text;
     }

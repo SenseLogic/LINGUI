@@ -25,6 +25,17 @@ namespace GAME
 
         // ~~
 
+        public virtual string Date(
+            string day,
+            string month,
+            string year
+            )
+        {
+            return ( day + "/" + month + "/" + year );
+        }
+
+        // ~~
+
         public virtual TRANSLATION Chests(
             TRANSLATION count_translation
             )
@@ -140,8 +151,25 @@ namespace GAME
             result_translation.AddText( GetTranslation( "English" ) );
             result_translation.AddText( " / " );
             result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
+            result_translation.AddText( Date( "18", "2", "2018" ) + "\n" );
 
             return result_translation.Text;
+        }
+
+        // ~~
+
+        public virtual TRANSLATION Kings(
+            TRANSLATION count_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.SetText( "reyes" );
+            result_translation.SetQuantity( count_translation.Quantity );
+            result_translation.SetGenre( GENRE.Male );
+
+            return result_translation;
         }
 
         // ~~
@@ -152,7 +180,10 @@ namespace GAME
             TRANSLATION
                 result_translation = new TRANSLATION(),
                 no_chests_translation = new TRANSLATION(),
-                one_chest_translation = new TRANSLATION();
+                one_chest_translation = new TRANSLATION(),
+                kings_translation = new TRANSLATION(),
+                queens_translation = new TRANSLATION(),
+                princes_translation = new TRANSLATION();
 
             no_chests_translation = Chests( new TRANSLATION( "", "0" ) );
             one_chest_translation = Chests( new TRANSLATION( "", "1" ) );
@@ -163,6 +194,12 @@ namespace GAME
             result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
             result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );
             result_translation.AddText( TestFunctions() );
+            kings_translation = Kings( new TRANSLATION( "", "1" ) );
+            queens_translation.SetText( "reinas" );
+            queens_translation.SetQuantity( "2" );
+            queens_translation.SetGenre( GENRE.Female );
+            princes_translation = new TRANSLATION( "príncipes", "3", GENRE.Male );
+            result_translation.AddText( kings_translation.Text + " " + queens_translation.Text + " " + princes_translation.Text + "\n" );
 
             return result_translation.Text;
         }

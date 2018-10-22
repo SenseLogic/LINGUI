@@ -2,9 +2,12 @@ LANGUAGE
 
     MainMenu
 
-    :Chests count
+    Date day month year
+        ( day ~ "/" ~ month ~ "/" ~ year )
 
-    :Swords count
+    :Chests :count
+
+    :Swords :count
 
     :NoSwords
         Swords( 0* )
@@ -12,13 +15,13 @@ LANGUAGE
     :OneSword
         Swords( 1* )
 
-    TheItems items
+    TheItems :items
 
-    TheItemsHaveBeenFound items
+    TheItemsHaveBeenFound :items
 
-    Dump this
+    Dump :this
         "\"" ~ $this ~ "\" / \"" ~ *this ~ "\" / '" ~ ^this ~ "' / "
-        if :this
+        if !this
             GetIntegerText( #this ) ~ " / "
         if .this
             GetRealText( %this ) ~ " / "
@@ -51,8 +54,15 @@ LANGUAGE
         " / "
         GetTranslation( "French" ).Text ~ "\n"
 
+        Date( "18", "2", "2018" ) ~ "\n"
+
+    :Kings :count
+        $result = "reyes"
+        *result = *count
+        &result = male
+
     Test
-        var no_chests one_chest
+        var :no_chests :one_chest
         no_chests = Chests( 0* )
         one_chest = Chests( 1* )
 
@@ -64,3 +74,12 @@ LANGUAGE
         TheItemsHaveBeenFound( Swords( 2* ) )
 
         TestFunctions()
+
+        var :kings :queens :princes
+        kings = Kings( 1* )
+        $queens = "reinas"
+        *queens = "2"
+        &queens = female
+        princes = 3*"príncipes":male
+
+        $kings ~ " " ~ $queens ~ " " ~ $princes ~ "\n"

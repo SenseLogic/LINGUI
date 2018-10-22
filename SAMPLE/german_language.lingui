@@ -10,9 +10,9 @@ GERMAN_LANGUAGE : LANGUAGE
         "Spiel vorbei!"
 
     Welcome first_name last_name
-        "Willkommen, " ~ $first_name ~ " " ~ $last_name ~ "!"
+        "Willkommen, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears count
+    Pears :count
         *count ~ " "
         if @count = one
             "Birne"

@@ -27,8 +27,8 @@ class LANGUAGE extends BASE_LANGUAGE
     // ~~
 
     String Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
+        String first_name,
+        String last_name
         )
     {
         return "";

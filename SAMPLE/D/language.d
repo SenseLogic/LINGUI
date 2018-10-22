@@ -30,8 +30,8 @@ class LANGUAGE : BASE_LANGUAGE
     // ~~
 
     dstring Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
+        dstring first_name,
+        dstring last_name
         )
     {
         return "";

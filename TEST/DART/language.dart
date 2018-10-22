@@ -26,6 +26,17 @@ class LANGUAGE extends BASE_LANGUAGE
 
     // ~~
 
+    String Date(
+        String day,
+        String month,
+        String year
+        )
+    {
+        return ( day + "/" + month + "/" + year );
+    }
+
+    // ~~
+
     TRANSLATION Chests(
         TRANSLATION count_translation
         )
@@ -141,8 +152,25 @@ class LANGUAGE extends BASE_LANGUAGE
         result_translation.AddText( GetTranslation( "English" ) );
         result_translation.AddText( " / " );
         result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
+        result_translation.AddText( Date( "18", "2", "2018" ) + "\n" );
 
         return result_translation.Text;
+    }
+
+    // ~~
+
+    TRANSLATION Kings(
+        TRANSLATION count_translation
+        )
+    {
+        TRANSLATION
+            result_translation = TRANSLATION();
+
+        result_translation.SetText( "reyes" );
+        result_translation.SetQuantity( count_translation.Quantity );
+        result_translation.SetGenre( GENRE.Male );
+
+        return result_translation;
     }
 
     // ~~
@@ -153,7 +181,10 @@ class LANGUAGE extends BASE_LANGUAGE
         TRANSLATION
             result_translation = TRANSLATION(),
             no_chests_translation = TRANSLATION(),
-            one_chest_translation = TRANSLATION();
+            one_chest_translation = TRANSLATION(),
+            kings_translation = TRANSLATION(),
+            queens_translation = TRANSLATION(),
+            princes_translation = TRANSLATION();
 
         no_chests_translation = Chests( TRANSLATION( "", "0" ) );
         one_chest_translation = Chests( TRANSLATION( "", "1" ) );
@@ -164,6 +195,12 @@ class LANGUAGE extends BASE_LANGUAGE
         result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
         result_translation.AddText( TheItemsHaveBeenFound( Swords( TRANSLATION( "", "2" ) ) ) );
         result_translation.AddText( TestFunctions() );
+        kings_translation = Kings( TRANSLATION( "", "1" ) );
+        queens_translation.SetText( "reinas" );
+        queens_translation.SetQuantity( "2" );
+        queens_translation.SetGenre( GENRE.Female );
+        princes_translation = TRANSLATION( "príncipes", "3", GENRE.Male );
+        result_translation.AddText( kings_translation.Text + " " + queens_translation.Text + " " + princes_translation.Text + "\n" );
 
         return result_translation.Text;
     }

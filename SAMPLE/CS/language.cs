@@ -26,8 +26,8 @@ namespace LINGUI
         // ~~
 
         public virtual string Welcome(
-            TRANSLATION first_name_translation,
-            TRANSLATION last_name_translation
+            string first_name,
+            string last_name
             )
         {
             return "";

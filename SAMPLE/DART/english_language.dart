@@ -49,11 +49,11 @@ class ENGLISH_LANGUAGE extends LANGUAGE
     // ~~
 
     String Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
+        String first_name,
+        String last_name
         )
     {
-        return "Welcome, " + first_name_translation.Text + " " + last_name_translation.Text + "!";
+        return "Welcome, " + first_name + " " + last_name + "!";
     }
 
     // ~~

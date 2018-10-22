@@ -52,11 +52,11 @@ class FRENCH_LANGUAGE : LANGUAGE
     // ~~
 
     override dstring Welcome(
-        TRANSLATION first_name_translation,
-        TRANSLATION last_name_translation
+        dstring first_name,
+        dstring last_name
         )
     {
-        return "Bienvenue, " ~ first_name_translation.Text ~ " " ~ last_name_translation.Text ~ " !";
+        return "Bienvenue, " ~ first_name ~ " " ~ last_name ~ " !";
     }
 
     // ~~

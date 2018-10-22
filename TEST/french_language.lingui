@@ -9,7 +9,7 @@ FRENCH_LANGUAGE : LANGUAGE
     MainMenu
         "Menu principal"
 
-    :Chests count
+    :Chests :count
         if #count <= 1
             "coffre"
         else
@@ -17,7 +17,7 @@ FRENCH_LANGUAGE : LANGUAGE
         *result = *count
         &result = male
 
-    :Swords count
+    :Swords :count
         if @count = one
             "épée"
         else
@@ -25,7 +25,7 @@ FRENCH_LANGUAGE : LANGUAGE
         *result = *count
         &result = female
 
-    TheItems items
+    TheItems :items
         if #items = 0
             if &items = female
                 "Aucune "
@@ -44,7 +44,7 @@ FRENCH_LANGUAGE : LANGUAGE
             " "
         items
 
-    Have items
+    Have :items
         if #items = 0
             " n'a"
         elseif #items <= 1
@@ -52,14 +52,14 @@ FRENCH_LANGUAGE : LANGUAGE
         else
             " ont"
 
-    BeenFound items
+    BeenFound :items
         " été trouvé"
         if &items = female
             "e"
         if #items > 1
             "s"
 
-    TheItemsHaveBeenFound items
+    TheItemsHaveBeenFound :items
         TheItems( items )
         Have( items )
         BeenFound( items )

@@ -9,21 +9,21 @@ ENGLISH_LANGUAGE : LANGUAGE
     MainMenu
         "Main menu"
 
-    :Chests count
+    :Chests :count
         if #count = 1
             "chest"
         else
             "chests"
         *result = *count
 
-    :Swords count
+    :Swords :count
         if @count = one
             "sword"
         else
             "swords"
         *result = *count
 
-    TheItems items
+    TheItems :items
         if #items = 0
             "No "
         elseif #items = 1
@@ -34,71 +34,10 @@ ENGLISH_LANGUAGE : LANGUAGE
             " "
         items
 
-    TheItemsHaveBeenFound items
+    TheItemsHaveBeenFound :items
         TheItems( items )
         if #items = 1
             " has"
         else
             " have"
         " been found.\n"
-
-FRENCH_LANGUAGE : LANGUAGE
-
-    MainMenu
-        "Menu principal"
-
-    :Chests count
-        if #count <= 1
-            "coffre"
-        else
-            "coffres"
-        *result = *count
-        &result = male
-
-    :Swords count
-        if @count = one
-            "épée"
-        else
-            "épées"
-        *result = *count
-        &result = female
-
-    TheItems items
-        if #items = 0
-            if &items = female
-                "Aucune "
-            else
-                "Aucun "
-        elseif #items = 1
-            if HasFirstCharacter( GetLowerCase( $items ), "aâeéêèiîoôuûh" )
-                "L'"
-            elseif &items = female
-                "La "
-            else
-                "Le "
-        else
-            "Les "
-            *items
-            " "
-        items
-
-    Have items
-        if #items = 0
-            " n'a"
-        elseif #items <= 1
-            " a"
-        else
-            " ont"
-
-    BeenFound items
-        " été trouvé"
-        if &items = female
-            "e"
-        if #items > 1
-            "s"
-
-    TheItemsHaveBeenFound items
-        TheItems( items )
-        Have( items )
-        BeenFound( items )
-        ".\n"
