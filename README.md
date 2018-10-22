@@ -268,14 +268,12 @@ Its translation will be evaluated once, and stored inside the translation dictio
 
 ### Translation functions
 
-Translation functions :
+Translation functions return a translation string or value.
 
-*   can have one or several parameter variables;
-*   can declare local variables;
-*   return a translation.
+They can have parameters and declare local variables.
 
-A function returns the concatenation of the function textual expressions,
-stored inside an implicit `result` translation variable.
+A function result is the concatenation of its evaluated expressions,
+accumulated inside an implicit `result` variable.
 
 If the function has a single-line definition starting with `"` or `(`,
 it immediately returns its result without storing it inside a `result` variable.
