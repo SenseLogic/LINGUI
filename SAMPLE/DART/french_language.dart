@@ -43,7 +43,7 @@ class FRENCH_LANGUAGE extends LANGUAGE
     String GameOver(
         )
     {
-        return "Fin du jeu!";
+        return "Fin du jeu !";
     }
 
     // ~~

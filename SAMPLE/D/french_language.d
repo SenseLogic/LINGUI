@@ -46,7 +46,7 @@ class FRENCH_LANGUAGE : LANGUAGE
     override dstring GameOver(
         )
     {
-        return "Fin du jeu!";
+        return "Fin du jeu !";
     }
 
     // ~~

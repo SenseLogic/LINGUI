@@ -74,7 +74,7 @@ FRENCH_LANGUAGE : LANGUAGE
         "Nouveau jeu"
 
     GameOver
-        "Fin du jeu!"
+        "Fin du jeu !"
 
     Welcome first_name last_name
         "Bienvenue, " ~ first_name ~ " " ~ last_name ~ " !"
@@ -223,7 +223,7 @@ Willkommen, Jack Sparrow!
 2 Birnen
 princesse
 Nouveau jeu
-Fin du jeu!
+Fin du jeu !
 Bienvenue, Jack Sparrow !
 0 poire
 1 poire

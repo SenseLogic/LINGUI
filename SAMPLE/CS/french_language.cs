@@ -42,7 +42,7 @@ namespace LINGUI
         public override string GameOver(
             )
         {
-            return "Fin du jeu!";
+            return "Fin du jeu !";
         }
 
         // ~~
