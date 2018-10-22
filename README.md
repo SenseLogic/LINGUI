@@ -256,10 +256,6 @@ A translation value has one or several of the following properties :
 *   a quantity text (`*`), with an integer (`#`) or real (`%`) value;
 *   a genre (`&`).
 
-Functions declared with a `:` prefix return a translation value instead of a string.
-
-Function parameters and variables declared with a `:` prefix store a translation value instead of a string.
-
 ### Translation constants
 
 A translation constant has a quoted name, and is defined by a single line expression.
@@ -268,17 +264,18 @@ Its translation will be evaluated once, and stored inside the translation dictio
 
 ### Translation functions
 
-Translation functions return a translation string or value.
+Functions have parameters and declare local variables.
 
-They can have parameters and declare local variables.
+The function result is the concatenation of its evaluated expressions,
+accumulated inside an implicit `result` translation variable.
 
-A function result is the concatenation of its evaluated expressions,
-accumulated inside an implicit `result` variable.
+If the function has a single-line definition starting with `"` or `(`, it directly returns its result.
 
-If the function has a single-line definition starting with `"` or `(`,
-it immediately returns its result without storing it inside a `result` variable.
+Adding an empty `var` declaration prevents this optimization.
 
-This optimization can be prevented by adding an empty `var` declaration.
+Functions declared with a `:` prefix return a translation value instead of a string.
+
+Function parameters and variables declared with a `:` prefix store a translation value instead of a string.
 
 ### Function statements
 
