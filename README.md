@@ -264,7 +264,7 @@ Its translation will be evaluated once, and stored inside the translation dictio
 
 ### Translation functions
 
-Functions have parameters and declare local variables.
+Functions can have parameters and declare local variables.
 
 The function result is the concatenation of its evaluated expressions,
 accumulated inside an implicit `result` translation variable.
