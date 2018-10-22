@@ -315,7 +315,7 @@ Function parameters and variables declared with a `:` prefix store a translation
 
 ### Accessors
 
-Variable names can be prefixed by the following accessors :
+Translation variable names can be prefixed by the following accessors :
 
 ```lua
 $    text
