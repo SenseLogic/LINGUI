@@ -26,13 +26,29 @@ class LANGUAGE extends BASE_LANGUAGE
 
     // ~~
 
-    String Date(
+    String DateInline(
         String day,
         String month,
         String year
         )
     {
         return ( day + "/" + month + "/" + year );
+    }
+
+    // ~~
+
+    String DateResult(
+        String day,
+        String month,
+        String year
+        )
+    {
+        TRANSLATION
+            result_translation = TRANSLATION();
+
+        result_translation.AddText( day + "/" + month + "/" + year );
+
+        return result_translation.Text;
     }
 
     // ~~
@@ -152,7 +168,7 @@ class LANGUAGE extends BASE_LANGUAGE
         result_translation.AddText( GetTranslation( "English" ) );
         result_translation.AddText( " / " );
         result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
-        result_translation.AddText( Date( "18", "2", "2018" ) + "\n" );
+        result_translation.AddText( DateInline( "18", "2", "2018" ) + " " + DateResult( "18", "2", "2018" ) + "\n" );
 
         return result_translation.Text;
     }

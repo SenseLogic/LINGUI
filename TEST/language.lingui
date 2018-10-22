@@ -2,8 +2,12 @@ LANGUAGE
 
     MainMenu
 
-    Date day month year
+    DateInline day month year
         ( day ~ "/" ~ month ~ "/" ~ year )
+
+    DateResult day month year
+        var
+        day ~ "/" ~ month ~ "/" ~ year
 
     :Chests :count
 
@@ -54,7 +58,7 @@ LANGUAGE
         " / "
         GetTranslation( "French" ).Text ~ "\n"
 
-        Date( "18", "2", "2018" ) ~ "\n"
+        DateInline( "18", "2", "2018" ) ~ " " ~ DateResult( "18", "2", "2018" ) ~ "\n"
 
     :Kings :count
         $result = "reyes"

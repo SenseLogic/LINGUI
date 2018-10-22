@@ -274,9 +274,13 @@ Translation functions :
 *   can declare local variables;
 *   return a translation.
 
-A function returns the concatenation of the function textual expressions, stored inside an implicit `result` translation variable.
+A function returns the concatenation of the function textual expressions,
+stored inside an implicit `result` translation variable.
 
-If the function has a single-line definition starting with `"` or `(`, it immediately returns its result without storing it inside a `result` variable.
+If the function has a single-line definition starting with `"` or `(`,
+it immediately returns its result without storing it inside a `result` variable.
+
+This optimization can be prevented by adding an empty `var` declaration.
 
 ### Function statements
 

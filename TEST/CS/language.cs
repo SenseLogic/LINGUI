@@ -25,13 +25,29 @@ namespace GAME
 
         // ~~
 
-        public virtual string Date(
+        public virtual string DateInline(
             string day,
             string month,
             string year
             )
         {
             return ( day + "/" + month + "/" + year );
+        }
+
+        // ~~
+
+        public virtual string DateResult(
+            string day,
+            string month,
+            string year
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( day + "/" + month + "/" + year );
+
+            return result_translation.Text;
         }
 
         // ~~
@@ -151,7 +167,7 @@ namespace GAME
             result_translation.AddText( GetTranslation( "English" ) );
             result_translation.AddText( " / " );
             result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
-            result_translation.AddText( Date( "18", "2", "2018" ) + "\n" );
+            result_translation.AddText( DateInline( "18", "2", "2018" ) + " " + DateResult( "18", "2", "2018" ) + "\n" );
 
             return result_translation.Text;
         }
