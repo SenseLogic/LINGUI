@@ -470,7 +470,33 @@ class BASE_LANGUAGE
         ]
         )
     {
-        return integer.toString();
+        int
+            digit_count;
+        String
+            text;
+
+        text = integer.toString();
+
+        digit_count = text.length;
+
+        if ( integer < 0 )
+        {
+            --digit_count;
+
+            if ( digit_count < minimum_digit_count )
+            {
+                text = "-" + "00000000000000000000".substring( 0, minimum_digit_count - digit_count ) + text.substring( 1 );
+            }
+        }
+        else
+        {
+            if ( digit_count < minimum_digit_count )
+            {
+                text = "00000000000000000000".substring( 0, minimum_digit_count - digit_count ) + text;
+            }
+        }
+
+        return text;
     }
 
     // ~~

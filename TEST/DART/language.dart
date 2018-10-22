@@ -147,6 +147,7 @@ class LANGUAGE extends BASE_LANGUAGE
         TRANSLATION
             result_translation = TRANSLATION();
 
+        result_translation.AddText( GetIntegerText( -12, 4 ) + " / " + GetIntegerText( 12, 4 ) + "\n" );
         result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, -1 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
         result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );

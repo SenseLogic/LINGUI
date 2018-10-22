@@ -150,6 +150,7 @@ class LANGUAGE : BASE_LANGUAGE
         TRANSLATION
             result_translation;
 
+        result_translation.AddText( GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n" );
         result_translation.AddText( GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0f, -1 ) ~ " / " ~ GetRealText( -12.0f ) ~ " / " ~ GetRealText( -12.0f, 3 ) ~ " \n" );
         result_translation.AddText( GetRealText( -12.3f, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345f ) ~ " / " ~ GetRealText( -12.3456789f, 0, 3, DotCharacter ) ~ "\n" );
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n" );

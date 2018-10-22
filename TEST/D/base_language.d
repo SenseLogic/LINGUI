@@ -422,7 +422,33 @@ class BASE_LANGUAGE
         int minimum_digit_count = 1
         )
     {
-        return integer.to!dstring();
+        int
+            digit_count;
+        dstring
+            text;
+
+        text = integer.to!dstring();
+
+        digit_count = text.length.to!int();
+
+        if ( integer < 0 )
+        {
+            --digit_count;
+
+            if ( digit_count < minimum_digit_count )
+            {
+                text = "-" ~ "00000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text[ 1 .. $ ];
+            }
+        }
+        else
+        {
+            if ( digit_count < minimum_digit_count )
+            {
+                text = "00000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text;
+            }
+        }
+
+        return text;
     }
 
     // ~~
