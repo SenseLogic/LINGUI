@@ -12,9 +12,9 @@ GERMAN_LANGUAGE : LANGUAGE
     Welcome first_name last_name
         "Willkommen, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears :count
-        *count ~ " "
-        if @count = one
+    Pears #count
+        $count ~ " "
+        if count = 1
             "Birne"
         else
             "Birnen"

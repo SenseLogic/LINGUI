@@ -36,7 +36,7 @@ namespace LINGUI
         // ~~
 
         public virtual string Pears(
-            TRANSLATION count_translation
+            int count
             )
         {
             return "";

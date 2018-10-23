@@ -32,7 +32,28 @@ LANGUAGE
 
         GetPluralityText( @this ) ~ " / " ~ GetPluralityText( °this ) ~ " / " ~ GetGenreText( &this ) ~ "\n"
 
+    !GetOppositeBoolean !value
+        var !result
+        result = not value
+        return result
+
+    #GetOppositeInteger #value
+        var #result
+        result = - value
+        return result
+
+    %GetOppositeReal %value
+        var %result
+        result = - value
+        return result
+
     TestFunctions
+        var !boolean_value #integer_value %real_value
+        boolean_value = GetOppositeBoolean( true )
+        integer_value = GetOppositeInteger( 1 )
+        real_value = GetOppositeReal( 1.0 )
+        $boolean_value ~ " / " ~ $integer_value ~ " / " ~ $real_value ~ "\n"
+        GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "\n"
         GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n"
         GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, -1 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " \n"
         GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DotCharacter ) ~ "\n"

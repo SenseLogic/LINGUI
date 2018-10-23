@@ -170,6 +170,7 @@ enum RULE_TYPE
     Language,
     Function,
     Var,
+    Return,
     If,
     Elseif,
     Else,
@@ -215,7 +216,11 @@ class RULE
         ParameterNameArray,
         VariableNameArray;
     bool
+        IsBooleanFunction,
+        IsIntegerFunction,
+        IsRealFunction,
         IsStringFunction,
+        IsTranslationFunction,
         IsBaseFunction;
     RULE
         FunctionRule;
@@ -435,18 +440,30 @@ class RULE
 
     // ~~
 
-    bool IsStringVariable(
-        dstring variable_name
+    bool HasVariable(
+        dstring variable_name,
+        dchar prefix_character
         )
     {
-        RULE
-            function_rule;
+        dchar
+            first_character;
 
         foreach ( function_parameter_name; FunctionRule.ParameterNameArray )
         {
-            if ( !function_parameter_name.startsWith( ':' ) )
+            first_character = function_parameter_name[ 0 ];
+
+            if ( prefix_character == 0
+                 && first_character >= 'a'
+                 && first_character <= 'z' )
             {
                 if ( variable_name == function_parameter_name )
+                {
+                    return true;
+                }
+            }
+            else if ( first_character == prefix_character )
+            {
+                if ( variable_name == function_parameter_name[ 1 .. $ ] )
                 {
                     return true;
                 }
@@ -455,9 +472,20 @@ class RULE
 
         foreach ( function_variable_name; FunctionRule.VariableNameArray )
         {
-            if ( !function_variable_name.startsWith( ':' ) )
+            first_character = function_variable_name[ 0 ];
+
+            if ( prefix_character == 0
+                 && first_character >= 'a'
+                 && first_character <= 'z' )
             {
                 if ( variable_name == function_variable_name )
+                {
+                    return true;
+                }
+            }
+            else if ( first_character == prefix_character )
+            {
+                if ( variable_name == function_variable_name[ 1 .. $ ] )
                 {
                     return true;
                 }
@@ -469,36 +497,60 @@ class RULE
 
     // ~~
 
+    bool IsStringVariable(
+        dstring variable_name
+        )
+    {
+        return HasVariable( variable_name, 0 );
+    }
+
+    // ~~
+
+    bool IsBooleanVariable(
+        dstring variable_name
+        )
+    {
+        return HasVariable( variable_name, '!' );
+    }
+
+    // ~~
+
+    bool IsIntegerVariable(
+        dstring variable_name
+        )
+    {
+        return HasVariable( variable_name, '#' );
+    }
+
+    // ~~
+
+    bool IsRealVariable(
+        dstring variable_name
+        )
+    {
+        return HasVariable( variable_name, '%' );
+    }
+
+    // ~~
+
     bool IsTranslationVariable(
         dstring variable_name
         )
     {
-        RULE
-            function_rule;
+        return HasVariable( variable_name, ':' );
+    }
 
-        foreach ( function_parameter_name; FunctionRule.ParameterNameArray )
-        {
-            if ( function_parameter_name.startsWith( ':' ) )
-            {
-                if ( variable_name == function_parameter_name[ 1 .. $ ] )
-                {
-                    return true;
-                }
-            }
-        }
+    // ~~
 
-        foreach ( function_variable_name; FunctionRule.VariableNameArray )
-        {
-            if ( function_variable_name.startsWith( ':' ) )
-            {
-                if ( variable_name == function_variable_name[ 1 .. $ ] )
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    bool IsScalarVariable(
+        dstring variable_name
+        )
+    {
+        return
+            IsStringVariable( variable_name )
+            || IsBooleanVariable( variable_name )
+            || IsIntegerVariable( variable_name )
+            || IsRealVariable( variable_name );
     }
 
     // ~~
@@ -514,7 +566,7 @@ class RULE
         dstring
             variable_name;
 
-        if ( IsStringVariable( text ) )
+        if ( IsScalarVariable( text ) )
         {
             return text;
         }
@@ -523,7 +575,22 @@ class RULE
             first_character = text[ 0 ];
             variable_name = GetVariableName( text );
 
-            if ( IsTranslationVariable( variable_name ) )
+            if ( IsBooleanVariable( variable_name )
+                 && first_character == '$' )
+            {
+                return "GetBooleanText( " ~ variable_name ~ " )";
+            }
+            else if ( IsIntegerVariable( variable_name )
+                      && first_character == '$' )
+            {
+                return "GetIntegerText( " ~ variable_name ~ " )";
+            }
+            else if ( IsRealVariable( variable_name )
+                      && first_character == '$' )
+            {
+                return "GetRealText( " ~ variable_name ~ " )";
+            }
+            else if ( IsTranslationVariable( variable_name ) )
             {
                 if ( first_character >= 'a'
                      && first_character <= 'z' )
@@ -668,6 +735,14 @@ class RULE
             {
                 code_token = "+";
             }
+            else if ( token == "false" )
+            {
+                code_token = "false";
+            }
+            else if ( token == "true" )
+            {
+                code_token = "true";
+            }
             else if ( token == "zero" )
             {
                 code_token = "PLURALITY.Zero";
@@ -766,18 +841,97 @@ class RULE
         )
     {
         dstring[]
+            boolean_variable_name_array,
+            integer_variable_name_array,
+            real_variable_name_array,
             string_variable_name_array,
             translation_variable_name_array;
 
         foreach ( variable_name; VariableNameArray )
         {
-            if ( variable_name.startsWith( ':' ) )
+            if ( variable_name.startsWith( '!' ) )
+            {
+                boolean_variable_name_array ~= variable_name[ 1 .. $ ];
+            }
+            else if ( variable_name.startsWith( '#' ) )
+            {
+                integer_variable_name_array ~= variable_name[ 1 .. $ ];
+            }
+            else if ( variable_name.startsWith( '%' ) )
+            {
+                real_variable_name_array ~= variable_name[ 1 .. $ ];
+            }
+            else if ( variable_name.startsWith( ':' ) )
             {
                 translation_variable_name_array ~= variable_name[ 1 .. $ ];
             }
             else
             {
                 string_variable_name_array ~= variable_name;
+            }
+        }
+
+        if ( boolean_variable_name_array.length > 0 )
+        {
+            code.AddLine( "bool" );
+
+            foreach ( boolean_variable_name_index, boolean_variable_name; boolean_variable_name_array )
+            {
+                code.AddLine( "    " ~ boolean_variable_name );
+
+                if ( boolean_variable_name_index + 1 < boolean_variable_name_array.length )
+                {
+                    code.AddText( "," );
+                }
+                else
+                {
+                    code.AddText( ";" );
+                }
+            }
+        }
+
+        if ( integer_variable_name_array.length > 0 )
+        {
+            code.AddLine( "int" );
+
+            foreach ( integer_variable_name_index, integer_variable_name; integer_variable_name_array )
+            {
+                code.AddLine( "    " ~ integer_variable_name );
+
+                if ( integer_variable_name_index + 1 < integer_variable_name_array.length )
+                {
+                    code.AddText( "," );
+                }
+                else
+                {
+                    code.AddText( ";" );
+                }
+            }
+        }
+
+        if ( real_variable_name_array.length > 0 )
+        {
+            if ( CsOptionIsEnabled || DOptionIsEnabled )
+            {
+                code.AddLine( "float" );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddLine( "double" );
+            }
+
+            foreach ( real_variable_name_index, real_variable_name; real_variable_name_array )
+            {
+                code.AddLine( "    " ~ real_variable_name );
+
+                if ( real_variable_name_index + 1 < real_variable_name_array.length )
+                {
+                    code.AddText( "," );
+                }
+                else
+                {
+                    code.AddText( ";" );
+                }
             }
         }
 
@@ -906,7 +1060,11 @@ class RULE
         CODE code
         )
     {
-        if ( Type == RULE_TYPE.If )
+        if ( Type == RULE_TYPE.Return )
+        {
+            code.AddLine( "return " ~ GetExpressionCode( 1 ) ~ ";" );
+        }
+        else if ( Type == RULE_TYPE.If )
         {
             code.AddLine( "if ( " ~ GetExpressionCode( 1 ) ~ " )" );
             AddStatementBlockCode( code );
@@ -1004,7 +1162,26 @@ class RULE
             code.AddLine( "" );
         }
 
-        if ( IsStringFunction )
+        if ( IsBooleanFunction )
+        {
+            code.AddText( "bool " );
+        }
+        else if ( IsIntegerFunction )
+        {
+            code.AddText( "int " );
+        }
+        else if ( IsRealFunction )
+        {
+            if ( CsOptionIsEnabled || DOptionIsEnabled )
+            {
+                code.AddText( "float " );
+            }
+            else if ( DartOptionIsEnabled )
+            {
+                code.AddText( "double " );
+            }
+        }
+        else if ( IsStringFunction )
         {
             if ( CsOptionIsEnabled )
             {
@@ -1032,26 +1209,41 @@ class RULE
 
             if ( parameter_name.startsWith( ':' ) )
             {
-                parameter_name = parameter_name[ 1 .. $ ];
-
-                code.AddText( "TRANSLATION " ~ parameter_name ~ "_translation" );
+                code.AddText( "TRANSLATION " ~ parameter_name[ 1 .. $ ] ~ "_translation" );
+            }
+            else if ( parameter_name.startsWith( '!' ) )
+            {
+                code.AddText( "bool " ~ parameter_name[ 1 .. $ ] );
+            }
+            else if ( parameter_name.startsWith( '#' ) )
+            {
+                code.AddText( "int " ~ parameter_name[ 1 .. $ ] );
+            }
+            else if ( parameter_name.startsWith( '%' ) )
+            {
+                if ( CsOptionIsEnabled || DOptionIsEnabled )
+                {
+                    code.AddText( "float " ~ parameter_name[ 1 .. $ ] );
+                }
+                else if ( DartOptionIsEnabled )
+                {
+                    code.AddText( "double " ~ parameter_name[ 1 .. $ ] );
+                }
             }
             else
             {
                 if ( CsOptionIsEnabled )
                 {
-                    code.AddText( "string " );
+                    code.AddText( "string " ~ parameter_name );
                 }
                 else if ( DOptionIsEnabled )
                 {
-                    code.AddText( "dstring " );
+                    code.AddText( "dstring " ~ parameter_name );
                 }
                 else if ( DartOptionIsEnabled )
                 {
-                    code.AddText( "String " );
+                    code.AddText( "String " ~ parameter_name );
                 }
-
-                code.AddText( parameter_name );
             }
 
             if ( parameter_index + 1 < ParameterNameArray.length )
@@ -1065,7 +1257,26 @@ class RULE
 
         if ( SubRuleArray.length == 0 )
         {
-            if ( IsStringFunction )
+            if ( IsBooleanFunction )
+            {
+                code.AddLine( "return false;" );
+            }
+            else if ( IsIntegerFunction )
+            {
+                code.AddLine( "return 0;" );
+            }
+            else if ( IsRealFunction )
+            {
+                if ( CsOptionIsEnabled || DOptionIsEnabled )
+                {
+                    code.AddLine( "return 0.0f;" );
+                }
+                else if ( DartOptionIsEnabled )
+                {
+                    code.AddLine( "return 0.0;" );
+                }
+            }
+            else if ( IsStringFunction )
             {
                 code.AddLine( "return \"\";" );
             }
@@ -1076,7 +1287,8 @@ class RULE
         }
         else if ( SubRuleArray.length == 1
                   && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression
-                  && SubRuleArray[ 0 ].IsStringExpression() )
+                  && SubRuleArray[ 0 ].IsStringExpression()
+                  && ( IsStringFunction || IsTranslationFunction ) )
         {
             if ( IsStringFunction )
             {
@@ -1100,14 +1312,14 @@ class RULE
                 sub_rule.AddStatementCode( code );
             }
 
-            code.AddLine( "" );
-
             if ( IsStringFunction )
             {
+                code.AddLine( "" );
                 code.AddLine( "return result_translation.Text;" );
             }
-            else
+            else if ( IsTranslationFunction )
             {
+                code.AddLine( "" );
                 code.AddLine( "return result_translation;" );
             }
         }
@@ -1531,9 +1743,36 @@ class RULE
 
         Type = RULE_TYPE.Function;
 
-        if ( first_token.startsWith( ":" ) )
+        IsBooleanFunction = false;
+        IsIntegerFunction = false;
+        IsRealFunction = false;
+        IsStringFunction = false;
+        IsTranslationFunction = false;
+
+        if ( first_token.startsWith( "!" ) )
         {
-            IsStringFunction = false;
+            IsBooleanFunction = true;
+
+            Text = Text[ 1 .. $ ];
+            TokenArray[ 0 ] = first_token[ 1 .. $ ];
+        }
+        else if ( first_token.startsWith( "#" ) )
+        {
+            IsIntegerFunction = true;
+
+            Text = Text[ 1 .. $ ];
+            TokenArray[ 0 ] = first_token[ 1 .. $ ];
+        }
+        else if ( first_token.startsWith( "%" ) )
+        {
+            IsRealFunction = true;
+
+            Text = Text[ 1 .. $ ];
+            TokenArray[ 0 ] = first_token[ 1 .. $ ];
+        }
+        else if ( first_token.startsWith( ":" ) )
+        {
+            IsTranslationFunction = true;
 
             Text = Text[ 1 .. $ ];
             TokenArray[ 0 ] = first_token[ 1 .. $ ];
@@ -1553,7 +1792,11 @@ class RULE
             {
                 if ( base_function_rule.Text == Text )
                 {
-                    if ( base_function_rule.IsStringFunction != IsStringFunction )
+                    if ( base_function_rule.IsBooleanFunction != IsBooleanFunction
+                         || base_function_rule.IsIntegerFunction != IsIntegerFunction
+                         || base_function_rule.IsRealFunction != IsRealFunction
+                         || base_function_rule.IsStringFunction != IsStringFunction
+                         || base_function_rule.IsTranslationFunction != IsTranslationFunction )
                     {
                         Abort( "Invalid base function" );
                     }
@@ -1567,7 +1810,11 @@ class RULE
 
         FunctionName = TokenArray[ 0 ];
         ParameterNameArray = TokenArray[ 1 .. $ ];
-        VariableNameArray ~= ":result";
+
+        if ( IsStringFunction || IsTranslationFunction )
+        {
+            VariableNameArray ~= ":result";
+        }
     }
 
     // ~~
@@ -1592,6 +1839,10 @@ class RULE
         else if ( first_token == "var" )
         {
             Type = RULE_TYPE.Var;
+        }
+        else if ( first_token == "return" )
+        {
+            Type = RULE_TYPE.Return;
         }
         else if ( first_token == "if" )
         {
@@ -1672,7 +1923,7 @@ class SCRIPT
 
             foreach ( line_index, line; line_array )
             {
-                if ( !line.startsWith( "#" ) )
+                if ( !line.startsWith( "//" ) )
                 {
                     rule_text = line.strip();
 

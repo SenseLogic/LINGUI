@@ -37,7 +37,7 @@ class LANGUAGE extends BASE_LANGUAGE
     // ~~
 
     String Pears(
-        TRANSLATION count_translation
+        int count
         )
     {
         return "";

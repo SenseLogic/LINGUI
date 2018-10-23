@@ -141,12 +141,62 @@ class LANGUAGE extends BASE_LANGUAGE
 
     // ~~
 
+    bool GetOppositeBoolean(
+        bool value
+        )
+    {
+        bool
+            result;
+
+        result = ! value;
+        return result;
+    }
+
+    // ~~
+
+    int GetOppositeInteger(
+        int value
+        )
+    {
+        int
+            result;
+
+        result = - value;
+        return result;
+    }
+
+    // ~~
+
+    double GetOppositeReal(
+        double value
+        )
+    {
+        double
+            result;
+
+        result = - value;
+        return result;
+    }
+
+    // ~~
+
     String TestFunctions(
         )
     {
+        bool
+            boolean_value;
+        int
+            integer_value;
+        double
+            real_value;
         TRANSLATION
             result_translation = TRANSLATION();
 
+        boolean_value = GetOppositeBoolean( true );
+        integer_value = GetOppositeInteger( 1 );
+        real_value = GetOppositeReal( 1.0 );
+        result_translation.AddText( GetBooleanText( boolean_value ) + " / " + GetIntegerText( integer_value ) + " / " + GetRealText( real_value ) + "\n" );
+        result_translation.AddText( GetBooleanText( false ) + " / " + GetBooleanText( true ) + "\n" );
         result_translation.AddText( GetIntegerText( -12, 4 ) + " / " + GetIntegerText( 12, 4 ) + "\n" );
         result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, -1 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
         result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );

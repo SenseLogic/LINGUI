@@ -59,15 +59,15 @@ class FRENCH_LANGUAGE extends LANGUAGE
     // ~~
 
     String Pears(
-        TRANSLATION count_translation
+        int count
         )
     {
         TRANSLATION
             result_translation = TRANSLATION();
 
-        result_translation.AddText( count_translation.Quantity + " " );
+        result_translation.AddText( GetIntegerText( count ) + " " );
 
-        if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
+        if ( count == 0 || count == 1 )
         {
             result_translation.AddText( "poire" );
         }

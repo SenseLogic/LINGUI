@@ -40,7 +40,7 @@ class LANGUAGE : BASE_LANGUAGE
     // ~~
 
     dstring Pears(
-        TRANSLATION count_translation
+        int count
         )
     {
         return "";

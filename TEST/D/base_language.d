@@ -399,6 +399,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    bool GetTextBoolean(
+        dstring text
+        )
+    {
+        return text == "true";
+    }
+
+    // ~~
+
     int GetTextInteger(
         dstring text
         )
@@ -413,6 +422,22 @@ class BASE_LANGUAGE
         )
     {
         return text.to!float();
+    }
+
+    // ~~
+
+    dstring GetBooleanText(
+        bool boolean
+        )
+    {
+        if ( boolean )
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
+        }
     }
 
     // ~~

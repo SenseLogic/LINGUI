@@ -62,15 +62,15 @@ class GERMAN_LANGUAGE : LANGUAGE
     // ~~
 
     override dstring Pears(
-        TRANSLATION count_translation
+        int count
         )
     {
         TRANSLATION
             result_translation;
 
-        result_translation.AddText( count_translation.Quantity ~ " " );
+        result_translation.AddText( GetIntegerText( count ) ~ " " );
 
-        if ( count_translation.GetGermanCardinalPlurality() == PLURALITY.One )
+        if ( count == 1 )
         {
             result_translation.AddText( "Birne" );
         }

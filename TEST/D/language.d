@@ -144,12 +144,62 @@ class LANGUAGE : BASE_LANGUAGE
 
     // ~~
 
+    bool GetOppositeBoolean(
+        bool value
+        )
+    {
+        bool
+            result;
+
+        result = ! value;
+        return result;
+    }
+
+    // ~~
+
+    int GetOppositeInteger(
+        int value
+        )
+    {
+        int
+            result;
+
+        result = - value;
+        return result;
+    }
+
+    // ~~
+
+    float GetOppositeReal(
+        float value
+        )
+    {
+        float
+            result;
+
+        result = - value;
+        return result;
+    }
+
+    // ~~
+
     dstring TestFunctions(
         )
     {
+        bool
+            boolean_value;
+        int
+            integer_value;
+        float
+            real_value;
         TRANSLATION
             result_translation;
 
+        boolean_value = GetOppositeBoolean( true );
+        integer_value = GetOppositeInteger( 1 );
+        real_value = GetOppositeReal( 1.0f );
+        result_translation.AddText( GetBooleanText( boolean_value ) ~ " / " ~ GetIntegerText( integer_value ) ~ " / " ~ GetRealText( real_value ) ~ "\n" );
+        result_translation.AddText( GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "\n" );
         result_translation.AddText( GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n" );
         result_translation.AddText( GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0f, -1 ) ~ " / " ~ GetRealText( -12.0f ) ~ " / " ~ GetRealText( -12.0f, 3 ) ~ " \n" );
         result_translation.AddText( GetRealText( -12.3f, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345f ) ~ " / " ~ GetRealText( -12.3456789f, 0, 3, DotCharacter ) ~ "\n" );

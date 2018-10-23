@@ -445,6 +445,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    bool GetTextBoolean(
+        String text
+        )
+    {
+        return text == "true";
+    }
+
+    // ~~
+
     int GetTextInteger(
         String text
         )
@@ -459,6 +468,22 @@ class BASE_LANGUAGE
         )
     {
         return double.parse( text );
+    }
+
+    // ~~
+
+    String GetBooleanText(
+        bool boolean
+        )
+    {
+        if ( boolean )
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
+        }
     }
 
     // ~~

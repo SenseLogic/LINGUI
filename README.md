@@ -21,7 +21,7 @@ LANGUAGE
 
     Welcome first_name last_name
 
-    Pears :count
+    Pears #count
 
 ENGLISH_LANGUAGE : LANGUAGE
 
@@ -37,9 +37,9 @@ ENGLISH_LANGUAGE : LANGUAGE
     Welcome first_name last_name
         "Welcome, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears :count
-        *count ~ " "
-        if @count = one
+    Pears #count
+        $count ~ " "
+        if count = 1
             "pear"
         else
             "pears"
@@ -58,9 +58,9 @@ GERMAN_LANGUAGE : LANGUAGE
     Welcome first_name last_name
         "Willkommen, " ~ first_name ~ " " ~ last_name ~ "!"
 
-    Pears :count
-        *count ~ " "
-        if @count = one
+    Pears #count
+        $count ~ " "
+        if count = 1
             "Birne"
         else
             "Birnen"
@@ -79,9 +79,9 @@ FRENCH_LANGUAGE : LANGUAGE
     Welcome first_name last_name
         "Bienvenue, " ~ first_name ~ " " ~ last_name ~ " !"
 
-    Pears :count
-        *count ~ " "
-        if @count = one
+    Pears #count
+        $count ~ " "
+        if count = 0 or count = 1
             "poire"
         else
             "poires"
@@ -109,9 +109,9 @@ public class TEST
         Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
         Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( "Jack", "Sparrow" ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 2 ) ) );
+        Console.WriteLine( language.Pears( 0 ) );
+        Console.WriteLine( language.Pears( 1 ) );
+        Console.WriteLine( language.Pears( 2 ) );
     }
 
     // ~~
@@ -149,9 +149,9 @@ void TestLanguage(
     writeln( language.GetTranslation( "NewGame" ).Text );
     writeln( language.GameOver() );
     writeln( language.Welcome( "Jack", "Sparrow" ) );
-    writeln( language.Pears( TRANSLATION( 0 ) ) );
-    writeln( language.Pears( TRANSLATION( 1 ) ) );
-    writeln( language.Pears( TRANSLATION( 2 ) ) );
+    writeln( language.Pears( 0 ) );
+    writeln( language.Pears( 1 ) );
+    writeln( language.Pears( 2 ) );
 }
 
 // ~~
@@ -187,9 +187,9 @@ void TestLanguage(
     print( language.GetTranslation( "NewGame" ).Text );
     print( language.GameOver() );
     print( language.Welcome( "Jack", "Sparrow" ) );
-    print( language.Pears( TRANSLATION( 0 ) ) );
-    print( language.Pears( TRANSLATION( 1 ) ) );
-    print( language.Pears( TRANSLATION( 2 ) ) );
+    print( language.Pears( 0 ) );
+    print( language.Pears( 1 ) );
+    print( language.Pears( 2 ) );
 }
 
 // ~~
@@ -273,9 +273,15 @@ If the function has a single-line definition starting with `"` or `(`, it direct
 
 Adding an empty `var` declaration prevents this optimization.
 
-Functions declared with a `:` prefix return a translation value instead of a string.
+### Type prefixes
 
-Function parameters and variables declared with a `:` prefix store a translation value instead of a string.
+The type of the functions, parameters and variables is defined by their declaration prefix :
+
+*   none : string
+*   `!` : boolean
+*   `#` : integer
+*   `%` : real
+*   `:` : translation
 
 ### Function statements
 
@@ -302,6 +308,12 @@ Function parameters and variables declared with a `:` prefix store a translation
         ...
     ```
 
+*   Returns
+
+    ```lua
+    return count + 1
+    ```
+
 *   Variable declarations and assignments
 
     ```lua
@@ -314,6 +326,12 @@ Function parameters and variables declared with a `:` prefix store a translation
     ```
 
 ### Accessors
+
+Boolean, integer and real variable names can be prefixed by the following accessor :
+
+```lua
+$    text
+```
 
 Translation variable names can be prefixed by the following accessors :
 
@@ -371,6 +389,9 @@ or     logical or
 ### Predefined constants
 
 ```lua
+false
+true
+
 zero
 one
 two
@@ -410,8 +431,10 @@ HasSuffix( text, prefix )
 HasSuffix( translation, prefix )
 GetIntegerReal( integer )
 GetRealInteger( real )
+GetTextBoolean( text )
 GetTextInteger( text )
 GetTextReal( text )
+GetBooleanText( boolean )
 GetIntegerText( integer, minimum_digit_count )
 GetIntegerText( integer )
 GetRealText( real, minimum_fractional_digit_count, maximum_fractional_digit_count, dot_character )
@@ -427,7 +450,7 @@ GetOrdinalPlurality( translation )
 ### Comments
 
 ```
-# This is a comment.
+// This is a comment.
 ```
 
 ### Conventions
@@ -508,7 +531,7 @@ Converts Lingui files to C# source code files.
 
 ## Version
 
-2.2
+2.3
 
 ## Author
 

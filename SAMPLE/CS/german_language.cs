@@ -58,15 +58,15 @@ namespace LINGUI
         // ~~
 
         public override string Pears(
-            TRANSLATION count_translation
+            int count
             )
         {
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            result_translation.AddText( count_translation.Quantity + " " );
+            result_translation.AddText( GetIntegerText( count ) + " " );
 
-            if ( count_translation.GetGermanCardinalPlurality() == PLURALITY.One )
+            if ( count == 1 )
             {
                 result_translation.AddText( "Birne" );
             }

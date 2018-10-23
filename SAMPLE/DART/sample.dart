@@ -16,9 +16,9 @@ void TestLanguage(
     print( language.GetTranslation( "NewGame" ).Text );
     print( language.GameOver() );
     print( language.Welcome( "Jack", "Sparrow" ) );
-    print( language.Pears( TRANSLATION( 0 ) ) );
-    print( language.Pears( TRANSLATION( 1 ) ) );
-    print( language.Pears( TRANSLATION( 2 ) ) );
+    print( language.Pears( 0 ) );
+    print( language.Pears( 1 ) );
+    print( language.Pears( 2 ) );
 }
 
 // ~~

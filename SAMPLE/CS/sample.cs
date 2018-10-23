@@ -17,9 +17,9 @@ public class TEST
         Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
         Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( "Jack", "Sparrow" ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 0 ) ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 1 ) ) );
-        Console.WriteLine( language.Pears( new TRANSLATION( 2 ) ) );
+        Console.WriteLine( language.Pears( 0 ) );
+        Console.WriteLine( language.Pears( 1 ) );
+        Console.WriteLine( language.Pears( 2 ) );
     }
 
     // ~~

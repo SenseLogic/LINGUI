@@ -421,6 +421,15 @@ namespace GAME
 
         // ~~
 
+        public bool GetTextBoolean(
+            String text
+            )
+        {
+            return text == "true";
+        }
+
+        // ~~
+
         public int GetTextInteger(
             String text
             )
@@ -435,6 +444,22 @@ namespace GAME
             )
         {
             return float.Parse( text.Replace( ',', '.' ), CultureInfo.InvariantCulture );
+        }
+
+        // ~~
+
+        public string GetBooleanText(
+            bool boolean
+            )
+        {
+            if ( boolean )
+            {
+                return "true";
+            }
+            else
+            {
+                return "false";
+            }
         }
 
         // ~~
