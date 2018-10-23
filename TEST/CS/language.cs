@@ -25,29 +25,13 @@ namespace GAME
 
         // ~~
 
-        public virtual string DateInline(
+        public virtual string GetDate(
             string day,
             string month,
             string year
             )
         {
-            return ( day + "/" + month + "/" + year );
-        }
-
-        // ~~
-
-        public virtual string DateResult(
-            string day,
-            string month,
-            string year
-            )
-        {
-            TRANSLATION
-                result_translation = new TRANSLATION();
-
-            result_translation.AddText( day + "/" + month + "/" + year );
-
-            return result_translation.Text;
+            return day + "/" + month + "/" + year;
         }
 
         // ~~
@@ -73,12 +57,7 @@ namespace GAME
         public virtual TRANSLATION NoSwords(
             )
         {
-            TRANSLATION
-                result_translation = new TRANSLATION();
-
-            result_translation.AddText( Swords( new TRANSLATION( "", "0" ) ) );
-
-            return result_translation;
+            return Swords( new TRANSLATION( "", "0" ) );
         }
 
         // ~~
@@ -86,12 +65,7 @@ namespace GAME
         public virtual TRANSLATION OneSword(
             )
         {
-            TRANSLATION
-                result_translation = new TRANSLATION();
-
-            result_translation.AddText( Swords( new TRANSLATION( "", "1" ) ) );
-
-            return result_translation;
+            return Swords( new TRANSLATION( "", "1" ) );
         }
 
         // ~~
@@ -148,6 +122,7 @@ namespace GAME
                 result;
 
             result = ! value;
+
             return result;
         }
 
@@ -161,6 +136,7 @@ namespace GAME
                 result;
 
             result = - value;
+
             return result;
         }
 
@@ -174,7 +150,54 @@ namespace GAME
                 result;
 
             result = - value;
+
             return result;
+        }
+
+        // ~~
+
+        public virtual string GetOppositeString(
+            string value
+            )
+        {
+            string
+                result = "";
+
+            result = "not " + value;
+
+            return result;
+        }
+
+        // ~~
+
+        public virtual TRANSLATION GetOppositeTranslation(
+            TRANSLATION value_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.SetQuantity( value_translation.Quantity );
+            result_translation.SetText( "not " + value_translation.Text );
+            result_translation.SetGenre( value_translation.Genre );
+
+            return result_translation;
+        }
+
+        // ~~
+
+        public virtual TRANSLATION GetInverseTranslation(
+            TRANSLATION value_translation
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.SetQuantity( value_translation.Quantity );
+            result_translation.SetText( "one over " + value_translation.Text );
+            result_translation.SetGenre( value_translation.Genre );
+
+            return result_translation;
         }
 
         // ~~
@@ -183,18 +206,25 @@ namespace GAME
             )
         {
             bool
-                boolean_value;
+                opposite_boolean;
             int
-                integer_value;
+                opposite_integer;
             float
-                real_value;
+                opposite_real;
+            string
+                opposite_string = "";
             TRANSLATION
+                opposite_translation_translation = new TRANSLATION(),
+                inverse_translation_translation = new TRANSLATION(),
                 result_translation = new TRANSLATION();
 
-            boolean_value = GetOppositeBoolean( true );
-            integer_value = GetOppositeInteger( 1 );
-            real_value = GetOppositeReal( 1.0f );
-            result_translation.AddText( GetBooleanText( boolean_value ) + " / " + GetIntegerText( integer_value ) + " / " + GetRealText( real_value ) + "\n" );
+            opposite_boolean = GetOppositeBoolean( true );
+            opposite_integer = GetOppositeInteger( 1 );
+            opposite_real = GetOppositeReal( 1.0f );
+            opposite_string = GetOppositeString( "one" );
+            opposite_translation_translation = GetOppositeTranslation( new TRANSLATION( "one", "1" ) );
+            inverse_translation_translation = GetInverseTranslation( new TRANSLATION( "x", "1" ) );
+            result_translation.AddText( GetBooleanText( opposite_boolean ) + " / " + GetIntegerText( opposite_integer ) + " / " + GetRealText( opposite_real ) + " / " + opposite_string + " / " + opposite_translation_translation.Text + " / " + inverse_translation_translation.Text + "\n" );
             result_translation.AddText( GetBooleanText( false ) + " / " + GetBooleanText( true ) + "\n" );
             result_translation.AddText( GetIntegerText( -12, 4 ) + " / " + GetIntegerText( 12, 4 ) + "\n" );
             result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0f, -1 ) + " / " + GetRealText( -12.0f ) + " / " + GetRealText( -12.0f, 3 ) + " \n" );
@@ -217,8 +247,7 @@ namespace GAME
             result_translation.AddText( Dump( new TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
             result_translation.AddText( GetTranslation( "English" ) );
             result_translation.AddText( " / " );
-            result_translation.AddText( GetTranslation( "French" ).Text + "\n" );
-            result_translation.AddText( DateInline( "18", "2", "2018" ) + " " + DateResult( "18", "2", "2018" ) + "\n" );
+            result_translation.AddText( GetTranslation( "French" ).Text + " / " + GetDate( "18", "2", "2018" ) + "\n" );
 
             return result_translation.Text;
         }
@@ -245,12 +274,12 @@ namespace GAME
             )
         {
             TRANSLATION
-                result_translation = new TRANSLATION(),
                 no_chests_translation = new TRANSLATION(),
                 one_chest_translation = new TRANSLATION(),
                 kings_translation = new TRANSLATION(),
                 queens_translation = new TRANSLATION(),
-                princes_translation = new TRANSLATION();
+                princes_translation = new TRANSLATION(),
+                result_translation = new TRANSLATION();
 
             no_chests_translation = Chests( new TRANSLATION( "", "0" ) );
             one_chest_translation = Chests( new TRANSLATION( "", "1" ) );

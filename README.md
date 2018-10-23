@@ -267,11 +267,12 @@ Its translation will be evaluated once, and stored inside the translation dictio
 Functions can have parameters and declare local variables.
 
 The function result is the concatenation of its evaluated expressions,
-accumulated inside an implicit `result` translation variable.
+accumulated inside an implicit `result` translation variable,
+unless the function :
 
-If the function has a single-line definition starting with `"` or `(`, it directly returns its result.
-
-Adding an empty `var` declaration prevents this optimization.
+*   has a single-line definition starting with `"`;
+*   declares a `result` variable;
+*   uses a `return` statement.
 
 ### Type prefixes
 

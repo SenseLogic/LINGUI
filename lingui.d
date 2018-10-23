@@ -123,7 +123,8 @@ class CODE
 
         if ( prior_text.length > 0
              && text.length > 0
-             && ( ( text.startsWith( "if " )
+             && ( ( ( text.startsWith( "if " )
+                      || text.startsWith( "return " ) )
                     && prior_text != "{" )
                   || ( prior_text == "}"
                        && text != "}"
@@ -395,7 +396,7 @@ class RULE
     {
         return
             text.length > 0
-            && "$*^#%!.@°&".indexOf( text[ 0 ] ) >= 0;
+            && "$*^#%!.@°&:".indexOf( text[ 0 ] ) >= 0;
     }
 
     // ~~
@@ -829,9 +830,64 @@ class RULE
     bool IsStringExpression(
         )
     {
-        return
-            Text.startsWith( '"' )
-            || Text.startsWith( '(' );
+        return Text.startsWith( '"' );
+    }
+
+    // ~~
+
+    bool ForbidsResultVariable(
+        )
+    {
+        if ( Type == RULE_TYPE.Var )
+        {
+            foreach ( token; TokenArray[ 1 .. $ ] )
+            {
+                if ( GetVariableName( token ) == "result" )
+                {
+                    return true;
+                }
+            }
+        }
+        else if ( Type == RULE_TYPE.Return )
+        {
+            return true;
+        }
+
+        foreach ( sub_rule; SubRuleArray )
+        {
+            if ( sub_rule.ForbidsResultVariable() )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // ~~
+
+    bool RequiresResultVariable(
+        )
+    {
+        if ( Type == RULE_TYPE.Expression )
+        {
+            return true;
+        }
+        else if ( Type == RULE_TYPE.Assignment
+                  && GetVariableName( TokenArray[ 0 ] ) == "result" )
+        {
+            return true;
+        }
+
+        foreach ( sub_rule; SubRuleArray )
+        {
+            if ( sub_rule.RequiresResultVariable() )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // -- OPERATIONS
@@ -998,8 +1054,10 @@ class RULE
             }
         }
 
-
-        code.AddLine( "" );
+        if ( VariableNameArray.length > 0 )
+        {
+            code.AddLine( "" );
+        }
     }
 
     // ~~
@@ -1083,7 +1141,7 @@ class RULE
         {
             AddAssignmentCode( code );
         }
-        else if ( Type != RULE_TYPE.Var )
+        else if ( Type == RULE_TYPE.Expression )
         {
             code.AddLine( "result_translation.AddText( " ~ GetExpressionCode( 0 ) ~ " );" );
         }
@@ -1105,7 +1163,7 @@ class RULE
         }
 
         if ( SubRuleArray.length == 1
-             && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression)
+             && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression )
         {
             if ( SubRuleArray[ 0 ].IsStringExpression() )
             {
@@ -1135,6 +1193,9 @@ class RULE
         CODE code
         )
     {
+        bool
+            function_has_result_variable;
+
         if ( CsOptionIsEnabled )
         {
             if ( IsBaseFunction )
@@ -1294,17 +1355,30 @@ class RULE
             {
                 code.AddLine( "return " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
             }
-            else if ( CsOptionIsEnabled )
+            else if ( IsTranslationFunction )
             {
-                code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
-            }
-            else if ( DOptionIsEnabled || DartOptionIsEnabled )
-            {
-                code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                if ( CsOptionIsEnabled )
+                {
+                    code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                }
+                else if ( DOptionIsEnabled || DartOptionIsEnabled )
+                {
+                    code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                }
             }
         }
         else
         {
+            function_has_result_variable
+                = ( IsStringFunction || IsTranslationFunction )
+                  && !ForbidsResultVariable()
+                  && RequiresResultVariable();
+
+            if ( function_has_result_variable )
+            {
+                VariableNameArray ~= ":result";
+            }
+
             AddVarCode( code );
 
             foreach ( sub_rule; SubRuleArray )
@@ -1312,15 +1386,16 @@ class RULE
                 sub_rule.AddStatementCode( code );
             }
 
-            if ( IsStringFunction )
+            if ( function_has_result_variable )
             {
-                code.AddLine( "" );
-                code.AddLine( "return result_translation.Text;" );
-            }
-            else if ( IsTranslationFunction )
-            {
-                code.AddLine( "" );
-                code.AddLine( "return result_translation;" );
+                if ( IsStringFunction )
+                {
+                    code.AddLine( "return result_translation.Text;" );
+                }
+                else if ( IsTranslationFunction )
+                {
+                    code.AddLine( "return result_translation;" );
+                }
             }
         }
 
@@ -1810,11 +1885,6 @@ class RULE
 
         FunctionName = TokenArray[ 0 ];
         ParameterNameArray = TokenArray[ 1 .. $ ];
-
-        if ( IsStringFunction || IsTranslationFunction )
-        {
-            VariableNameArray ~= ":result";
-        }
     }
 
     // ~~

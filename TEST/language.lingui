@@ -2,22 +2,18 @@ LANGUAGE
 
     MainMenu
 
-    DateInline day month year
-        ( day ~ "/" ~ month ~ "/" ~ year )
-
-    DateResult day month year
-        var
-        day ~ "/" ~ month ~ "/" ~ year
+    GetDate day month year
+        return day ~ "/" ~ month ~ "/" ~ year
 
     :Chests :count
 
     :Swords :count
 
     :NoSwords
-        Swords( 0* )
+        return Swords( 0* )
 
     :OneSword
-        Swords( 1* )
+        return Swords( 1* )
 
     TheItems :items
 
@@ -47,12 +43,32 @@ LANGUAGE
         result = - value
         return result
 
+    GetOppositeString value
+        var result
+        result = "not " ~ value
+        return result
+
+    :GetOppositeTranslation :value
+        var :result
+        *result = *value
+        $result = "not " ~ $value
+        &result = &value
+        return result
+
+    :GetInverseTranslation :value
+        *result = *value
+        $result = "one over " ~ $value
+        &result = &value
+
     TestFunctions
-        var !boolean_value #integer_value %real_value
-        boolean_value = GetOppositeBoolean( true )
-        integer_value = GetOppositeInteger( 1 )
-        real_value = GetOppositeReal( 1.0 )
-        $boolean_value ~ " / " ~ $integer_value ~ " / " ~ $real_value ~ "\n"
+        var !opposite_boolean #opposite_integer %opposite_real opposite_string :opposite_translation :inverse_translation
+        opposite_boolean = GetOppositeBoolean( true )
+        opposite_integer = GetOppositeInteger( 1 )
+        opposite_real = GetOppositeReal( 1.0 )
+        opposite_string = GetOppositeString( "one" )
+        opposite_translation = GetOppositeTranslation( 1*"one":neutral )
+        inverse_translation = GetInverseTranslation( 1*"x":neutral )
+        $opposite_boolean ~ " / " ~ $opposite_integer ~ " / " ~ $opposite_real ~ " / " ~ opposite_string ~ " / " ~ $opposite_translation ~ " / " ~ $inverse_translation ~ "\n"
         GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "\n"
         GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n"
         GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, -1 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " \n"
@@ -78,9 +94,7 @@ LANGUAGE
 
         GetTranslation( "English" )
         " / "
-        GetTranslation( "French" ).Text ~ "\n"
-
-        DateInline( "18", "2", "2018" ) ~ " " ~ DateResult( "18", "2", "2018" ) ~ "\n"
+        GetTranslation( "French" ).Text ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n"
 
     :Kings :count
         $result = "reyes"
