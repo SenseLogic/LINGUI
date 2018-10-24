@@ -6,9 +6,9 @@ Internationalization code generator.
 
 ## Description
 
-Lingui converts human-readable translation scripts into compilable C#/D/Dart code which can be directly integrated into the localized application.
+Lingui converts human-readable translation scripts into optimized C#/D/Dart code which can be directly integrated into the localized application.
 
-Its minimalistic syntax is designed to allow professional translators to specify both static and parametric translations in a simple way.
+Its minimalistic declarative syntax allows professional translators to specify both static and dynamic translations in a simple way.
 
 ## Sample
 
@@ -244,13 +244,27 @@ A language class can extend another one, by specifying the base language after a
 
 A base language must be declared before its derived languages.
 
-The first language generally defines the application interface,
-by declaring the translation functions available to the localized application,
-while the next languages provide their language-specific implementations.
+The first language (often named `LANGUAGE`) is generally used to define the common application interface.
 
-### Translation values
+It will declare all the translation functions that the localized application code will need.
 
-A translation value has one or several of the following properties :
+The next languages will then provide their language-specific implementations.
+
+### Translation functions
+
+Functions can have parameters and declare local variables.
+
+The type of the functions, function parameters and local variables is defined through their declaration prefix :
+
+*   none : string
+*   `!` : boolean
+*   `#` : integer
+*   `%` : real
+*   `:` : translation
+
+### Translation value
+
+A translation value is a data structure which provides one or several of the following properties :
 
 *   a text (`$`);
 *   a quantity text (`*`), with an integer (`#`) or real (`%`) value;
@@ -258,31 +272,11 @@ A translation value has one or several of the following properties :
 
 ### Translation constants
 
-A translation constant has a quoted name, and is defined by a single line expression.
+A translation constant is a quoted string.
 
-Its translation will be evaluated once, and stored inside the translation dictionary of each language.
+It is only declared in actual language classes, and defined by a single line expression which is evaluated only once.
 
-### Translation functions
-
-Functions can have parameters and declare local variables.
-
-The function result is the concatenation of its evaluated expressions,
-accumulated inside an implicit `result` translation variable,
-unless the function :
-
-*   has a single-line definition starting with `"`;
-*   declares a `result` variable;
-*   uses a `return` statement.
-
-### Type prefixes
-
-The type of the functions, parameters and variables is defined by their declaration prefix :
-
-*   none : string
-*   `!` : boolean
-*   `#` : integer
-*   `%` : real
-*   `:` : translation
+The resulting translation of this evaluation is stored inside the translation dictionary of its language class.
 
 ### Function statements
 
@@ -326,7 +320,7 @@ The type of the functions, parameters and variables is defined by their declarat
     princes = 3*"príncipes":male
     ```
 
-### Accessors
+### Variable accessors
 
 Boolean, integer and real variable names can be prefixed by the following accessor :
 
@@ -351,8 +345,6 @@ $    text
 
 ### Operators
 
-Expressions and conditions can use the following operators :
-
 ```lua
 ~      text concatenation
 +      addition
@@ -372,7 +364,7 @@ or     logical or
 ( )    grouping parentheses
 ```
 
-### Constants
+### Literals
 
 ```lua
 "Some text.\n"          text
@@ -454,15 +446,25 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
-### Conventions
+### Result variable
 
-*   Class names are written in upper case.
-*   Function names start by an upper case letter.
-*   Parameter and variable names start by a lower case letter.
+The function result is the concatenation of its evaluated expressions.
+
+An implicit `result` translation variable will be implicitly declared,
+in order to automatically accumulate these expression, if the translation function:
+
+*   use textual expressions;
+*   doesn't explicitly declares a `result` variable;
+*   hasn't a single-line definition starting with `"`;
+*   doesn't use any `return` statement.
+
+### Case conventions
+
+*   Class names : `UPPER_CASE`;
+*   Function names : `PascalCase`;
+*   Parameter and variable names : `snake_case`.
 
 ### Limitations
-
-Predefined constant names can't be used for function parameter and variable names.
 
 Operators and variables must be separated by spaces.
 
