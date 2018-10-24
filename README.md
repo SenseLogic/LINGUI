@@ -2,13 +2,13 @@
 
 # Lingui
 
-Internationalization code generator.
+Internationalization code generator for C#, D and Dart applications.
 
 ## Description
 
 Lingui converts human-readable translation scripts into optimized C#/D/Dart code which can be directly integrated into the localized application.
 
-Its minimalistic declarative syntax allows professional translators to specify both static and dynamic translations in a simple way.
+Its minimalistic syntax allows translators to define both static and dynamic translations in a simple way.
 
 ## Sample
 
