@@ -249,9 +249,7 @@ class LANGUAGE : BASE_LANGUAGE
         result_translation.AddText( Dump( TRANSLATION( "", "6.5" ) ) );
         result_translation.AddText( Dump( TRANSLATION( "metros", "7.5" ) ) );
         result_translation.AddText( Dump( TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
-        result_translation.AddText( GetTranslation( "English" ) );
-        result_translation.AddText( " / " );
-        result_translation.AddText( GetTranslation( "French" ).Text ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n" );
+        result_translation.AddText( GetText( "English" ) ~ " / " ~ GetText( "French" ) ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n" );
 
         return result_translation.Text;
     }

@@ -307,6 +307,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    dstring GetText(
+        dstring key
+        )
+    {
+        return TranslationMap[ key ].Text;
+    }
+
+    // ~~
+
     TRANSLATION GetLowerCase(
         TRANSLATION translation
         )

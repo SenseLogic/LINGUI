@@ -92,9 +92,7 @@ LANGUAGE
         Dump( 7.5*"metros" )
         Dump( 8.5*"vueltas":female )
 
-        GetTranslation( "English" )
-        " / "
-        GetTranslation( "French" ).Text ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n"
+        GetText( "English" ) ~ " / " ~ GetText( "French" ) ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n"
 
     :Kings :count
         $result = "reyes"

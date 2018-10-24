@@ -329,6 +329,15 @@ namespace LINGUI
 
         // ~~
 
+        public string GetText(
+            string key
+            )
+        {
+            return TranslationDictionary[ key ].Text;
+        }
+
+        // ~~
+
         public TRANSLATION GetLowerCase(
             TRANSLATION translation
             )

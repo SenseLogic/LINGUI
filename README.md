@@ -105,8 +105,8 @@ public class TEST
         LANGUAGE language
         )
     {
-        Console.WriteLine( language.GetTranslation( "princess" ).Text );
-        Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
+        Console.WriteLine( language.GetText( "princess" ) );
+        Console.WriteLine( language.GetText( "NewGame" ) );
         Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( "Jack", "Sparrow" ) );
         Console.WriteLine( language.Pears( 0 ) );
@@ -145,8 +145,8 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    writeln( language.GetTranslation( "princess" ).Text );
-    writeln( language.GetTranslation( "NewGame" ).Text );
+    writeln( language.GetText( "princess" ) );
+    writeln( language.GetText( "NewGame" ) );
     writeln( language.GameOver() );
     writeln( language.Welcome( "Jack", "Sparrow" ) );
     writeln( language.Pears( 0 ) );
@@ -183,8 +183,8 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    print( language.GetTranslation( "princess" ).Text );
-    print( language.GetTranslation( "NewGame" ).Text );
+    print( language.GetText( "princess" ) );
+    print( language.GetText( "NewGame" ) );
     print( language.GameOver() );
     print( language.Welcome( "Jack", "Sparrow" ) );
     print( language.Pears( 0 ) );
@@ -408,6 +408,7 @@ MakeTranslation( integer_quantity, genre )
 MakeTranslation( integer_quantity )
 HasTranslation( key )
 GetTranslation( key )
+GetText( key )
 GetLowerCase( text )
 GetLowerCase( translation )
 GetUpperCase( text )

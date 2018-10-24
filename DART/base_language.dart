@@ -312,6 +312,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    String GetText(
+        String key
+        )
+    {
+        return TranslationMap[ key ].Text;
+    }
+
+    // ~~
+
     dynamic GetLowerCase(
         dynamic text
         )

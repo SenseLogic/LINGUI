@@ -13,8 +13,8 @@ public class TEST
         LANGUAGE language
         )
     {
-        Console.WriteLine( language.GetTranslation( "princess" ).Text );
-        Console.WriteLine( language.GetTranslation( "NewGame" ).Text );
+        Console.WriteLine( language.GetText( "princess" ) );
+        Console.WriteLine( language.GetText( "NewGame" ) );
         Console.WriteLine( language.GameOver() );
         Console.WriteLine( language.Welcome( "Jack", "Sparrow" ) );
         Console.WriteLine( language.Pears( 0 ) );

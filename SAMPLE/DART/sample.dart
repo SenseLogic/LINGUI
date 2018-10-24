@@ -12,8 +12,8 @@ void TestLanguage(
     LANGUAGE language
     )
 {
-    print( language.GetTranslation( "princess" ).Text );
-    print( language.GetTranslation( "NewGame" ).Text );
+    print( language.GetText( "princess" ) );
+    print( language.GetText( "NewGame" ) );
     print( language.GameOver() );
     print( language.Welcome( "Jack", "Sparrow" ) );
     print( language.Pears( 0 ) );
