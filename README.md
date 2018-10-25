@@ -320,9 +320,8 @@ The resulting translation of this evaluation is stored inside the translation di
 
 ### Result variable
 
-By default, a `result` translation variable is implicitly declared to
-accumulate the textual expressions of the translation function,
-but only if it :
+A `result` translation variable is implicitly declared to
+accumulate the textual expressions of each translation function which :
 
 *   actually uses textual expressions;
 *   doesn't explicitly declares a `result` variable;
