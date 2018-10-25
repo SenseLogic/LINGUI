@@ -502,7 +502,7 @@ The `--cs`, `--d` and `--dart` options are mutually exclusive.
 lingui --dart --check --base --namespace game --verbose language.lingui english_language.lingui german_language.lingui DART/
 ```
 
-Converts Lingui files to Dart source code files, generating the base classes too, using "game" as namespace and
+Converts Lingui files to Dart source code files, generating the base classes too, using "game" as namespace, and
 checking for missing constants or functions.
 
 ```bash
