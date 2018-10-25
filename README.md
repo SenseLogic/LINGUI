@@ -244,11 +244,9 @@ A language class can extend another one, by specifying the base language after a
 
 A base language must be declared before its derived languages.
 
-The first language (often named `LANGUAGE`) is generally used to define the common application interface.
+The first language (often named `LANGUAGE`) is generally used to declare all the translation functions that the localized application code will use.
 
-It will declare all the translation functions that the localized application code will need.
-
-The next languages will then provide their language-specific implementations.
+The next languages will then extend it, in order to provide language-specific implementations.
 
 ### Translation functions
 
