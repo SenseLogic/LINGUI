@@ -490,6 +490,7 @@ lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/
 --base : generate the base classes
 --namespace LINGUI : use this namespace
 --uppercase : generate uppercase filenames
+--check : check for missing constants or functions
 --verbose : show the processing messages
 ```
 
@@ -498,10 +499,11 @@ The `--cs`, `--d` and `--dart` options are mutually exclusive.
 ### Examples
 
 ```bash
-lingui --dart --base --namespace game --verbose language.lingui english_language.lingui german_language.lingui DART/
+lingui --dart --check --base --namespace game --verbose language.lingui english_language.lingui german_language.lingui DART/
 ```
 
-Converts Lingui files to Dart source code files, generating the base classes too and using "game" as namespace.
+Converts Lingui files to Dart source code files, generating the base classes too, using "game" as namespace and
+checking for missing constants or functions.
 
 ```bash
 lingui --cs --verbose language.lingui english_language.lingui german_language.lingui CS/

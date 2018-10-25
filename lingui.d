@@ -240,6 +240,15 @@ class RULE
 
     // ~~
 
+    void Warn(
+        dstring message
+        )
+    {
+        writeln( "*** WARNING : ", message );
+    }
+
+    // ~~
+
     dchar GetDotCharacter(
         )
     {
@@ -890,7 +899,88 @@ class RULE
         return false;
     }
 
-    // -- OPERATIONS
+    // ~~
+
+    void FindMissingConstants(
+        )
+    {
+        bool
+            constant_is_found;
+
+        foreach ( constant_rule; SubRuleArray )
+        {
+            if ( constant_rule.IsStringConstant() )
+            {
+                foreach ( language_rule; SuperRule.SubRuleArray )
+                {
+                    if ( language_rule != this
+                         && language_rule.BaseLanguageRule == BaseLanguageRule )
+                    {
+                        constant_is_found = false;
+
+                        foreach ( other_constant_rule; language_rule.SubRuleArray )
+                        {
+                            if ( other_constant_rule.Text == constant_rule.Text )
+                            {
+                                constant_is_found = true;
+
+                                break;
+                            }
+                        }
+
+                        if ( !constant_is_found )
+                        {
+                            constant_rule.Warn( "Missing " ~ TokenArray[ 0 ] ~ " constant in " ~ language_rule.TokenArray[ 0 ] ~ " : " ~ constant_rule.Text );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ~~
+
+    void FindMissingFunctions(
+        )
+    {
+        bool
+            function_is_found;
+        RULE
+            base_language_rule;
+
+        base_language_rule = BaseLanguageRule;
+
+        while ( base_language_rule.BaseLanguageRule !is null )
+        {
+            base_language_rule = base_language_rule.BaseLanguageRule;
+        }
+
+        foreach ( base_function_rule; base_language_rule.SubRuleArray )
+        {
+            if ( !base_function_rule.IsStringConstant()
+                 && base_function_rule.SubRuleArray.length == 0 )
+            {
+                function_is_found = false;
+
+                foreach ( function_rule; SubRuleArray )
+                {
+                    if ( function_rule.Text == base_function_rule.Text )
+                    {
+                        function_is_found = true;
+
+                        break;
+                    }
+                }
+
+                if ( !function_is_found )
+                {
+                    base_function_rule.Warn( "Missing " ~ base_language_rule.TokenArray[ 0 ] ~ " function in " ~ TokenArray[ 0 ] ~ " : " ~ base_function_rule.Text );
+                }
+            }
+        }
+    }
+
+    // ~~
 
     void AddVarCode(
         CODE code
@@ -1970,6 +2060,21 @@ class SCRIPT
     RULE
         Rule;
 
+    // -- INQUIRIES
+
+    void Check(
+        )
+    {
+        foreach ( language_rule; Rule.SubRuleArray )
+        {
+            if ( language_rule.BaseLanguageRule !is null )
+            {
+                language_rule.FindMissingConstants();
+                language_rule.FindMissingFunctions();
+            }
+        }
+    }
+
     // -- OPERATIONS
 
     void ReadFiles(
@@ -2033,6 +2138,11 @@ class SCRIPT
                     }
                 }
             }
+        }
+
+        if ( CheckOptionIsEnabled )
+        {
+            Check();
         }
     }
 
@@ -2154,6 +2264,7 @@ class SCRIPT
 
 bool
     BaseOptionIsEnabled,
+    CheckOptionIsEnabled,
     CsOptionIsEnabled,
     DOptionIsEnabled,
     DartOptionIsEnabled,
@@ -2245,6 +2356,7 @@ void main(
     BaseNamespace = "";
     Namespace = "";
     UpperCaseOptionIsEnabled = false;
+    CheckOptionIsEnabled = false;
     VerboseOptionIsEnabled = false;
     InputFilePathArray = [];
     OutputFolderPath = "";
@@ -2288,6 +2400,10 @@ void main(
         else if ( option == "--uppercase" )
         {
             UpperCaseOptionIsEnabled = true;
+        }
+        else if ( option == "--check" )
+        {
+            CheckOptionIsEnabled = true;
         }
         else if ( option == "--verbose" )
         {
@@ -2355,6 +2471,7 @@ void main(
         writeln( "    --base" );
         writeln( "    --namespace LINGUI" );
         writeln( "    --uppercase" );
+        writeln( "    --check" );
         writeln( "    --verbose" );
         writeln( "Examples :" );
         writeln( "    lingui --cs --base --namespace GAME --verbose test.lingui CS/" );
