@@ -246,7 +246,7 @@ A base language must be declared before its derived languages.
 
 The first language (often named `LANGUAGE`) is generally used to declare all the translation functions that the localized application code will use.
 
-The next languages will then extend it, in order to provide language-specific implementations.
+The next languages then extend it, in order to provide their language-specific implementations.
 
 ### Translation functions
 
