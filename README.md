@@ -326,7 +326,7 @@ accumulate the textual expressions of each translation function which :
 *   actually uses textual expressions;
 *   doesn't explicitly declare a `result` variable;
 *   doesn't use any `return` statement;
-*   hasn't a single-line definition starting with `"`.
+*   hasn't a single-line definition starting with a quoted string (`"`).
 
 ### Variable accessors
 
