@@ -320,6 +320,16 @@ The resulting translation of this evaluation is stored inside the translation di
     princes = 3*"príncipes":male
     ```
 
+### Result variable
+
+By default, a `result` translation variable is implicitly declared
+to accumulate the textual expressions of the translation function , but only if it :
+
+*   actually uses textual expressions;
+*   doesn't explicitly declares a `result` variable;
+*   doesn't use any `return` statement;
+*   hasn't a single-line definition starting with `"`.
+
 ### Variable accessors
 
 Boolean, integer and real variable names can be prefixed by the following accessor :
@@ -421,8 +431,8 @@ HasFirstCharacter( text, first_characters )
 HasFirstCharacter( translation, first_characters )
 HasPrefix( text, prefix )
 HasPrefix( translation, prefix )
-HasSuffix( text, prefix )
-HasSuffix( translation, prefix )
+HasSuffix( text, suffix )
+HasSuffix( translation, suffix )
 GetIntegerReal( integer )
 GetRealInteger( real )
 GetTextBoolean( text )
@@ -446,18 +456,6 @@ GetOrdinalPlurality( translation )
 ```
 // This is a comment.
 ```
-
-### Result variable
-
-The function result is the concatenation of its evaluated expressions.
-
-An implicit `result` translation variable will be implicitly declared,
-in order to automatically accumulate these expression, if the translation function:
-
-*   use textual expressions;
-*   doesn't explicitly declares a `result` variable;
-*   hasn't a single-line definition starting with `"`;
-*   doesn't use any `return` statement.
 
 ### Case conventions
 
