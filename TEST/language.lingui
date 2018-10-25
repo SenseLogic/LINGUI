@@ -5,7 +5,7 @@ LANGUAGE
     GetDate day month year
         return day ~ "/" ~ month ~ "/" ~ year
 
-    :Chests :count
+    :Chests #count
 
     :Swords :count
 
@@ -101,12 +101,12 @@ LANGUAGE
 
     Test
         var :no_chests :one_chest
-        no_chests = Chests( 0* )
-        one_chest = Chests( 1* )
+        no_chests = Chests( 0 )
+        one_chest = Chests( 1 )
 
         TheItemsHaveBeenFound( no_chests )
         TheItemsHaveBeenFound( one_chest )
-        TheItemsHaveBeenFound( Chests( 2* ) )
+        TheItemsHaveBeenFound( Chests( 2 ) )
         TheItemsHaveBeenFound( NoSwords() )
         TheItemsHaveBeenFound( OneSword() )
         TheItemsHaveBeenFound( Swords( 2* ) )

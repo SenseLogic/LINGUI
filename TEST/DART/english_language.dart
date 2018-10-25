@@ -49,13 +49,13 @@ class ENGLISH_LANGUAGE extends LANGUAGE
     // ~~
 
     TRANSLATION Chests(
-        TRANSLATION count_translation
+        int count
         )
     {
         TRANSLATION
             result_translation = TRANSLATION();
 
-        if ( count_translation.IntegerQuantity == 1 )
+        if ( count == 1 )
         {
             result_translation.AddText( "chest" );
         }
@@ -64,7 +64,7 @@ class ENGLISH_LANGUAGE extends LANGUAGE
             result_translation.AddText( "chests" );
         }
 
-        result_translation.SetQuantity( count_translation.Quantity );
+        result_translation.SetQuantity( count );
 
         return result_translation;
     }

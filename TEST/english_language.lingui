@@ -9,12 +9,12 @@ ENGLISH_LANGUAGE : LANGUAGE
     MainMenu
         "Main menu"
 
-    :Chests :count
-        if #count = 1
+    :Chests #count
+        if count = 1
             "chest"
         else
             "chests"
-        *result = *count
+        *result = count
 
     :Swords :count
         if @count = one

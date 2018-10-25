@@ -9,12 +9,12 @@ FRENCH_LANGUAGE : LANGUAGE
     MainMenu
         "Menu principal"
 
-    :Chests :count
-        if #count <= 1
+    :Chests #count
+        if count <= 1
             "coffre"
         else
             "coffres"
-        *result = *count
+        *result = count
         &result = male
 
     :Swords :count

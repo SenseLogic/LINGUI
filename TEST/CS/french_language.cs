@@ -48,13 +48,13 @@ namespace GAME
         // ~~
 
         public override TRANSLATION Chests(
-            TRANSLATION count_translation
+            int count
             )
         {
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            if ( count_translation.IntegerQuantity <= 1 )
+            if ( count <= 1 )
             {
                 result_translation.AddText( "coffre" );
             }
@@ -63,7 +63,7 @@ namespace GAME
                 result_translation.AddText( "coffres" );
             }
 
-            result_translation.SetQuantity( count_translation.Quantity );
+            result_translation.SetQuantity( count );
             result_translation.SetGenre( GENRE.Male );
 
             return result_translation;

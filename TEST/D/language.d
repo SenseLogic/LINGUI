@@ -41,7 +41,7 @@ class LANGUAGE : BASE_LANGUAGE
     // ~~
 
     TRANSLATION Chests(
-        TRANSLATION count_translation
+        int count
         )
     {
         return TRANSLATION.Null;
@@ -283,11 +283,11 @@ class LANGUAGE : BASE_LANGUAGE
             princes_translation,
             result_translation;
 
-        no_chests_translation = Chests( TRANSLATION( "", "0" ) );
-        one_chest_translation = Chests( TRANSLATION( "", "1" ) );
+        no_chests_translation = Chests( 0 );
+        one_chest_translation = Chests( 1 );
         result_translation.AddText( TheItemsHaveBeenFound( no_chests_translation ) );
         result_translation.AddText( TheItemsHaveBeenFound( one_chest_translation ) );
-        result_translation.AddText( TheItemsHaveBeenFound( Chests( TRANSLATION( "", "2" ) ) ) );
+        result_translation.AddText( TheItemsHaveBeenFound( Chests( 2 ) ) );
         result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
         result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
         result_translation.AddText( TheItemsHaveBeenFound( Swords( TRANSLATION( "", "2" ) ) ) );
