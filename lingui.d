@@ -173,7 +173,6 @@ enum RULE_TYPE
     Var,
     Return,
     If,
-    Elseif,
     Else,
     Assignment,
     Expression
@@ -1217,14 +1216,26 @@ class RULE
             code.AddLine( "if ( " ~ GetExpressionCode( 1 ) ~ " )" );
             AddStatementBlockCode( code );
         }
-        else if ( Type == RULE_TYPE.Elseif )
+        else if ( Type == RULE_TYPE.Else )
         {
-            code.AddLine( "else if ( " ~ GetExpressionCode( 1 ) ~ " )" );
+            if ( TokenArray.length == 1 )
+            {
+                code.AddLine( "else" );
+            }
+            else if ( TokenArray.length > 2
+                      && TokenArray[ 1 ] == "if" )
+            {
+                code.AddLine( "else if ( " ~ GetExpressionCode( 2 ) ~ " )" );
+            }
+            else
+            {
+                Abort( "Invalid statement : " ~ Text );
+            }
+
             AddStatementBlockCode( code );
         }
         else if ( Type == RULE_TYPE.Else )
         {
-            code.AddLine( "else" );
             AddStatementBlockCode( code );
         }
         else if ( Type == RULE_TYPE.Assignment )
@@ -2007,10 +2018,6 @@ class RULE
         else if ( first_token == "if" )
         {
             Type = RULE_TYPE.If;
-        }
-        else if ( first_token == "elseif" )
-        {
-            Type = RULE_TYPE.Elseif;
         }
         else if ( first_token == "else" )
         {

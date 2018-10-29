@@ -202,6 +202,57 @@ namespace GAME
 
         // ~~
 
+        public virtual string TestConditions(
+            int value
+            )
+        {
+            TRANSLATION
+                result_translation = new TRANSLATION();
+
+            result_translation.AddText( GetIntegerText( value ) );
+
+            if ( value < 0 )
+            {
+                if ( value < -20 )
+                {
+                    result_translation.AddText( " < -20" );
+                }
+                else if ( value < -10 )
+                {
+                    result_translation.AddText( " < -10" );
+                }
+                else
+                {
+                    result_translation.AddText( " < 0" );
+                }
+            }
+            else if ( value > 0 )
+            {
+                if ( value > 20 )
+                {
+                    result_translation.AddText( " > 20" );
+                }
+                else if ( value > 10 )
+                {
+                    result_translation.AddText( " > 10" );
+                }
+                else
+                {
+                    result_translation.AddText( " > 0" );
+                }
+            }
+            else
+            {
+                result_translation.AddText( " = 0" );
+            }
+
+            result_translation.AddText( "\n" );
+
+            return result_translation.Text;
+        }
+
+        // ~~
+
         public virtual string TestFunctions(
             )
         {
@@ -288,6 +339,13 @@ namespace GAME
             result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
             result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );
             result_translation.AddText( TestFunctions() );
+            result_translation.AddText( TestConditions( -25 ) );
+            result_translation.AddText( TestConditions( -15 ) );
+            result_translation.AddText( TestConditions( -5 ) );
+            result_translation.AddText( TestConditions( 0 ) );
+            result_translation.AddText( TestConditions( 5 ) );
+            result_translation.AddText( TestConditions( 15 ) );
+            result_translation.AddText( TestConditions( 25 ) );
             kings_translation = Kings( new TRANSLATION( "", "1" ) );
             queens_translation.SetText( "reinas" );
             queens_translation.SetQuantity( "2" );

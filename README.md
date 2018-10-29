@@ -291,11 +291,11 @@ The resulting translation of this evaluation is stored inside the translation di
     if @person = one
         if &person = female
             ...
-        elseif &person = male
+        else if &person = male
             ...
         else
             ...
-    elseif #person <= 3
+    else if #person <= 3
         ...
     else
         ...
@@ -533,7 +533,7 @@ Converts Lingui files to C# source code files.
 
 ## Version
 
-2.3
+2.4
 
 ## Author
 

@@ -31,10 +31,10 @@ FRENCH_LANGUAGE : LANGUAGE
                 "Aucune "
             else
                 "Aucun "
-        elseif #items = 1
+        else if #items = 1
             if HasFirstCharacter( GetLowerCase( $items ), "aâeéêèiîoôuûh" )
                 "L'"
-            elseif &items = female
+            else if &items = female
                 "La "
             else
                 "Le "
@@ -47,7 +47,7 @@ FRENCH_LANGUAGE : LANGUAGE
     Have :items
         if #items = 0
             " n'a"
-        elseif #items <= 1
+        else if #items <= 1
             " a"
         else
             " ont"

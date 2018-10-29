@@ -60,6 +60,26 @@ LANGUAGE
         $result = "one over " ~ $value
         &result = &value
 
+    TestConditions #value
+        $value
+        if value < 0
+            if value < -20
+                " < -20"
+            else if value < -10
+                " < -10"
+            else
+                " < 0"
+        else if value > 0
+            if value > 20
+                " > 20"
+            else if value > 10
+                " > 10"
+            else
+                " > 0"
+        else
+            " = 0"
+        "\n"
+
     TestFunctions
         var !opposite_boolean #opposite_integer %opposite_real opposite_string :opposite_translation :inverse_translation
         opposite_boolean = GetOppositeBoolean( true )
@@ -112,6 +132,14 @@ LANGUAGE
         TheItemsHaveBeenFound( Swords( 2* ) )
 
         TestFunctions()
+
+        TestConditions( -25 )
+        TestConditions( -15 )
+        TestConditions( -5 )
+        TestConditions( 0 )
+        TestConditions( 5 )
+        TestConditions( 15 )
+        TestConditions( 25 )
 
         var :kings :queens :princes
         kings = Kings( 1* )
