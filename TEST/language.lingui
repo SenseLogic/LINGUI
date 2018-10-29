@@ -65,14 +65,14 @@ LANGUAGE
         if value < 0
             if value < -20
                 " < -20"
-            else if value < -10
+            elseif value < -10
                 " < -10"
             else
                 " < 0"
         else if value > 0
             if value > 20
                 " > 20"
-            else if value > 10
+            elseif value > 10
                 " > 10"
             else
                 " > 0"
