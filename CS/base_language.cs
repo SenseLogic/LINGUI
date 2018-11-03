@@ -412,7 +412,7 @@ namespace LINGUI
 
         // ~~
 
-        public float GetIntegerReal(
+        public double GetIntegerReal(
             int integer
             )
         {
@@ -422,7 +422,7 @@ namespace LINGUI
         // ~~
 
         public int GetRealInteger(
-            float real
+            double real
             )
         {
             return ( int )real;
@@ -448,11 +448,11 @@ namespace LINGUI
 
         // ~~
 
-        public float GetTextReal(
+        public double GetTextReal(
             String text
             )
         {
-            return float.Parse( text.Replace( ',', '.' ), CultureInfo.InvariantCulture );
+            return double.Parse( text.Replace( ',', '.' ), CultureInfo.InvariantCulture );
         }
 
         // ~~
@@ -510,14 +510,12 @@ namespace LINGUI
         // ~~
 
         public string GetRealText(
-            float real,
+            double real,
             int minimum_fractional_digit_count = 1,
             int maximum_fractional_digit_count = 20,
             char dot_character = '\0'
             )
         {
-            bool
-                trailing_zeros_are_removed;
             int
                 dot_character_index,
                 fractional_digit_count;
@@ -548,16 +546,6 @@ namespace LINGUI
 
             fractional_digit_count = text.Length - dot_character_index - 1;
 
-            if ( minimum_fractional_digit_count < 0 )
-            {
-                trailing_zeros_are_removed = true;
-                minimum_fractional_digit_count = 0;
-            }
-            else
-            {
-                trailing_zeros_are_removed = false;
-            }
-
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
                 text += "00000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
@@ -571,7 +559,7 @@ namespace LINGUI
                 fractional_digit_count = maximum_fractional_digit_count;
             }
 
-            if ( trailing_zeros_are_removed )
+            if ( minimum_fractional_digit_count < maximum_fractional_digit_count )
             {
                 while ( fractional_digit_count > minimum_fractional_digit_count
                         && text[ dot_character_index + fractional_digit_count ] == '0' )
@@ -579,7 +567,7 @@ namespace LINGUI
                     --fractional_digit_count;
                 }
 
-                text = text.Substring( 0, dot_character_index + fractional_digit_count );
+                text = text.Substring( 0, dot_character_index + fractional_digit_count + 1 );
             }
 
             if ( fractional_digit_count == 0 )

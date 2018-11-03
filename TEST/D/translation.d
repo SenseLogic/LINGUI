@@ -20,7 +20,7 @@ struct TRANSLATION
         HasRealQuantity;
     int
         IntegerQuantity;
-    float
+    double
         RealQuantity;
     GENRE
         Genre;
@@ -81,7 +81,7 @@ struct TRANSLATION
         HasIntegerQuantity = true;
         HasRealQuantity = false;
         IntegerQuantity = integer_quantity;
-        RealQuantity = integer_quantity.to!float();
+        RealQuantity = integer_quantity.to!double();
         Genre = genre;
     }
 
@@ -224,8 +224,8 @@ struct TRANSLATION
     PLURALITY GetFrenchCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.0f
-             && RealQuantity <= 1.5f )
+        if ( RealQuantity >= 0.0
+             && RealQuantity <= 1.5 )
         {
             return PLURALITY.One;
         }
@@ -313,8 +313,8 @@ struct TRANSLATION
     PLURALITY GetPortugueseCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.0f
-             && RealQuantity <= 1.5f )
+        if ( RealQuantity >= 0.0
+             && RealQuantity <= 1.5 )
         {
             return PLURALITY.One;
         }
@@ -494,8 +494,8 @@ struct TRANSLATION
     PLURALITY GetDanishCardinalPlurality(
         )
     {
-        if ( RealQuantity >= 0.1f
-             && RealQuantity <= 1.6f )
+        if ( RealQuantity >= 0.1
+             && RealQuantity <= 1.6 )
         {
             return PLURALITY.One;
         }
@@ -640,7 +640,7 @@ struct TRANSLATION
         }
 
         IntegerQuantity = integer_text.to!int();
-        RealQuantity = quantity.to!float();
+        RealQuantity = quantity.to!double();
     }
 
     // ~~
@@ -653,7 +653,7 @@ struct TRANSLATION
         HasIntegerQuantity = true;
         HasRealQuantity = false;
         IntegerQuantity = integer_quantity;
-        RealQuantity = integer_quantity.to!float();
+        RealQuantity = integer_quantity.to!double();
     }
 
     // ~~

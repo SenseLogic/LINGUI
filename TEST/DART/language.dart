@@ -279,8 +279,9 @@ class LANGUAGE extends BASE_LANGUAGE
         result_translation.AddText( GetBooleanText( opposite_boolean ) + " / " + GetIntegerText( opposite_integer ) + " / " + GetRealText( opposite_real ) + " / " + opposite_string + " / " + opposite_translation_translation.Text + " / " + inverse_translation_translation.Text + "\n" );
         result_translation.AddText( GetBooleanText( false ) + " / " + GetBooleanText( true ) + "\n" );
         result_translation.AddText( GetIntegerText( -12, 4 ) + " / " + GetIntegerText( 12, 4 ) + "\n" );
-        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, -1 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
+        result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, 0 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
         result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );
+        result_translation.AddText( GetRealText( -12.000123456, 0, 3 ) + " / " + GetRealText( -12.000123456, 1, 3 ) + " / " + GetRealText( -12.000123456, 3, 3 ) + " / " + GetRealText( -12.000123456 ) + " \n" );
         result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
         result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
         result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );

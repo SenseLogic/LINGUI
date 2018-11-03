@@ -142,11 +142,11 @@ namespace GAME
 
         // ~~
 
-        public virtual float GetOppositeReal(
-            float value
+        public virtual double GetOppositeReal(
+            double value
             )
         {
-            float
+            double
                 result;
 
             result = - value;
@@ -260,7 +260,7 @@ namespace GAME
                 opposite_boolean;
             int
                 opposite_integer;
-            float
+            double
                 opposite_real;
             string
                 opposite_string = "";
@@ -271,15 +271,16 @@ namespace GAME
 
             opposite_boolean = GetOppositeBoolean( true );
             opposite_integer = GetOppositeInteger( 1 );
-            opposite_real = GetOppositeReal( 1.0f );
+            opposite_real = GetOppositeReal( 1.0 );
             opposite_string = GetOppositeString( "one" );
             opposite_translation_translation = GetOppositeTranslation( new TRANSLATION( "one", "1" ) );
             inverse_translation_translation = GetInverseTranslation( new TRANSLATION( "x", "1" ) );
             result_translation.AddText( GetBooleanText( opposite_boolean ) + " / " + GetIntegerText( opposite_integer ) + " / " + GetRealText( opposite_real ) + " / " + opposite_string + " / " + opposite_translation_translation.Text + " / " + inverse_translation_translation.Text + "\n" );
             result_translation.AddText( GetBooleanText( false ) + " / " + GetBooleanText( true ) + "\n" );
             result_translation.AddText( GetIntegerText( -12, 4 ) + " / " + GetIntegerText( 12, 4 ) + "\n" );
-            result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0f, -1 ) + " / " + GetRealText( -12.0f ) + " / " + GetRealText( -12.0f, 3 ) + " \n" );
-            result_translation.AddText( GetRealText( -12.3f, 3, 3, '_' ) + " / " + GetRealText( -12.345f ) + " / " + GetRealText( -12.3456789f, 0, 3, DotCharacter ) + "\n" );
+            result_translation.AddText( GetIntegerText( -12 ) + " / " + GetRealText( -12.0, 0 ) + " / " + GetRealText( -12.0 ) + " / " + GetRealText( -12.0, 3 ) + " \n" );
+            result_translation.AddText( GetRealText( -12.3, 3, 3, '_' ) + " / " + GetRealText( -12.345 ) + " / " + GetRealText( -12.3456789, 0, 3, DotCharacter ) + "\n" );
+            result_translation.AddText( GetRealText( -12.000123456, 0, 3 ) + " / " + GetRealText( -12.000123456, 1, 3 ) + " / " + GetRealText( -12.000123456, 3, 3 ) + " / " + GetRealText( -12.000123456 ) + " \n" );
             result_translation.AddText( GetLowerCase( "jack SPARROW" ) + " / " + GetUpperCase( "john MCLANE" ) + "\n" );
             result_translation.AddText( GetSentenceCase( "jason bourne" ) + " / " + GetTitleCase( "james kirk" ) + "\n" );
             result_translation.AddText( Dump( MakeTranslation( "cm" ) ) );

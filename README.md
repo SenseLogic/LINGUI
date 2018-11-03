@@ -488,6 +488,7 @@ lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/
 --d : generate D files
 --dart : generate Dart files
 --base : generate the base classes
+--float : use single precision numbers
 --namespace LINGUI : use this namespace
 --uppercase : generate uppercase filenames
 --check : check for missing constants or functions
@@ -506,10 +507,10 @@ Converts Lingui files to Dart source code files, generating the base classes too
 checking for missing constants or functions.
 
 ```bash
-lingui --cs --verbose language.lingui english_language.lingui german_language.lingui CS/
+lingui --cs --float --verbose language.lingui english_language.lingui german_language.lingui CS/
 ```
 
-Converts Lingui files to C# source code files.
+Converts Lingui files to C# source code files, using single precision numbers.
 
 ## Limitations
 

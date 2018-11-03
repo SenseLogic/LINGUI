@@ -20,7 +20,7 @@ namespace GAME
             HasRealQuantity;
         public int
             IntegerQuantity;
-        public float
+        public double
             RealQuantity;
         public GENRE
             Genre;
@@ -55,7 +55,7 @@ namespace GAME
             HasIntegerQuantity = false;
             HasRealQuantity = false;
             IntegerQuantity = 0;
-            RealQuantity = 0.0f;
+            RealQuantity = 0.0;
             Genre = genre;
 
             if ( quantity.Length > 0 )
@@ -76,7 +76,7 @@ namespace GAME
             HasIntegerQuantity = false;
             HasRealQuantity = false;
             IntegerQuantity = 0;
-            RealQuantity = 0.0f;
+            RealQuantity = 0.0;
             Genre = genre;
         }
 
@@ -92,7 +92,7 @@ namespace GAME
             HasIntegerQuantity = true;
             HasRealQuantity = false;
             IntegerQuantity = integer_quantity;
-            RealQuantity = ( float )integer_quantity;
+            RealQuantity = ( double )integer_quantity;
             Genre = genre;
         }
 
@@ -235,8 +235,8 @@ namespace GAME
         public PLURALITY GetFrenchCardinalPlurality(
             )
         {
-            if ( RealQuantity >= 0.0f
-                 && RealQuantity <= 1.5f )
+            if ( RealQuantity >= 0.0
+                 && RealQuantity <= 1.5 )
             {
                 return PLURALITY.One;
             }
@@ -324,8 +324,8 @@ namespace GAME
         public PLURALITY GetPortugueseCardinalPlurality(
             )
         {
-            if ( RealQuantity >= 0.0f
-                 && RealQuantity <= 1.5f )
+            if ( RealQuantity >= 0.0
+                 && RealQuantity <= 1.5 )
             {
                 return PLURALITY.One;
             }
@@ -505,8 +505,8 @@ namespace GAME
         public PLURALITY GetDanishCardinalPlurality(
             )
         {
-            if ( RealQuantity >= 0.1f
-                 && RealQuantity <= 1.6f )
+            if ( RealQuantity >= 0.1
+                 && RealQuantity <= 1.6 )
             {
                 return PLURALITY.One;
             }
@@ -661,7 +661,7 @@ namespace GAME
             }
 
             IntegerQuantity = int.Parse( integer_text );
-            RealQuantity = float.Parse( quantity.Replace( ',', '.' ), CultureInfo.InvariantCulture );
+            RealQuantity = double.Parse( quantity.Replace( ',', '.' ), CultureInfo.InvariantCulture );
         }
 
         // ~~
@@ -674,7 +674,7 @@ namespace GAME
             HasIntegerQuantity = true;
             HasRealQuantity = false;
             IntegerQuantity = integer_quantity;
-            RealQuantity = ( float )integer_quantity;
+            RealQuantity = ( double )integer_quantity;
         }
 
         // ~~

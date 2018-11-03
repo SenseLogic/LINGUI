@@ -390,17 +390,17 @@ class BASE_LANGUAGE
 
     // ~~
 
-    float GetIntegerReal(
+    double GetIntegerReal(
         int integer
         )
     {
-        return integer.to!float();
+        return integer.to!double();
     }
 
     // ~~
 
     int GetRealInteger(
-        float real_
+        double real_
         )
     {
         return real_.to!int();
@@ -426,11 +426,11 @@ class BASE_LANGUAGE
 
     // ~~
 
-    float GetTextReal(
+    double GetTextReal(
         dstring text
         )
     {
-        return text.to!float();
+        return text.to!double();
     }
 
     // ~~
@@ -488,14 +488,12 @@ class BASE_LANGUAGE
     // ~~
 
     dstring GetRealText(
-        float real_,
+        double real_,
         int minimum_fractional_digit_count = 1,
         int maximum_fractional_digit_count = 20,
         dchar dot_character = 0
         )
     {
-        bool
-            trailing_zeros_are_removed;
         long
             dot_character_index,
             fractional_digit_count;
@@ -526,16 +524,6 @@ class BASE_LANGUAGE
 
         fractional_digit_count = text.length - dot_character_index - 1;
 
-        if ( minimum_fractional_digit_count < 0 )
-        {
-            trailing_zeros_are_removed = true;
-            minimum_fractional_digit_count = 0;
-        }
-        else
-        {
-            trailing_zeros_are_removed = false;
-        }
-
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
             text ~= "00000000000000000000"d[ 0 .. minimum_fractional_digit_count - fractional_digit_count ];
@@ -549,7 +537,7 @@ class BASE_LANGUAGE
             fractional_digit_count = maximum_fractional_digit_count;
         }
 
-        if ( trailing_zeros_are_removed )
+        if ( minimum_fractional_digit_count < maximum_fractional_digit_count )
         {
             while ( fractional_digit_count > minimum_fractional_digit_count
                     && text[ dot_character_index + fractional_digit_count ] == '0' )
@@ -557,7 +545,7 @@ class BASE_LANGUAGE
                 --fractional_digit_count;
             }
 
-            text = text[ 0 .. dot_character_index + fractional_digit_count ];
+            text = text[ 0 .. dot_character_index + fractional_digit_count + 1 ];
         }
 
         if ( fractional_digit_count == 0 )

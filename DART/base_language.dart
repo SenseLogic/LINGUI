@@ -544,8 +544,6 @@ class BASE_LANGUAGE
         ]
         )
     {
-        bool
-            trailing_zeros_are_removed;
         int
             dot_character_index,
             fractional_digit_count;
@@ -576,16 +574,6 @@ class BASE_LANGUAGE
 
         fractional_digit_count = text.length - dot_character_index - 1;
 
-        if ( minimum_fractional_digit_count < 0 )
-        {
-            trailing_zeros_are_removed = true;
-            minimum_fractional_digit_count = 0;
-        }
-        else
-        {
-            trailing_zeros_are_removed = false;
-        }
-
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
             text += "00000000000000000000".substring( 0, minimum_fractional_digit_count - fractional_digit_count );
@@ -599,7 +587,7 @@ class BASE_LANGUAGE
             fractional_digit_count = maximum_fractional_digit_count;
         }
 
-        if ( trailing_zeros_are_removed )
+        if ( minimum_fractional_digit_count < maximum_fractional_digit_count )
         {
             while ( fractional_digit_count > minimum_fractional_digit_count
                     && text[ dot_character_index + fractional_digit_count ] == '0' )
@@ -607,7 +595,7 @@ class BASE_LANGUAGE
                 --fractional_digit_count;
             }
 
-            text = text.substring( 0, dot_character_index + fractional_digit_count );
+            text = text.substring( 0, dot_character_index + fractional_digit_count + 1 );
         }
 
         if ( fractional_digit_count == 0 )

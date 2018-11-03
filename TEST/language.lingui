@@ -91,8 +91,9 @@ LANGUAGE
         $opposite_boolean ~ " / " ~ $opposite_integer ~ " / " ~ $opposite_real ~ " / " ~ opposite_string ~ " / " ~ $opposite_translation ~ " / " ~ $inverse_translation ~ "\n"
         GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "\n"
         GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n"
-        GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, -1 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " \n"
+        GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, 0 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " \n"
         GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DotCharacter ) ~ "\n"
+        GetRealText( -12.000123456, 0, 3 ) ~ " / " ~ GetRealText( -12.000123456, 1, 3 ) ~ " / " ~ GetRealText( -12.000123456, 3, 3 ) ~ " / " ~ GetRealText( -12.000123456 ) ~ " \n"
         GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n"
         GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n"
 

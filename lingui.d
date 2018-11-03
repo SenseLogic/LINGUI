@@ -313,7 +313,7 @@ class RULE
         dstring text
         )
     {
-        if ( ( CsOptionIsEnabled || DOptionIsEnabled )
+        if ( FloatOptionIsEnabled
              && text.indexOf( '.' ) >= 0 )
         {
             return text ~ "f";
@@ -1057,14 +1057,7 @@ class RULE
 
         if ( real_variable_name_array.length > 0 )
         {
-            if ( CsOptionIsEnabled || DOptionIsEnabled )
-            {
-                code.AddLine( "float" );
-            }
-            else if ( DartOptionIsEnabled )
-            {
-                code.AddLine( "double" );
-            }
+            code.AddLine( GetRealType() );
 
             foreach ( real_variable_name_index, real_variable_name; real_variable_name_array )
             {
@@ -1340,14 +1333,7 @@ class RULE
         }
         else if ( IsRealFunction )
         {
-            if ( CsOptionIsEnabled || DOptionIsEnabled )
-            {
-                code.AddText( "float " );
-            }
-            else if ( DartOptionIsEnabled )
-            {
-                code.AddText( "double " );
-            }
+            code.AddText( GetRealType() ~ " " );
         }
         else if ( IsStringFunction )
         {
@@ -1389,14 +1375,7 @@ class RULE
             }
             else if ( parameter_name.startsWith( '%' ) )
             {
-                if ( CsOptionIsEnabled || DOptionIsEnabled )
-                {
-                    code.AddText( "float " ~ parameter_name[ 1 .. $ ] );
-                }
-                else if ( DartOptionIsEnabled )
-                {
-                    code.AddText( "double " ~ parameter_name[ 1 .. $ ] );
-                }
+                code.AddText( GetRealType() ~ " " ~ parameter_name[ 1 .. $ ] );
             }
             else
             {
@@ -1435,7 +1414,7 @@ class RULE
             }
             else if ( IsRealFunction )
             {
-                if ( CsOptionIsEnabled || DOptionIsEnabled )
+                if ( FloatOptionIsEnabled )
                 {
                     code.AddLine( "return 0.0f;" );
                 }
@@ -2213,6 +2192,17 @@ class SCRIPT
             file_text = file_text.replace( "lingui", Namespace );
         }
 
+        if ( FloatOptionIsEnabled )
+        {
+            file_text
+                = file_text
+                      .replace( "double", "float" )
+                      .replace( "0.0", "0.0f" )
+                      .replace( "0.1", "0.1f" )
+                      .replace( "1.5", "1.5f" )
+                      .replace( "1.6", "1.6f" );
+        }
+
         if ( VerboseOptionIsEnabled )
         {
             writeln( "Writing file : ", output_file_path );
@@ -2285,6 +2275,7 @@ bool
     CsOptionIsEnabled,
     DOptionIsEnabled,
     DartOptionIsEnabled,
+    FloatOptionIsEnabled,
     UpperCaseOptionIsEnabled,
     VerboseOptionIsEnabled;
 dstring
@@ -2355,6 +2346,21 @@ dstring GetExecutablePath(
 
 // ~~
 
+dstring GetRealType(
+    )
+{
+    if ( FloatOptionIsEnabled )
+    {
+        return "float";
+    }
+    else
+    {
+        return "double";
+    }
+}
+
+// ~~
+
 void main(
     string[] argument_array
     )
@@ -2370,6 +2376,7 @@ void main(
     DOptionIsEnabled = false;
     DartOptionIsEnabled = false;
     BaseOptionIsEnabled = false;
+    FloatOptionIsEnabled = false;
     BaseNamespace = "";
     Namespace = "";
     UpperCaseOptionIsEnabled = false;
@@ -2407,6 +2414,10 @@ void main(
         {
             BaseOptionIsEnabled = true;
         }
+        else if ( option == "--float" )
+        {
+            FloatOptionIsEnabled = true;
+        }
         else if ( option == "--namespace"
                   && argument_array.length >= 1 )
         {
@@ -2430,6 +2441,11 @@ void main(
         {
             Abort( "Invalid option : " ~ option );
         }
+    }
+
+    if ( DartOptionIsEnabled )
+    {
+        FloatOptionIsEnabled = false;
     }
 
     if ( Namespace == "" )
@@ -2486,6 +2502,7 @@ void main(
         writeln( "    --d" );
         writeln( "    --dart" );
         writeln( "    --base" );
+        writeln( "    --float" );
         writeln( "    --namespace LINGUI" );
         writeln( "    --uppercase" );
         writeln( "    --check" );
