@@ -2200,7 +2200,8 @@ class SCRIPT
                       .replace( "0.0", "0.0f" )
                       .replace( "0.1", "0.1f" )
                       .replace( "1.5", "1.5f" )
-                      .replace( "1.6", "1.6f" );
+                      .replace( "1.6", "1.6f" )
+                      .replace( "= 12,", "= 6," );
         }
 
         if ( VerboseOptionIsEnabled )

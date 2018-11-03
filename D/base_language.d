@@ -6,6 +6,7 @@ import lingui.genre;
 import lingui.plurality;
 import lingui.translation;
 import std.conv : to;
+import std.format : format;
 import std.string : endsWith, indexOf, startsWith;
 
 // -- TYPES
@@ -471,14 +472,14 @@ class BASE_LANGUAGE
 
             if ( digit_count < minimum_digit_count )
             {
-                text = "-" ~ "00000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text[ 1 .. $ ];
+                text = "-" ~ "0000000000000000000000000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text[ 1 .. $ ];
             }
         }
         else
         {
             if ( digit_count < minimum_digit_count )
             {
-                text = "00000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text;
+                text = "0000000000000000000000000000000000000000"d[ 0 .. minimum_digit_count - digit_count ] ~ text;
             }
         }
 
@@ -490,7 +491,7 @@ class BASE_LANGUAGE
     dstring GetRealText(
         double real_,
         int minimum_fractional_digit_count = 1,
-        int maximum_fractional_digit_count = 20,
+        int maximum_fractional_digit_count = 12,
         dchar dot_character = 0
         )
     {
@@ -500,7 +501,7 @@ class BASE_LANGUAGE
         dstring
             text;
 
-        text = real_.to!dstring();
+        text = format( "%.*f", maximum_fractional_digit_count, real_ ).to!dstring();
 
         if ( dot_character == 0 )
         {
@@ -526,7 +527,7 @@ class BASE_LANGUAGE
 
         if ( fractional_digit_count < minimum_fractional_digit_count )
         {
-            text ~= "00000000000000000000"d[ 0 .. minimum_fractional_digit_count - fractional_digit_count ];
+            text ~= "0000000000000000000000000000000000000000"d[ 0 .. minimum_fractional_digit_count - fractional_digit_count ];
 
             fractional_digit_count = minimum_fractional_digit_count;
         }

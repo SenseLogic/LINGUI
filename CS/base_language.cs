@@ -493,14 +493,14 @@ namespace LINGUI
 
                 if ( digit_count < minimum_digit_count )
                 {
-                    text = "-" + "00000000000000000000".Substring( 0, minimum_digit_count - digit_count ) + text.Substring( 1 );
+                    text = "-" + "0000000000000000000000000000000000000000".Substring( 0, minimum_digit_count - digit_count ) + text.Substring( 1 );
                 }
             }
             else
             {
                 if ( digit_count < minimum_digit_count )
                 {
-                    text = "00000000000000000000".Substring( 0, minimum_digit_count - digit_count ) + text;
+                    text = "0000000000000000000000000000000000000000".Substring( 0, minimum_digit_count - digit_count ) + text;
                 }
             }
 
@@ -512,7 +512,7 @@ namespace LINGUI
         public string GetRealText(
             double real,
             int minimum_fractional_digit_count = 1,
-            int maximum_fractional_digit_count = 20,
+            int maximum_fractional_digit_count = 12,
             char dot_character = '\0'
             )
         {
@@ -548,7 +548,7 @@ namespace LINGUI
 
             if ( fractional_digit_count < minimum_fractional_digit_count )
             {
-                text += "00000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
+                text += "0000000000000000000000000000000000000000".Substring( 0, minimum_fractional_digit_count - fractional_digit_count );
 
                 fractional_digit_count = minimum_fractional_digit_count;
             }
