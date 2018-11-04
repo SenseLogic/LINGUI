@@ -550,7 +550,7 @@ class BASE_LANGUAGE
         String
             text;
 
-        text = real.toString();
+        text = real.toStringAsFixed( maximum_fractional_digit_count );
 
         if ( dot_character == '\0' )
         {

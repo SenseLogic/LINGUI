@@ -522,7 +522,7 @@ namespace GAME
             string
                 text;
 
-            text = real.ToString();
+            text = real.ToString( "F" + maximum_fractional_digit_count.ToString() );
 
             if ( dot_character == '\0' )
             {
