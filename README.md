@@ -455,6 +455,21 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
+### Translation dictionaries
+
+When using the `--mirror` option, missing constants are automatically translated using the entries of the matching `.ld` dictionary files.
+
+The dictionary entries must appear at matching line in each file. An empty line is considered as a missing entry.
+
+Newline characters are replaced by a special four-character sequence (` :: `).
+
+Therefore dictionaries are fully compatible with online translation services like :
+
+*   [Online Translator](https://www.online-translator.com)
+*   [Google Translate](https://translate.google.com)
+*   [Bing Translator](https://www.bing.com/translator)
+*   [Yandex Translate](https://translate.yandex.com)
+
 ### Case conventions
 
 *   Class names : `UPPER_CASE`;
@@ -497,17 +512,6 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 ```
 
 The `--cs`, `--d` and `--dart` options are mutually exclusive.
-
-The `--mirror` option uses `.ld` dictionary files to find the translation of missing constants in `.lg` files.
-
-The dictionary entries must appear at the same line for each language. An empty line is considered as a missing entry
-
-Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are compatible with online translation services like :
-
-*   [Online Translator](https://www.online-translator.com)
-*   [Google Translate](https://translate.google.com)
-*   [Bing Translator](https://www.bing.com/translator)
-*   [Yandex Translate](https://translate.yandex.com)
 
 ### Examples
 
