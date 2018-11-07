@@ -466,7 +466,6 @@ Newline characters are replaced by a special four-character sequence (` :: `), s
 *   [Online Translator](https://www.online-translator.com)
 *   [Google Translate](https://translate.google.com)
 *   [Bing Translator](https://www.bing.com/translator)
-*   [Yandex Translate](https://translate.yandex.com)
 
 ### Case conventions
 
