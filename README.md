@@ -461,7 +461,7 @@ When using the `--mirror` option, missing constants are automatically translated
 
 The dictionary entries must appear at matching lines in each file. An empty line is considered as a missing entry.
 
-Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are fully compatible with online translation services like :
+Newline characters are replaced by the special four-character sequence '` :: `', so that dictionaries are fully compatible with online translation services like :
 
 *   [Online Translator](https://www.online-translator.com)
 *   [Google Translate](https://translate.google.com)
