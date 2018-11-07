@@ -21,12 +21,13 @@
 // -- IMPORTS
 
 import core.stdc.stdlib : exit;
+import std.algorithm : countUntil;
 import std.array : replicate;
 import std.conv : to;
-import std.file : readText, thisExePath, write;
+import std.file : exists, readText, thisExePath, write, FileException;
 import std.path : dirName;
 import std.stdio : writeln;
-import std.string : endsWith, indexOf, replace, startsWith, split, strip, stripRight, toLower, toUpper;
+import std.string : endsWith, indexOf, join, replace, startsWith, split, strip, stripRight, toLower, toUpper;
 
 // -- TYPES
 
@@ -236,15 +237,6 @@ class RULE
         writeln( "*** ERROR : ", message );
 
         exit( -1 );
-    }
-
-    // ~~
-
-    void Warn(
-        dstring message
-        )
-    {
-        writeln( "*** WARNING : ", message );
     }
 
     // ~~
@@ -930,7 +922,7 @@ class RULE
 
                         if ( !constant_is_found )
                         {
-                            constant_rule.Warn( "Missing " ~ TokenArray[ 0 ] ~ " constant in " ~ language_rule.TokenArray[ 0 ] ~ " : " ~ constant_rule.Text );
+                            Warn( "Missing " ~ TokenArray[ 0 ] ~ " constant in " ~ language_rule.TokenArray[ 0 ] ~ " : " ~ constant_rule.Text );
                         }
                     }
                 }
@@ -974,7 +966,7 @@ class RULE
 
                 if ( !function_is_found )
                 {
-                    base_function_rule.Warn( "Missing " ~ base_language_rule.TokenArray[ 0 ] ~ " function in " ~ TokenArray[ 0 ] ~ " : " ~ base_function_rule.Text );
+                    Warn( "Missing " ~ base_language_rule.TokenArray[ 0 ] ~ " function in " ~ TokenArray[ 0 ] ~ " : " ~ base_function_rule.Text );
                 }
             }
         }
@@ -1743,12 +1735,7 @@ class RULE
             output_file_path ~= ".dart";
         }
 
-        if ( VerboseOptionIsEnabled )
-        {
-            writeln( "Writing file : ", output_file_path );
-        }
-
-        output_file_path.write( code.GetText().to!string() );
+        output_file_path.WriteText( code.GetText() );
     }
 
     // ~~
@@ -2049,10 +2036,394 @@ class RULE
 
 // ~~
 
+class BLOCK
+{
+    // -- ATTRIBUTES
+
+    long
+        Level,
+        IndentationSpaceCount;
+    dstring[]
+        LineArray;
+    BLOCK
+        SuperBlock;
+    BLOCK[]
+        SubBlockArray;
+
+    // -- CONSTRUCTORS
+
+    this(
+        long indentation_space_count
+        )
+    {
+        IndentationSpaceCount = indentation_space_count;
+    }
+
+    // -- INQUIRIES
+
+    bool IsComment(
+        )
+    {
+        return LineArray[ 0 ][ IndentationSpaceCount .. $ ].startsWith( "//" );
+    }
+
+    // ~~
+
+    bool IsConstant(
+        )
+    {
+        return LineArray[ 0 ][ IndentationSpaceCount .. $ ].startsWith( '"' );
+    }
+
+    // ~~
+
+    void AddLineArray(
+        ref dstring[] line_array
+        )
+    {
+        line_array ~= LineArray;
+
+        foreach ( sub_block; SubBlockArray )
+        {
+            sub_block.AddLineArray( line_array );
+        }
+    }
+
+    // ~~
+
+    dstring[] GetLineArray(
+        )
+    {
+        dstring[]
+            line_array;
+
+        AddLineArray( line_array );
+
+        return line_array;
+    }
+
+    // ~~
+
+    dstring GetText(
+        )
+    {
+        return GetLineArray().join( '\n' );
+    }
+
+    // ~~
+
+    void Dump(
+        )
+    {
+        writeln( Level, " / ", IndentationSpaceCount, " : " );
+        writeln( LineArray.join( '\n' ) );
+
+        foreach ( sub_block; SubBlockArray )
+        {
+            sub_block.Dump();
+        }
+    }
+
+    // ~~
+
+    dstring GetTargetTranslation(
+        dstring source_translation,
+        FILE source_dictionary_file,
+        FILE target_dictionary_file
+        )
+    {
+        dstring
+            target_translation;
+        long
+            source_line_index;
+
+        source_line_index = source_dictionary_file.LineArray.countUntil( source_translation );
+
+        if ( source_line_index >= 0 )
+        {
+            if ( source_line_index < target_dictionary_file.LineArray.length
+                 && target_dictionary_file.LineArray[ source_line_index ].length > 0 )
+            {
+                target_translation = target_dictionary_file.LineArray[ source_line_index ];
+            }
+            else
+            {
+                target_translation = "?" ~ source_translation;
+
+                target_dictionary_file.MissingLineArray ~= source_translation;
+            }
+        }
+        else
+        {
+            target_translation = "?" ~ source_translation;
+
+            while ( source_dictionary_file.LineArray.length > 0
+                    && source_dictionary_file.LineArray[ $ -1 ].length == 0 )
+            {
+                --source_dictionary_file.LineArray.length;
+            }
+
+            source_dictionary_file.LineArray ~= source_translation;
+            source_dictionary_file.MissingLineArray ~= source_translation;
+            target_dictionary_file.MissingLineArray ~= source_translation;
+        }
+
+        return target_translation.replace( " :: ", "\\n" );
+    }
+
+    // ~~
+
+    dstring GetTargetLine(
+        dstring source_line,
+        FILE source_file,
+        FILE target_file
+        )
+    {
+        bool
+            it_is_in_character_literal,
+            it_is_in_string_literal;
+        dchar
+            source_character;
+        dstring
+            source_translation,
+            target_line;
+        long
+            source_character_index;
+
+        it_is_in_string_literal = false;
+        it_is_in_character_literal = false;
+
+        for ( source_character_index = 0;
+              source_character_index < source_line.length;
+              ++source_character_index )
+        {
+            source_character = source_line[ source_character_index ];
+
+            if ( it_is_in_string_literal )
+            {
+                if ( source_character == '"' )
+                {
+                    source_translation ~= source_character;
+                    target_line ~= GetTargetTranslation( source_translation, source_file.DictionaryFile, target_file.DictionaryFile );
+
+                    it_is_in_string_literal = false;
+                }
+                else if ( source_character == '\\' )
+                {
+                    if ( source_character_index + 1 < source_line.length )
+                    {
+                        ++source_character_index;
+                        source_character = source_line[ source_character_index ];
+
+                        if ( source_character == 'n' )
+                        {
+                            source_translation ~= " :: ";
+                        }
+                        else
+                        {
+                            source_translation ~= '\\';
+                            source_translation ~= source_character;
+                        }
+                    }
+                    else
+                    {
+                        source_translation ~= source_character;
+                        target_line ~= source_translation;
+                    }
+                }
+                else
+                {
+                    source_translation ~= source_character;
+                }
+            }
+            else if ( it_is_in_character_literal )
+            {
+                target_line ~= source_character;
+
+                if ( source_character == '\'' )
+                {
+                    it_is_in_character_literal = false;
+                }
+                else if ( source_character == '\\'
+                          && source_character_index + 1 < source_line.length )
+                {
+                    ++source_character_index;
+
+                    target_line ~= source_line[ source_character_index ];
+                }
+            }
+            else if ( source_character == '"' )
+            {
+                source_translation = "";
+                source_translation ~= source_character;
+
+                it_is_in_string_literal = true;
+            }
+            else if ( source_character == '\'' )
+            {
+                target_line ~= source_character;
+
+                it_is_in_character_literal = true;
+            }
+            else
+            {
+                target_line ~= source_character;
+            }
+        }
+
+        return target_line;
+    }
+
+    // ~~
+
+    BLOCK GetTargetBlock(
+        BLOCK super_block,
+        FILE source_file,
+        FILE target_file
+        )
+    {
+        BLOCK
+            target_block;
+
+        target_block = new BLOCK( IndentationSpaceCount );
+        target_block.Level = Level;
+
+        foreach ( line; LineArray )
+        {
+            if ( Level <= 1 )
+            {
+                target_block.LineArray ~= line;
+            }
+            else
+            {
+                target_block.LineArray ~= GetTargetLine( line, source_file, target_file );
+            }
+        }
+
+        target_block.SuperBlock = super_block;
+
+        foreach ( sub_block; SubBlockArray )
+        {
+            target_block.SubBlockArray ~= sub_block.GetTargetBlock( this, source_file, target_file );
+        }
+
+        return target_block;
+    }
+
+    // -- OPERATIONS
+
+    void AddSubBlock(
+        BLOCK sub_block
+        )
+    {
+        SubBlockArray ~= sub_block;
+
+        sub_block.Level = Level + 1;
+        sub_block.SuperBlock = this;
+    }
+}
+
+// ~~
+
+class FILE
+{
+    // -- ATTRIBUTES
+
+    dstring
+        Path;
+    dstring[]
+        LineArray;
+    FILE
+        DictionaryFile;
+    BLOCK
+        Block,
+        LanguageBlock;
+    dstring
+        LanguageName,
+        BaseLanguageName;
+    dstring[]
+        MissingLineArray;
+
+    // -- INQUIRIES
+
+    dstring GetText(
+        )
+    {
+        return LineArray.join( '\n' );
+    }
+
+    // ~~
+
+    void Write(
+        )
+    {
+        Path.WriteText( GetText() );
+    }
+
+    // -- OPERATIONS
+
+    void ParseBlocks(
+        )
+    {
+        long
+            indentation_space_count;
+        BLOCK
+            block,
+            super_block;
+
+        Block = new BLOCK( -1 );
+        Block.Level = -1;
+
+        block = Block;
+
+        foreach ( line_index, line; LineArray )
+        {
+            indentation_space_count = line.GetIndentationSpaceCount();
+
+            if ( indentation_space_count > block.IndentationSpaceCount )
+            {
+                super_block = block;
+
+                block = new BLOCK( indentation_space_count );
+                super_block.AddSubBlock( block );
+            }
+            else if ( line.length > 0 )
+            {
+                if ( indentation_space_count < block.IndentationSpaceCount )
+                {
+                    super_block = block;
+
+                    while ( indentation_space_count <= super_block.IndentationSpaceCount )
+                    {
+                        super_block = super_block.SuperBlock;
+                    }
+                }
+                else
+                {
+                    super_block = block.SuperBlock;
+                }
+
+                block = new BLOCK( indentation_space_count);
+                super_block.AddSubBlock( block );
+            }
+
+            block.LineArray ~= line.stripRight();
+        }
+
+        assert( Block.GetText() == GetText() );
+    }
+}
+
+// ~~
+
 class SCRIPT
 {
     // -- ATTRIBUTES
 
+    FILE[]
+        FileArray;
+    FILE
+        SourceFile;
     RULE
         Rule;
 
@@ -2073,7 +2444,183 @@ class SCRIPT
 
     // -- OPERATIONS
 
-    void ReadFiles(
+    void ParseBlocks(
+        )
+    {
+        dstring
+            line;
+        FILE
+            file;
+
+        foreach ( file_path; FilePathArray )
+        {
+            file = new FILE();
+            file.Path = file_path;
+            file.LineArray = file.Path.ReadLineArray();
+            file.ParseBlocks();
+            file.DictionaryFile = new FILE();
+            file.DictionaryFile.Path = file_path.replace( ".lg", ".ld" );
+
+            if ( file.DictionaryFile.Path.exists() )
+            {
+                file.DictionaryFile.LineArray = file.DictionaryFile.Path.ReadLineArray();
+            }
+
+            foreach ( block; file.Block.SubBlockArray )
+            {
+                line = block.LineArray[ 0 ];
+
+                if ( line.length > 0
+                     && line[ 0 ] >= 'A'
+                     && line[ 0 ] <= 'Z'
+                     && line.indexOf( ':' ) > 0 )
+                {
+                    file.LanguageBlock = block;
+                    file.LanguageName = line.split( ':' )[ 0 ].strip();
+                    file.BaseLanguageName = line.split( ':' )[ 1 ].strip();
+
+                    if ( file.LanguageName == SourceLanguageName )
+                    {
+                        SourceFile = file;
+                    }
+
+                    break;
+                }
+            }
+
+            FileArray ~= file;
+        }
+    }
+
+    // ~~
+
+    void WriteMirroredFiles(
+        )
+    {
+        foreach ( target_file; FileArray )
+        {
+            if ( target_file.BaseLanguageName == SourceFile.BaseLanguageName
+                 && target_file.DictionaryFile.MissingLineArray.length > 0 )
+            {
+                PrintError( "Missing entries in dictionary file : " ~ target_file.DictionaryFile.Path );
+                writeln( target_file.DictionaryFile.MissingLineArray.join( '\n' ) );
+            }
+        }
+
+        foreach ( target_file; FileArray )
+        {
+            if ( target_file.BaseLanguageName == SourceFile.BaseLanguageName
+                 && target_file.LanguageName != SourceFile.LanguageName )
+            {
+                if ( target_file.DictionaryFile.MissingLineArray.length == 0 )
+                {
+                    target_file.Write();
+                }
+                else
+                {
+                    PrintError( "Can't mirror file : " ~ target_file.Path );
+                    writeln( target_file.GetText() );
+                }
+            }
+        }
+    }
+
+    // ~~
+
+    void MirrorBlocks(
+        )
+    {
+        long
+            source_block_index,
+            target_block_index;
+        BLOCK
+            source_language_block,
+            source_block,
+            target_language_block,
+            target_block;
+
+        if ( SourceFile !is null )
+        {
+            source_language_block = SourceFile.LanguageBlock;
+
+            foreach ( target_file; FileArray )
+            {
+                if ( target_file.BaseLanguageName == SourceFile.BaseLanguageName
+                     && target_file.LanguageName != SourceFile.LanguageName )
+                {
+                    target_language_block = target_file.LanguageBlock;
+
+                    for ( source_block_index = 0;
+                          source_block_index < source_language_block.SubBlockArray.length;
+                          ++source_block_index )
+                    {
+                        source_block = source_language_block.SubBlockArray[ source_block_index ];
+
+                        if ( source_block.IsComment()
+                             || source_block.IsConstant() )
+                        {
+                            for ( target_block_index = source_block_index;
+                                  target_block_index < target_language_block.SubBlockArray.length;
+                                  ++target_block_index )
+                            {
+                                target_block = target_language_block.SubBlockArray[ target_block_index ];
+
+                                if ( target_block.LineArray[ 0 ] == source_block.LineArray[ 0 ] )
+                                {
+                                    if ( target_block_index > source_block_index )
+                                    {
+                                        target_language_block.SubBlockArray
+                                            = target_language_block.SubBlockArray[ 0 .. target_block_index ]
+                                              ~ target_language_block.SubBlockArray[ target_block_index + 1 .. $ ];
+
+                                         target_language_block.SubBlockArray
+                                            = target_language_block.SubBlockArray[ 0 .. source_block_index ]
+                                              ~ target_block
+                                              ~ target_language_block.SubBlockArray[ source_block_index .. $ ];
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if ( target_block_index >= target_language_block.SubBlockArray.length )
+                            {
+                                 target_language_block.SubBlockArray
+                                    = target_language_block.SubBlockArray[ 0 .. source_block_index ]
+                                      ~ source_block.GetTargetBlock( target_language_block, SourceFile, target_file )
+                                      ~ target_language_block.SubBlockArray[ source_block_index .. $ ];
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    target_file.LineArray = target_file.Block.GetLineArray();
+                }
+            }
+
+            WriteMirroredFiles();
+        }
+        else
+        {
+            Abort( "Source language not found : " ~ SourceLanguageName );
+        }
+    }
+
+    // ~~
+
+    void MirrorFiles(
+        )
+    {
+        ParseBlocks();
+        MirrorBlocks();
+    }
+
+    // ~~
+
+    void ParseRules(
         )
     {
         dstring
@@ -2088,20 +2635,21 @@ class SCRIPT
 
         prior_rule = null;
 
-        foreach ( input_file_path; InputFilePathArray )
+        foreach ( file_path; FilePathArray )
         {
-            line_array = input_file_path.ReadLineArray();
+            line_array = file_path.ReadLineArray();
 
             foreach ( line_index, line; line_array )
             {
-                if ( !line.startsWith( "//" ) )
+                rule_text = line.strip();
+
+                if ( !rule_text.startsWith( "//" ) )
                 {
-                    rule_text = line.strip();
 
                     if ( rule_text.length > 0 )
                     {
                         rule = new RULE();
-                        rule.FilePath = input_file_path;
+                        rule.FilePath = file_path;
                         rule.LineIndex = line_index;
                         rule.Text = rule_text;
                         rule.IndentationSpaceCount = line.GetIndentationSpaceCount();
@@ -2181,7 +2729,7 @@ class SCRIPT
             Abort( "Invalid output folder path" );
         }
 
-        file_text = input_file_path.readText().to!dstring();
+        file_text = input_file_path.ReadText();
 
         if ( CsOptionIsEnabled )
         {
@@ -2204,12 +2752,7 @@ class SCRIPT
                       .replace( "= 12,", "= 6," );
         }
 
-        if ( VerboseOptionIsEnabled )
-        {
-            writeln( "Writing file : ", output_file_path );
-        }
-
-        output_file_path.write( file_text.to!string() );
+        output_file_path.WriteText( file_text );
     }
 
     // ~~
@@ -2256,15 +2799,21 @@ class SCRIPT
 
     // -- OPERATIONS
 
-    void ExecuteScript(
+    void Execute(
         )
     {
-        SCRIPT
-            script;
+        if ( MirrorOptionIsEnabled )
+        {
+            MirrorFiles();
+        }
 
-        script = new SCRIPT();
-        script.ReadFiles();
-        script.WriteFiles();
+        if ( CsOptionIsEnabled
+             || DOptionIsEnabled
+             || DartOptionIsEnabled )
+        {
+            ParseRules();
+            WriteFiles();
+        }
     }
 }
 
@@ -2277,22 +2826,55 @@ bool
     DOptionIsEnabled,
     DartOptionIsEnabled,
     FloatOptionIsEnabled,
-    UpperCaseOptionIsEnabled,
-    VerboseOptionIsEnabled;
+    PreviewOptionIsEnabled,
+    MirrorOptionIsEnabled,
+    UpperCaseOptionIsEnabled;
 dstring
     BaseNamespace,
     Namespace,
-    OutputFolderPath;
+    OutputFolderPath,
+    SourceLanguageName;
 dstring[]
-    InputFilePathArray;
+    FilePathArray;
 
 // -- FUNCTIONS
+
+void Warn(
+    dstring message
+    )
+{
+    writeln( "*** WARNING : ", message );
+}
+
+// ~~
+
+void PrintError(
+    dstring message
+    )
+{
+    writeln( "*** ERROR : ", message );
+}
+
+// ~~
 
 void Abort(
     dstring message
     )
 {
-    writeln( "*** ERROR : ", message );
+    PrintError( message );
+
+    exit( -1 );
+}
+
+// ~~
+
+void Abort(
+    dstring message,
+    FileException file_exception
+    )
+{
+    PrintError( message );
+    PrintError( file_exception.msg.to!dstring() );
 
     exit( -1 );
 }
@@ -2319,21 +2901,73 @@ long GetIndentationSpaceCount(
 
 // ~~
 
-dstring[] ReadLineArray(
+dstring ReadText(
     dstring file_path
     )
 {
     dstring
         file_text;
 
-    if ( VerboseOptionIsEnabled )
+    writeln( "Reading file : ", file_path );
+
+    try
     {
-        writeln( "Reading file : ", file_path );
+        file_text = file_path.readText().to!dstring();
+    }
+    catch ( FileException file_exception )
+    {
+        Abort( "Can't read file : " ~ file_path, file_exception );
     }
 
-    file_text = file_path.readText().to!dstring();
+    return file_text;
+}
 
-    return file_text.replace( "\t", "    " ).replace( "\r", "" ).split( '\n' );
+// ~~
+
+void WriteText(
+    dstring file_path,
+    dstring file_text
+    )
+{
+    writeln( "Writing file : ", file_path );
+
+    if ( PreviewOptionIsEnabled )
+    {
+        writeln( file_text );
+    }
+    else
+    {
+        try
+        {
+            file_path.write( file_text.to!string() );
+        }
+        catch ( FileException file_exception )
+        {
+            Abort( "Can't write file : " ~ file_path, file_exception );
+        }
+    }
+}
+
+// ~~
+
+dstring[] ReadLineArray(
+    dstring file_path
+    )
+{
+    dstring
+        file_text;
+    dstring[]
+        line_array;
+
+    file_text = file_path.ReadText();
+    line_array = file_text.replace( "\t", "    " ).replace( "\r", "" ).split( '\n' );
+
+    foreach ( ref line; line_array )
+    {
+        line = line.stripRight();
+    }
+
+    return line_array;
 }
 
 // ~~
@@ -2373,6 +3007,8 @@ void main(
 
     argument_array = argument_array[ 1 .. $ ];
 
+    MirrorOptionIsEnabled = false;
+    SourceLanguageName = "";
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
     DartOptionIsEnabled = false;
@@ -2382,8 +3018,8 @@ void main(
     Namespace = "";
     UpperCaseOptionIsEnabled = false;
     CheckOptionIsEnabled = false;
-    VerboseOptionIsEnabled = false;
-    InputFilePathArray = [];
+    PreviewOptionIsEnabled = false;
+    FilePathArray = [];
     OutputFolderPath = "";
 
     while ( argument_array.length >= 1
@@ -2393,9 +3029,17 @@ void main(
 
         argument_array = argument_array[ 1 .. $ ];
 
-        if ( option == "--cs"
-             && !DOptionIsEnabled
-             && !DartOptionIsEnabled )
+        if ( option == "--mirror"
+             && argument_array.length >= 1 )
+        {
+            MirrorOptionIsEnabled = true;
+            SourceLanguageName = argument_array[ 0 ].to!dstring();
+
+            argument_array = argument_array[ 1 .. $ ];
+        }
+        else if ( option == "--cs"
+                  && !DOptionIsEnabled
+                  && !DartOptionIsEnabled )
         {
             CsOptionIsEnabled = true;
         }
@@ -2434,9 +3078,9 @@ void main(
         {
             CheckOptionIsEnabled = true;
         }
-        else if ( option == "--verbose" )
+        else if ( option == "--preview" )
         {
-            VerboseOptionIsEnabled = true;
+            PreviewOptionIsEnabled = true;
         }
         else
         {
@@ -2449,7 +3093,7 @@ void main(
         FloatOptionIsEnabled = false;
     }
 
-    if ( Namespace == "" )
+    if ( Namespace.length == 0 )
     {
         if ( CsOptionIsEnabled )
         {
@@ -2475,9 +3119,9 @@ void main(
     }
 
     while ( argument_array.length >= 1
-            && argument_array[ 0 ].endsWith( ".lingui" ) )
+            && argument_array[ 0 ].endsWith( ".lg" ) )
     {
-        InputFilePathArray ~= argument_array[ 0 ].to!dstring();
+        FilePathArray ~= argument_array[ 0 ].to!dstring();
 
         argument_array = argument_array[ 1 .. $ ];
     }
@@ -2490,15 +3134,20 @@ void main(
         argument_array = argument_array[ 1 .. $ ];
     }
 
-    if ( argument_array.length == 0 )
+    if ( argument_array.length == 0
+         && FilePathArray.length > 0
+         && ( ( CsOptionIsEnabled || DOptionIsEnabled || DartOptionIsEnabled )
+                && OutputFolderPath.length > 0 )
+              || MirrorOptionIsEnabled )
     {
         script = new SCRIPT();
-        script.ExecuteScript();
+        script.Execute();
     }
     else
     {
-        writeln( "Usage : lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/" );
+        writeln( "Usage : lingui [options] language.lg first_language.lg second_language.lg ... OUTPUT_FOLDER/" );
         writeln( "Options :" );
+        writeln( "    --mirror ENGLISH_LANGUAGE" );
         writeln( "    --cs" );
         writeln( "    --d" );
         writeln( "    --dart" );
@@ -2507,10 +3156,10 @@ void main(
         writeln( "    --namespace LINGUI" );
         writeln( "    --uppercase" );
         writeln( "    --check" );
-        writeln( "    --verbose" );
+        writeln( "    --preview" );
         writeln( "Examples :" );
-        writeln( "    lingui --cs --base --namespace GAME --verbose test.lingui CS/" );
-        writeln( "    lingui --d --verbose test.lingui D/" );
+        writeln( "    lingui --dart --check --base --namespace game language.lg english_language.lg german_language.lg DART/" );
+        writeln( "    lingui --cs --float language.lg english_language.lg german_language.lg CS/" );
 
         Abort( "Invalid arguments : " ~ argument_array.to!dstring() );
     }

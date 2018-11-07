@@ -1,4 +1,11 @@
+// -- TYPES
+
 ENGLISH_LANGUAGE : LANGUAGE
+
+    // -- CONSTANTS
+
+    "Language:"
+        "Language:"
 
     "English"
         "English"
@@ -6,14 +13,22 @@ ENGLISH_LANGUAGE : LANGUAGE
     "French"
         "French"
 
+    "Spanish"
+        "Spanish"
+
+    "Haiku poem"
+        "Evening light,\nthe blue transparency\nof a dragonfly."
+
+    // -- INQUIRIES
+
     MainMenu
         "Main menu"
 
-    :Chests #count
+    :Helmets #count
         if count = 1
-            "chest"
+            "helmet"
         else
-            "chests"
+            "helmets"
         *result = count
 
     :Swords :count

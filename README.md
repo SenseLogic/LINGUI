@@ -478,12 +478,13 @@ dmd -m64 lingui.d
 ### Command line
 
 ```bash
-lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/
+lingui [options] language.lg language.lg first_language.lg second_language.lg ... OUTPUT_FOLDER/
 ```
 
 ### Options
 
 ```
+--mirror SOURCE_LANGUAGE : mirror the translation constants of this language
 --cs : generate C# files
 --d : generate D files
 --dart : generate Dart files
@@ -492,7 +493,7 @@ lingui [options] language.lingui [language.lingui ...] OUTPUT_FOLDER/
 --namespace LINGUI : use this namespace
 --uppercase : generate uppercase filenames
 --check : check for missing constants or functions
---verbose : show the processing messages
+--preview : preview the changes without applying them
 ```
 
 The `--cs`, `--d` and `--dart` options are mutually exclusive.
@@ -500,17 +501,23 @@ The `--cs`, `--d` and `--dart` options are mutually exclusive.
 ### Examples
 
 ```bash
-lingui --dart --check --base --namespace game --verbose language.lingui english_language.lingui german_language.lingui DART/
+lingui --dart --check --base --namespace game language.lg english_language.lg german_language.lg DART/
 ```
 
 Converts Lingui files to Dart source code files, generating the base classes too, using "game" as namespace, and
 checking for missing constants or functions.
 
 ```bash
-lingui --cs --float --verbose language.lingui english_language.lingui german_language.lingui CS/
+lingui --cs --float language.lg english_language.lg german_language.lg CS/
 ```
 
 Converts Lingui files to C# source code files, using single precision numbers.
+
+```bash
+lingui --mirror ENGLISH_LANGUAGE --preview language.lg english_language.lg french_language.lg spanish_language.lg
+```
+
+Mirrors the translation constants of `english_language.lg` into `french_language.lg` and `spanish_language.lg`.
 
 ## Limitations
 
@@ -534,7 +541,7 @@ Converts Lingui files to C# source code files, using single precision numbers.
 
 ## Version
 
-2.4
+3.0
 
 ## Author
 

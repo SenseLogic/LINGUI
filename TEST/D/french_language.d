@@ -19,8 +19,9 @@ class FRENCH_LANGUAGE : LANGUAGE
         super();
         Name = "French";
         DotCharacter = ',';
-        TranslationMap[ "English" ] = TRANSLATION( "Anglais" );
         TranslationMap[ "French" ] = TRANSLATION( "Français" );
+        TranslationMap[ "English" ] = TRANSLATION( "Anglais" );
+        TranslationMap[ "Language:" ] = TRANSLATION( "Langue :" );
     }
 
     // -- INQUIRIES
@@ -51,7 +52,7 @@ class FRENCH_LANGUAGE : LANGUAGE
 
     // ~~
 
-    override TRANSLATION Chests(
+    override TRANSLATION Helmets(
         int count
         )
     {
@@ -60,11 +61,11 @@ class FRENCH_LANGUAGE : LANGUAGE
 
         if ( count <= 1 )
         {
-            result_translation.AddText( "coffre" );
+            result_translation.AddText( "heaume" );
         }
         else
         {
-            result_translation.AddText( "coffres" );
+            result_translation.AddText( "heaumes" );
         }
 
         result_translation.SetQuantity( count );
@@ -119,7 +120,7 @@ class FRENCH_LANGUAGE : LANGUAGE
         }
         else if ( items_translation.IntegerQuantity == 1 )
         {
-            if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuûh" ) )
+            if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuû" ) )
             {
                 result_translation.AddText( "L'" );
             }

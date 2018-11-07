@@ -3,6 +3,7 @@
 import "dart:io";
 import "english_language.dart";
 import "french_language.dart";
+import "spanish_language.dart";
 import "language.dart";
 import "translation.dart";
 
@@ -27,14 +28,7 @@ void main(
     List<String> argument_list
     )
 {
-    ENGLISH_LANGUAGE
-        english_language;
-    FRENCH_LANGUAGE
-        french_language;
-
-    english_language = ENGLISH_LANGUAGE();
-    french_language = FRENCH_LANGUAGE();
-
-    TestLanguage( english_language );
-    TestLanguage( french_language );
+    TestLanguage( ENGLISH_LANGUAGE() );
+    TestLanguage( FRENCH_LANGUAGE() );
+    TestLanguage( SPANISH_LANGUAGE() );
 }

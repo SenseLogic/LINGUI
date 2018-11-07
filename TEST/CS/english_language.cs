@@ -15,8 +15,11 @@ namespace GAME
         {
             Name = "English";
             DotCharacter = '.';
+            TranslationDictionary[ "Language:" ] = new TRANSLATION( "Language:" );
             TranslationDictionary[ "English" ] = new TRANSLATION( "English" );
             TranslationDictionary[ "French" ] = new TRANSLATION( "French" );
+            TranslationDictionary[ "Spanish" ] = new TRANSLATION( "Spanish" );
+            TranslationDictionary[ "Haiku poem" ] = new TRANSLATION( "Evening light,\nthe blue transparency\nof a dragonfly." );
         }
 
         // -- INQUIRIES
@@ -47,7 +50,7 @@ namespace GAME
 
         // ~~
 
-        public override TRANSLATION Chests(
+        public override TRANSLATION Helmets(
             int count
             )
         {
@@ -56,11 +59,11 @@ namespace GAME
 
             if ( count == 1 )
             {
-                result_translation.AddText( "chest" );
+                result_translation.AddText( "helmet" );
             }
             else
             {
-                result_translation.AddText( "chests" );
+                result_translation.AddText( "helmets" );
             }
 
             result_translation.SetQuantity( count );

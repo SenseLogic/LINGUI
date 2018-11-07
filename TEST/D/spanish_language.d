@@ -1,68 +1,70 @@
+module game.spanish_language;
+
 // -- IMPORTS
 
-import "language.dart";
-import "genre.dart";
-import "plurality.dart";
-import "translation.dart";
+import game.language;
+import game.genre;
+import game.plurality;
+import game.translation;
 
 // -- TYPES
 
-class FRENCH_LANGUAGE extends LANGUAGE
+class SPANISH_LANGUAGE : LANGUAGE
 {
     // -- CONSTRUCTORS
 
-    FRENCH_LANGUAGE(
-        ) : super()
+    this(
+        )
     {
-        Name = "French";
+        super();
+        Name = "Spanish";
         DotCharacter = ',';
-        TranslationMap[ "French" ] = TRANSLATION( "Français" );
-        TranslationMap[ "English" ] = TRANSLATION( "Anglais" );
-        TranslationMap[ "Language:" ] = TRANSLATION( "Langue :" );
+        TranslationMap[ "French" ] = TRANSLATION( "Francés" );
+        TranslationMap[ "English" ] = TRANSLATION( "Inglés" );
     }
 
     // -- INQUIRIES
 
-    PLURALITY GetCardinalPlurality(
-        TRANSLATION translation
+    override PLURALITY GetCardinalPlurality(
+        ref TRANSLATION translation
         )
     {
-        return translation.GetFrenchCardinalPlurality();
+        return translation.GetSpanishCardinalPlurality();
     }
 
     // ~~
 
-    PLURALITY GetOrdinalPlurality(
-        TRANSLATION translation
+    override PLURALITY GetOrdinalPlurality(
+        ref TRANSLATION translation
         )
     {
-        return translation.GetFrenchOrdinalPlurality();
+        return translation.GetSpanishOrdinalPlurality();
     }
 
     // ~~
 
-    String MainMenu(
+    override dstring MainMenu(
         )
     {
-        return "Menu principal";
+        return "Menú principal";
     }
 
     // ~~
 
-    TRANSLATION Helmets(
+    override TRANSLATION Helmets(
         int count
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
         if ( count <= 1 )
         {
-            result_translation.AddText( "heaume" );
+            result_translation.AddText( "yelmo" );
         }
         else
         {
-            result_translation.AddText( "heaumes" );
+            result_translation.AddText( "yelmos" );
         }
 
         result_translation.SetQuantity( count );
@@ -73,20 +75,20 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    TRANSLATION Swords(
+    override TRANSLATION Swords(
         TRANSLATION count_translation
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
-        if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
+        if ( count_translation.IntegerQuantity <= 1 )
         {
-            result_translation.AddText( "épée" );
+            result_translation.AddText( "espada" );
         }
         else
         {
-            result_translation.AddText( "épées" );
+            result_translation.AddText( "espadas" );
         }
 
         result_translation.SetQuantity( count_translation.Quantity );
@@ -97,42 +99,46 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String TheItems(
+    override dstring TheItems(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
         if ( items_translation.IntegerQuantity == 0 )
         {
             if ( items_translation.Genre == GENRE.Female )
             {
-                result_translation.AddText( "Aucune " );
+                result_translation.AddText( "Ninguna " );
             }
             else
             {
-                result_translation.AddText( "Aucun " );
+                result_translation.AddText( "Ningún " );
             }
         }
         else if ( items_translation.IntegerQuantity == 1 )
         {
-            if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuû" ) )
-            {
-                result_translation.AddText( "L'" );
-            }
-            else if ( items_translation.Genre == GENRE.Female )
+            if ( items_translation.Genre == GENRE.Female )
             {
                 result_translation.AddText( "La " );
             }
             else
             {
-                result_translation.AddText( "Le " );
+                result_translation.AddText( "El " );
             }
         }
         else
         {
-            result_translation.AddText( "Les " );
+            if ( items_translation.Genre == GENRE.Female )
+            {
+                result_translation.AddText( "Las " );
+            }
+            else
+            {
+                result_translation.AddText( "Los " );
+            }
+
             result_translation.AddText( items_translation.Quantity );
             result_translation.AddText( " " );
         }
@@ -144,24 +150,20 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String Have(
+    dstring Have(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
-        if ( items_translation.IntegerQuantity == 0 )
+        if ( items_translation.IntegerQuantity <= 1 )
         {
-            result_translation.AddText( " n'a" );
-        }
-        else if ( items_translation.IntegerQuantity <= 1 )
-        {
-            result_translation.AddText( " a" );
+            result_translation.AddText( " ha" );
         }
         else
         {
-            result_translation.AddText( " ont" );
+            result_translation.AddText( " han" );
         }
 
         return result_translation.Text;
@@ -169,18 +171,22 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String BeenFound(
+    dstring BeenFound(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
-        result_translation.AddText( " été trouvé" );
+        result_translation.AddText( " sido encontrad" );
 
         if ( items_translation.Genre == GENRE.Female )
         {
-            result_translation.AddText( "e" );
+            result_translation.AddText( "a" );
+        }
+        else
+        {
+            result_translation.AddText( "o" );
         }
 
         if ( items_translation.IntegerQuantity > 1 )
@@ -193,12 +199,12 @@ class FRENCH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    String TheItemsHaveBeenFound(
+    override dstring TheItemsHaveBeenFound(
         TRANSLATION items_translation
         )
     {
         TRANSLATION
-            result_translation = TRANSLATION();
+            result_translation;
 
         result_translation.AddText( TheItems( items_translation ) );
         result_translation.AddText( Have( items_translation ) );

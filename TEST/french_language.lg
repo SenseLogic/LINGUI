@@ -1,0 +1,75 @@
+// -- TYPES
+
+FRENCH_LANGUAGE : LANGUAGE
+
+    // -- CONSTANTS
+
+    "French"
+        "Français"
+
+    "English"
+        "Anglais"
+
+    "Language:"
+        "Langue :"
+
+    // -- INQUIRIES
+
+    MainMenu
+        "Menu principal"
+
+    :Helmets #count
+        if count <= 1
+            "heaume"
+        else
+            "heaumes"
+        *result = count
+        &result = male
+
+    :Swords :count
+        if @count = one
+            "épée"
+        else
+            "épées"
+        *result = *count
+        &result = female
+
+    TheItems :items
+        if #items = 0
+            if &items = female
+                "Aucune "
+            else
+                "Aucun "
+        else if #items = 1
+            if HasFirstCharacter( GetLowerCase( $items ), "aâeéêèiîoôuû" )
+                "L'"
+            else if &items = female
+                "La "
+            else
+                "Le "
+        else
+            "Les "
+            *items
+            " "
+        items
+
+    Have :items
+        if #items = 0
+            " n'a"
+        else if #items <= 1
+            " a"
+        else
+            " ont"
+
+    BeenFound :items
+        " été trouvé"
+        if &items = female
+            "e"
+        if #items > 1
+            "s"
+
+    TheItemsHaveBeenFound :items
+        TheItems( items )
+        Have( items )
+        BeenFound( items )
+        ".\n"

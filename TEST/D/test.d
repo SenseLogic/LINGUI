@@ -3,6 +3,7 @@
 import game.english_language;
 import game.french_language;
 import game.language;
+import game.spanish_language;
 import game.translation;
 import std.stdio : write, writeln;
 
@@ -27,14 +28,7 @@ void main(
     string[] argument_array
     )
 {
-    ENGLISH_LANGUAGE
-        english_language;
-    FRENCH_LANGUAGE
-        french_language;
-
-    english_language = new ENGLISH_LANGUAGE();
-    french_language = new FRENCH_LANGUAGE();
-
-    TestLanguage( english_language );
-    TestLanguage( french_language );
+    TestLanguage( new ENGLISH_LANGUAGE() );
+    TestLanguage( new FRENCH_LANGUAGE() );
+    TestLanguage( new SPANISH_LANGUAGE() );
 }

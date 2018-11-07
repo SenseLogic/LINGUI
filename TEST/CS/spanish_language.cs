@@ -6,18 +6,17 @@ using GAME;
 
 namespace GAME
 {
-    public class FRENCH_LANGUAGE : LANGUAGE
+    public class SPANISH_LANGUAGE : LANGUAGE
     {
         // -- CONSTRUCTORS
 
-        public FRENCH_LANGUAGE(
+        public SPANISH_LANGUAGE(
             ) : base()
         {
-            Name = "French";
+            Name = "Spanish";
             DotCharacter = ',';
-            TranslationDictionary[ "French" ] = new TRANSLATION( "Français" );
-            TranslationDictionary[ "English" ] = new TRANSLATION( "Anglais" );
-            TranslationDictionary[ "Language:" ] = new TRANSLATION( "Langue :" );
+            TranslationDictionary[ "French" ] = new TRANSLATION( "Francés" );
+            TranslationDictionary[ "English" ] = new TRANSLATION( "Inglés" );
         }
 
         // -- INQUIRIES
@@ -26,7 +25,7 @@ namespace GAME
             TRANSLATION translation
             )
         {
-            return translation.GetFrenchCardinalPlurality();
+            return translation.GetSpanishCardinalPlurality();
         }
 
         // ~~
@@ -35,7 +34,7 @@ namespace GAME
             TRANSLATION translation
             )
         {
-            return translation.GetFrenchOrdinalPlurality();
+            return translation.GetSpanishOrdinalPlurality();
         }
 
         // ~~
@@ -43,7 +42,7 @@ namespace GAME
         public override string MainMenu(
             )
         {
-            return "Menu principal";
+            return "Menú principal";
         }
 
         // ~~
@@ -57,11 +56,11 @@ namespace GAME
 
             if ( count <= 1 )
             {
-                result_translation.AddText( "heaume" );
+                result_translation.AddText( "yelmo" );
             }
             else
             {
-                result_translation.AddText( "heaumes" );
+                result_translation.AddText( "yelmos" );
             }
 
             result_translation.SetQuantity( count );
@@ -79,13 +78,13 @@ namespace GAME
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            if ( count_translation.GetFrenchCardinalPlurality() == PLURALITY.One )
+            if ( count_translation.IntegerQuantity <= 1 )
             {
-                result_translation.AddText( "épée" );
+                result_translation.AddText( "espada" );
             }
             else
             {
-                result_translation.AddText( "épées" );
+                result_translation.AddText( "espadas" );
             }
 
             result_translation.SetQuantity( count_translation.Quantity );
@@ -107,31 +106,35 @@ namespace GAME
             {
                 if ( items_translation.Genre == GENRE.Female )
                 {
-                    result_translation.AddText( "Aucune " );
+                    result_translation.AddText( "Ninguna " );
                 }
                 else
                 {
-                    result_translation.AddText( "Aucun " );
+                    result_translation.AddText( "Ningún " );
                 }
             }
             else if ( items_translation.IntegerQuantity == 1 )
             {
-                if ( HasFirstCharacter( GetLowerCase( items_translation.Text ), "aâeéêèiîoôuû" ) )
-                {
-                    result_translation.AddText( "L'" );
-                }
-                else if ( items_translation.Genre == GENRE.Female )
+                if ( items_translation.Genre == GENRE.Female )
                 {
                     result_translation.AddText( "La " );
                 }
                 else
                 {
-                    result_translation.AddText( "Le " );
+                    result_translation.AddText( "El " );
                 }
             }
             else
             {
-                result_translation.AddText( "Les " );
+                if ( items_translation.Genre == GENRE.Female )
+                {
+                    result_translation.AddText( "Las " );
+                }
+                else
+                {
+                    result_translation.AddText( "Los " );
+                }
+
                 result_translation.AddText( items_translation.Quantity );
                 result_translation.AddText( " " );
             }
@@ -150,17 +153,13 @@ namespace GAME
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            if ( items_translation.IntegerQuantity == 0 )
+            if ( items_translation.IntegerQuantity <= 1 )
             {
-                result_translation.AddText( " n'a" );
-            }
-            else if ( items_translation.IntegerQuantity <= 1 )
-            {
-                result_translation.AddText( " a" );
+                result_translation.AddText( " ha" );
             }
             else
             {
-                result_translation.AddText( " ont" );
+                result_translation.AddText( " han" );
             }
 
             return result_translation.Text;
@@ -175,11 +174,15 @@ namespace GAME
             TRANSLATION
                 result_translation = new TRANSLATION();
 
-            result_translation.AddText( " été trouvé" );
+            result_translation.AddText( " sido encontrad" );
 
             if ( items_translation.Genre == GENRE.Female )
             {
-                result_translation.AddText( "e" );
+                result_translation.AddText( "a" );
+            }
+            else
+            {
+                result_translation.AddText( "o" );
             }
 
             if ( items_translation.IntegerQuantity > 1 )

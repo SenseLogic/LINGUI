@@ -16,8 +16,11 @@ class ENGLISH_LANGUAGE extends LANGUAGE
     {
         Name = "English";
         DotCharacter = '.';
+        TranslationMap[ "Language:" ] = TRANSLATION( "Language:" );
         TranslationMap[ "English" ] = TRANSLATION( "English" );
         TranslationMap[ "French" ] = TRANSLATION( "French" );
+        TranslationMap[ "Spanish" ] = TRANSLATION( "Spanish" );
+        TranslationMap[ "Haiku poem" ] = TRANSLATION( "Evening light,\nthe blue transparency\nof a dragonfly." );
     }
 
     // -- INQUIRIES
@@ -48,7 +51,7 @@ class ENGLISH_LANGUAGE extends LANGUAGE
 
     // ~~
 
-    TRANSLATION Chests(
+    TRANSLATION Helmets(
         int count
         )
     {
@@ -57,11 +60,11 @@ class ENGLISH_LANGUAGE extends LANGUAGE
 
         if ( count == 1 )
         {
-            result_translation.AddText( "chest" );
+            result_translation.AddText( "helmet" );
         }
         else
         {
-            result_translation.AddText( "chests" );
+            result_translation.AddText( "helmets" );
         }
 
         result_translation.SetQuantity( count );

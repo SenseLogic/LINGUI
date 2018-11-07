@@ -36,7 +36,7 @@ namespace GAME
 
         // ~~
 
-        public virtual TRANSLATION Chests(
+        public virtual TRANSLATION Helmets(
             int count
             )
         {
@@ -324,18 +324,18 @@ namespace GAME
             )
         {
             TRANSLATION
-                no_chests_translation = new TRANSLATION(),
-                one_chest_translation = new TRANSLATION(),
+                no_helmets_translation = new TRANSLATION(),
+                one_helmet_translation = new TRANSLATION(),
                 kings_translation = new TRANSLATION(),
                 queens_translation = new TRANSLATION(),
                 princes_translation = new TRANSLATION(),
                 result_translation = new TRANSLATION();
 
-            no_chests_translation = Chests( 0 );
-            one_chest_translation = Chests( 1 );
-            result_translation.AddText( TheItemsHaveBeenFound( no_chests_translation ) );
-            result_translation.AddText( TheItemsHaveBeenFound( one_chest_translation ) );
-            result_translation.AddText( TheItemsHaveBeenFound( Chests( 2 ) ) );
+            no_helmets_translation = Helmets( 0 );
+            one_helmet_translation = Helmets( 1 );
+            result_translation.AddText( TheItemsHaveBeenFound( no_helmets_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( one_helmet_translation ) );
+            result_translation.AddText( TheItemsHaveBeenFound( Helmets( 2 ) ) );
             result_translation.AddText( TheItemsHaveBeenFound( NoSwords() ) );
             result_translation.AddText( TheItemsHaveBeenFound( OneSword() ) );
             result_translation.AddText( TheItemsHaveBeenFound( Swords( new TRANSLATION( "", "2" ) ) ) );

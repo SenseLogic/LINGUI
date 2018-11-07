@@ -5,7 +5,7 @@ LANGUAGE
     GetDate day month year
         return day ~ "/" ~ month ~ "/" ~ year
 
-    :Chests #count
+    :Helmets #count
 
     :Swords :count
 
@@ -121,13 +121,13 @@ LANGUAGE
         &result = male
 
     Test
-        var :no_chests :one_chest
-        no_chests = Chests( 0 )
-        one_chest = Chests( 1 )
+        var :no_helmets :one_helmet
+        no_helmets = Helmets( 0 )
+        one_helmet = Helmets( 1 )
 
-        TheItemsHaveBeenFound( no_chests )
-        TheItemsHaveBeenFound( one_chest )
-        TheItemsHaveBeenFound( Chests( 2 ) )
+        TheItemsHaveBeenFound( no_helmets )
+        TheItemsHaveBeenFound( one_helmet )
+        TheItemsHaveBeenFound( Helmets( 2 ) )
         TheItemsHaveBeenFound( NoSwords() )
         TheItemsHaveBeenFound( OneSword() )
         TheItemsHaveBeenFound( Swords( 2* ) )

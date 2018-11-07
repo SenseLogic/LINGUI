@@ -1,61 +1,68 @@
-FRENCH_LANGUAGE : LANGUAGE
+// -- TYPES
 
-    "English"
-        "Anglais"
+SPANISH_LANGUAGE : LANGUAGE
+
+    // -- CONSTANTS
 
     "French"
-        "Français"
+        "Francés"
+
+    "English"
+        "Inglés"
+
+    // -- INQUIRIES
 
     MainMenu
-        "Menu principal"
+        "Menú principal"
 
-    :Chests #count
+    :Helmets #count
         if count <= 1
-            "coffre"
+            "yelmo"
         else
-            "coffres"
+            "yelmos"
         *result = count
         &result = male
 
     :Swords :count
-        if @count = one
-            "épée"
+        if #count <= 1
+            "espada"
         else
-            "épées"
+            "espadas"
         *result = *count
         &result = female
 
     TheItems :items
         if #items = 0
             if &items = female
-                "Aucune "
+                "Ninguna "
             else
-                "Aucun "
+                "Ningún "
         else if #items = 1
-            if HasFirstCharacter( GetLowerCase( $items ), "aâeéêèiîoôuûh" )
-                "L'"
-            else if &items = female
+            if &items = female
                 "La "
             else
-                "Le "
+                "El "
         else
-            "Les "
+            if &items = female
+                "Las "
+            else
+                "Los "
             *items
             " "
         items
 
     Have :items
-        if #items = 0
-            " n'a"
-        else if #items <= 1
-            " a"
+        if #items <= 1
+            " ha"
         else
-            " ont"
+            " han"
 
     BeenFound :items
-        " été trouvé"
+        " sido encontrad"
         if &items = female
-            "e"
+            "a"
+        else
+            "o"
         if #items > 1
             "s"
 
