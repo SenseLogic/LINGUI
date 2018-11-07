@@ -498,7 +498,7 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 
 The `--cs`, `--d` and `--dart` options are mutually exclusive.
 
-The `--mirror` option will automatically look into `.ld` dictionary files for missing translations.
+The `--mirror` option uses `.ld` dictionary files to find the translation of missing constants in `.lg` files.
 
 The dictionary entries must appear at the same line for each language. An empty line is considered as a missing entry
 
