@@ -498,6 +498,17 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 
 The `--cs`, `--d` and `--dart` options are mutually exclusive.
 
+The `--mirror` option will automatically look into `.ld` dictionary files for missing translations.
+
+The dictionary entries must appear at the same line for each language. An empty line is considered as a missing entry
+
+Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are compatible with online translation services like :
+
+*   [Online Translator](https://www.online-translator.com)
+*   [Google Translate](https://translate.google.com)
+*   [Bing Translator](https://www.bing.com/translator)
+*   [Yandex Translate](https://translate.yandex.com)
+
 ### Examples
 
 ```bash
