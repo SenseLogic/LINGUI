@@ -455,7 +455,7 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
-### Translation dictionaries
+### Dictionaries
 
 When using the `--mirror` option, missing constants are automatically translated using the entries of the matching `.ld` dictionary files.
 
