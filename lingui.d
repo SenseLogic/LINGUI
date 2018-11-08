@@ -818,6 +818,34 @@ class RULE
 
     // ~~
 
+    dstring GetConstantCode(
+        )
+    {
+        dstring
+            concatenated_code;
+
+        foreach ( sub_rule_index, sub_rule; SubRuleArray )
+        {
+            if ( sub_rule_index > 0 )
+            {
+                if ( CsOptionIsEnabled || DartOptionIsEnabled )
+                {
+                    concatenated_code ~= " + ";
+                }
+                else if ( DOptionIsEnabled )
+                {
+                    concatenated_code ~= " ~ ";
+                }
+            }
+
+            concatenated_code ~= sub_rule.GetExpressionCode( 0 );
+        }
+
+        return concatenated_code;
+    }
+
+    // ~~
+
     bool IsStringConstant(
         )
     {
@@ -1254,23 +1282,23 @@ class RULE
             code.AddLine( "TranslationMap[ " ~ Text ~ " ] = " );
         }
 
-        if ( SubRuleArray.length == 1
+        if ( SubRuleArray.length >= 1
              && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression )
         {
             if ( SubRuleArray[ 0 ].IsStringExpression() )
             {
                 if ( CsOptionIsEnabled )
                 {
-                    code.AddText( "new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    code.AddText( "new TRANSLATION( " ~ GetConstantCode() ~ " );" );
                 }
                 else if ( DOptionIsEnabled || DartOptionIsEnabled )
                 {
-                    code.AddText( "TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    code.AddText( "TRANSLATION( " ~ GetConstantCode() ~ " );" );
                 }
             }
             else
             {
-                code.AddText( SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
+                code.AddText( GetConstantCode() ~ ";" );
             }
         }
         else
@@ -2310,6 +2338,101 @@ class BLOCK
         return target_block;
     }
 
+    // ~~
+
+    void ExtractTranslations(
+        FILE dictionary_file
+        )
+    {
+        bool
+            it_is_in_character_literal,
+            it_is_in_string_literal;
+        dchar
+            character;
+        dstring
+            translation;
+        long
+            character_index;
+
+        it_is_in_string_literal = false;
+        it_is_in_character_literal = false;
+
+        foreach ( line; LineArray )
+        {
+            for ( character_index = 0;
+                  character_index < line.length;
+                  ++character_index )
+            {
+                character = line[ character_index ];
+
+                if ( it_is_in_string_literal )
+                {
+                    if ( character == '"' )
+                    {
+                        translation ~= character;
+                        dictionary_file.LineArray ~= translation;
+
+                        it_is_in_string_literal = false;
+                    }
+                    else if ( character == '\\' )
+                    {
+                        if ( character_index + 1 < line.length )
+                        {
+                            ++character_index;
+                            character = line[ character_index ];
+
+                            if ( character == 'n' )
+                            {
+                                translation ~= " :: ";
+                            }
+                            else
+                            {
+                                translation ~= '\\';
+                                translation ~= character;
+                            }
+                        }
+                        else
+                        {
+                            translation ~= character;
+                        }
+                    }
+                    else
+                    {
+                        translation ~= character;
+                    }
+                }
+                else if ( it_is_in_character_literal )
+                {
+                    if ( character == '\'' )
+                    {
+                        it_is_in_character_literal = false;
+                    }
+                    else if ( character == '\\'
+                              && character_index + 1 < line.length )
+                    {
+                        ++character_index;
+                    }
+                }
+                else if ( character == '"' )
+                {
+                    translation = "";
+                    translation ~= character;
+
+                    it_is_in_string_literal = true;
+                }
+                else if ( character == '\'' )
+                {
+                    it_is_in_character_literal = true;
+                }
+            }
+        }
+
+        foreach ( sub_block; SubBlockArray )
+        {
+            sub_block.ExtractTranslations( dictionary_file );
+        }
+    }
+
     // -- OPERATIONS
 
     void AddSubBlock(
@@ -2452,6 +2575,9 @@ class SCRIPT
         FILE
             file;
 
+        FileArray = null;
+        SourceFile = null;
+
         foreach ( file_path; FilePathArray )
         {
             file = new FILE();
@@ -2527,7 +2653,7 @@ class SCRIPT
 
     // ~~
 
-    void MirrorBlocks(
+    void MirrorFiles(
         )
     {
         long
@@ -2538,6 +2664,8 @@ class SCRIPT
             source_block,
             target_language_block,
             target_block;
+
+        ParseBlocks();
 
         if ( SourceFile !is null )
         {
@@ -2611,11 +2739,35 @@ class SCRIPT
 
     // ~~
 
-    void MirrorFiles(
+    void ExtractTranslations(
         )
     {
         ParseBlocks();
-        MirrorBlocks();
+
+        foreach ( file; FileArray )
+        {
+            if ( file.LanguageBlock !is null )
+            {
+                file.DictionaryFile.LineArray = null;
+
+                foreach ( block; file.LanguageBlock.SubBlockArray )
+                {
+                    if ( block.IsConstant() )
+                    {
+                        foreach ( sub_block; block.SubBlockArray )
+                        {
+                            sub_block.ExtractTranslations( file.DictionaryFile );
+                        }
+                    }
+                    else if ( !block.IsComment() )
+                    {
+                        break;
+                    }
+                }
+
+                file.DictionaryFile.Write();
+            }
+        }
     }
 
     // ~~
@@ -2645,7 +2797,6 @@ class SCRIPT
 
                 if ( !rule_text.startsWith( "//" ) )
                 {
-
                     if ( rule_text.length > 0 )
                     {
                         rule = new RULE();
@@ -2807,6 +2958,11 @@ class SCRIPT
             MirrorFiles();
         }
 
+        if ( ExtractOptionIsEnabled )
+        {
+            ExtractTranslations();
+        }
+
         if ( CsOptionIsEnabled
              || DOptionIsEnabled
              || DartOptionIsEnabled )
@@ -2825,6 +2981,7 @@ bool
     CsOptionIsEnabled,
     DOptionIsEnabled,
     DartOptionIsEnabled,
+    ExtractOptionIsEnabled,
     FloatOptionIsEnabled,
     PreviewOptionIsEnabled,
     MirrorOptionIsEnabled,
@@ -3008,6 +3165,7 @@ void main(
     argument_array = argument_array[ 1 .. $ ];
 
     MirrorOptionIsEnabled = false;
+    ExtractOptionIsEnabled = false;
     SourceLanguageName = "";
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
@@ -3019,7 +3177,7 @@ void main(
     UpperCaseOptionIsEnabled = false;
     CheckOptionIsEnabled = false;
     PreviewOptionIsEnabled = false;
-    FilePathArray = [];
+    FilePathArray = null;
     OutputFolderPath = "";
 
     while ( argument_array.length >= 1
@@ -3036,6 +3194,10 @@ void main(
             SourceLanguageName = argument_array[ 0 ].to!dstring();
 
             argument_array = argument_array[ 1 .. $ ];
+        }
+        else if ( option == "--extract" )
+        {
+            ExtractOptionIsEnabled = true;
         }
         else if ( option == "--cs"
                   && !DOptionIsEnabled
@@ -3138,7 +3300,8 @@ void main(
          && FilePathArray.length > 0
          && ( ( CsOptionIsEnabled || DOptionIsEnabled || DartOptionIsEnabled )
                 && OutputFolderPath.length > 0 )
-              || MirrorOptionIsEnabled )
+              || MirrorOptionIsEnabled
+              || ExtractOptionIsEnabled )
     {
         script = new SCRIPT();
         script.Execute();
@@ -3148,6 +3311,7 @@ void main(
         writeln( "Usage : lingui [options] language.lg first_language.lg second_language.lg ... OUTPUT_FOLDER/" );
         writeln( "Options :" );
         writeln( "    --mirror ENGLISH_LANGUAGE" );
+        writeln( "    --extract" );
         writeln( "    --cs" );
         writeln( "    --d" );
         writeln( "    --dart" );

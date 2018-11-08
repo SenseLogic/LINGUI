@@ -272,9 +272,11 @@ A translation value is a data structure which provides one or several of the fol
 
 A translation constant is a quoted string.
 
-It is only declared in actual language classes, and defined by a single line expression which is evaluated only once.
+It is only declared in actual language classes.
 
-The resulting translation of this evaluation is stored inside the translation dictionary of its language class.
+It is defined by concatenated expressions which are evaluated only once.
+
+The result of this evaluation is stored inside the translation dictionary of its language.
 
 ### Function statements
 
@@ -457,9 +459,11 @@ GetOrdinalPlurality( translation )
 
 ### Dictionaries
 
-When using the `--mirror` option, missing constants are automatically translated using the entries of the matching `.ld` dictionary files.
+When the `--mirror` option is used :
+*   all constants declared before the first function are sorted in the same order as in the source language
+*   missing constants are automatically added, if they have appropriate translations in the matching `.ld` dictionaries.
 
-The dictionary entries must appear at matching lines in each file. An empty line is considered as a missing entry.
+The dictionary entries are matched by line numbers. An empty line is considered as a missing entry.
 
 Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are fully compatible with online translation services like :
 
@@ -497,6 +501,7 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 
 ```
 --mirror SOURCE_LANGUAGE : mirror the translation constants of this language
+--extract : extract the language dictionaries
 --cs : generate C# files
 --d : generate D files
 --dart : generate Dart files

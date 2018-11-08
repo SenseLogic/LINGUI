@@ -16,8 +16,14 @@ ENGLISH_LANGUAGE : LANGUAGE
     "Spanish"
         "Spanish"
 
-    "Haiku poem"
+    "Haiku"
         "Evening light,\nthe blue transparency\nof a dragonfly."
+
+    "Poem"
+        "The butterfly is a thing to behold,\n"
+        "with colors more beautiful than gold.\n"
+        "How I enjoy your beauty, butterfly,\n"
+        "as I sit and watch you flutter by."
 
     // -- INQUIRIES
 

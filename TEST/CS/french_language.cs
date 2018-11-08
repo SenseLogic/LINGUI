@@ -18,6 +18,7 @@ namespace GAME
             TranslationDictionary[ "French" ] = new TRANSLATION( "Français" );
             TranslationDictionary[ "English" ] = new TRANSLATION( "Anglais" );
             TranslationDictionary[ "Language:" ] = new TRANSLATION( "Langue :" );
+            TranslationDictionary[ "Poem" ] = new TRANSLATION( "Le papillon est une chose à contempler,\n" + "avec des couleurs plus belles que l'or.\n" + "Que j'apprécie ta beauté, papillon,\n" + "alors que je suis assis et te regarde flotter." );
         }
 
         // -- INQUIRIES

@@ -23,7 +23,8 @@ class ENGLISH_LANGUAGE : LANGUAGE
         TranslationMap[ "English" ] = TRANSLATION( "English" );
         TranslationMap[ "French" ] = TRANSLATION( "French" );
         TranslationMap[ "Spanish" ] = TRANSLATION( "Spanish" );
-        TranslationMap[ "Haiku poem" ] = TRANSLATION( "Evening light,\nthe blue transparency\nof a dragonfly." );
+        TranslationMap[ "Haiku" ] = TRANSLATION( "Evening light,\nthe blue transparency\nof a dragonfly." );
+        TranslationMap[ "Poem" ] = TRANSLATION( "The butterfly is a thing to behold,\n" ~ "with colors more beautiful than gold.\n" ~ "How I enjoy your beauty, butterfly,\n" ~ "as I sit and watch you flutter by." );
     }
 
     // -- INQUIRIES

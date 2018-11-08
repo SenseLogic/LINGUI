@@ -10,6 +10,12 @@ SPANISH_LANGUAGE : LANGUAGE
     "English"
         "Inglés"
 
+    "Poem"
+        "La mariposa es una cosa para contemplar,\n"
+        "Con colores más hermosos que el oro.\n"
+        "Que me gusta tu belleza, mariposa,\n"
+        "Mientras me siento y te veo revolotear."
+
     // -- INQUIRIES
 
     MainMenu

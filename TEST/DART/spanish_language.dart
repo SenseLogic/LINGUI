@@ -18,6 +18,7 @@ class SPANISH_LANGUAGE extends LANGUAGE
         DotCharacter = ',';
         TranslationMap[ "French" ] = TRANSLATION( "Francés" );
         TranslationMap[ "English" ] = TRANSLATION( "Inglés" );
+        TranslationMap[ "Poem" ] = TRANSLATION( "La mariposa es una cosa para contemplar,\n" + "Con colores más hermosos que el oro.\n" + "Que me gusta tu belleza, mariposa,\n" + "Mientras me siento y te veo revolotear." );
     }
 
     // -- INQUIRIES

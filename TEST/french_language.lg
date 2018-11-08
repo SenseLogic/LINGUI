@@ -13,6 +13,12 @@ FRENCH_LANGUAGE : LANGUAGE
     "Language:"
         "Langue :"
 
+    "Poem"
+        "Le papillon est une chose à contempler,\n"
+        "avec des couleurs plus belles que l'or.\n"
+        "Que j'apprécie ta beauté, papillon,\n"
+        "alors que je suis assis et te regarde flotter."
+
     // -- INQUIRIES
 
     MainMenu
