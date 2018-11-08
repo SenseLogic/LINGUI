@@ -462,7 +462,7 @@ GetOrdinalPlurality( translation )
 When the `--extract` option is used, all constants declared before the first function of each ".ld" file
 are extracted into a matching ".ld" dictionary file.
 
-The dictionary entries of the different languages are matched by line numbers.
+Matching translations must have the same line number.
 
 An empty line is considered as a missing entry.
 
