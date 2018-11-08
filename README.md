@@ -459,17 +459,25 @@ GetOrdinalPlurality( translation )
 
 ### Dictionaries
 
-When the `--mirror` option is used :
-*   all constants declared before the first function are sorted in the same order as in the source language
-*   missing constants are automatically added, if they have appropriate translations in the matching `.ld` dictionaries.
+When the `--extract` option is used, all constants declared before the first function of each ".ld" file
+are extracted into a matching ".ld" dictionary file.
 
-The dictionary entries are matched by line numbers. An empty line is considered as a missing entry.
+The dictionary entries of the different languages are matched by line numbers.
+
+An empty line is considered as a missing entry.
 
 Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are fully compatible with online translation services like :
 
 *   [Online Translator](https://www.online-translator.com)
 *   [Google Translate](https://translate.google.com)
 *   [Bing Translator](https://www.bing.com/translator)
+
+### Mirroring
+
+When the `--mirror` option is used :
+
+*   all constants declared before the first function are sorted in the same order as in the source language
+*   any missing constant is automatically added, using the translations of the dictionaries.
 
 ### Case conventions
 
