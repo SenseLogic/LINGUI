@@ -468,9 +468,9 @@ An empty line is considered as a missing entry.
 
 Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are fully compatible with online translation services like :
 
-*   [Online Translator](https://www.online-translator.com)
 *   [Google Translate](https://translate.google.com)
 *   [Bing Translator](https://www.bing.com/translator)
+*   [Online Translator](https://www.online-translator.com)
 
 ### Mirroring
 
