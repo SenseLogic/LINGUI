@@ -466,7 +466,7 @@ Matching translations must have the same line number.
 
 An empty line is considered as a missing entry.
 
-Newline characters are replaced by a special four-character sequence (` :: `), so that dictionaries are fully compatible with online translation services like :
+Newline characters are replaced by "` :: `", so that dictionaries are fully compatible with online translation services like :
 
 *   [Google Translate](https://translate.google.com)
 *   [Bing Translator](https://www.bing.com/translator)
