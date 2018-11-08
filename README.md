@@ -566,7 +566,7 @@ Mirrors the translation constants of `english_language.lg` into `french_language
 
 ## Version
 
-3.0
+3.1
 
 ## Author
 
