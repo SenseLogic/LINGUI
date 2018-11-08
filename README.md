@@ -476,7 +476,7 @@ Newline characters are replaced by "` :: `", so that dictionaries are fully comp
 
 When the `--mirror` option is used :
 
-*   all constants declared before the first function are sorted in the same order as in the source language
+*   all constants declared before the first function are sorted in the same order as in the source language;
 *   any missing constant is automatically added, using the translations of the dictionaries.
 
 ### Case conventions
