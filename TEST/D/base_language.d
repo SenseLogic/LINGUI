@@ -308,6 +308,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    bool HasText(
+        dstring key
+        )
+    {
+        return ( key in TranslationMap ) !is null;
+    }
+
+    // ~~
+
     dstring GetText(
         dstring key
         )

@@ -17,7 +17,7 @@ namespace GAME
             DotCharacter = ',';
             TranslationDictionary[ "French" ] = new TRANSLATION( "Francés" );
             TranslationDictionary[ "English" ] = new TRANSLATION( "Inglés" );
-            TranslationDictionary[ "Poem" ] = new TRANSLATION( "La mariposa es una cosa para contemplar,\n" + "Con colores más hermosos que el oro.\n" + "Que me gusta tu belleza, mariposa,\n" + "Mientras me siento y te veo revolotear." );
+            TranslationDictionary[ "Poem" ] = new TRANSLATION( "La mariposa es una cosa para contemplar,\ncon colores más hermosos que el oro.\n" + "Que me gusta tu belleza, mariposa,\nmientras me siento y te veo revolotear." );
         }
 
         // -- INQUIRIES

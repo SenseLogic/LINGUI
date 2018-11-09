@@ -1,2 +1,4 @@
 "Español"
-"Luz de la tarde, :: la transparencia azul :: de una libélula."
+"Los límites son creados por la mente."
+    "La imaginación te puede llevar al cielo."
+    "Ahora imagina algo."

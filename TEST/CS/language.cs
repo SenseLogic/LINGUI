@@ -298,6 +298,12 @@ namespace GAME
             result_translation.AddText( Dump( new TRANSLATION( "metros", "7.5" ) ) );
             result_translation.AddText( Dump( new TRANSLATION( "vueltas", "8.5", GENRE.Female ) ) );
             result_translation.AddText( GetText( "English" ) + " / " + GetText( "French" ) + " / " + GetDate( "18", "2", "2018" ) + "\n" );
+            result_translation.AddText( GetText( "Poem" ) + "\n" );
+
+            if ( HasText( "Haiku" ) )
+            {
+                result_translation.AddText( GetText( "Haiku" ) + "\n" );
+            }
 
             return result_translation.Text;
         }

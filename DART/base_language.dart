@@ -312,6 +312,15 @@ class BASE_LANGUAGE
 
     // ~~
 
+    bool HasText(
+        String key
+        )
+    {
+        return TranslationMap.containsKey( key );
+    }
+
+    // ~~
+
     String GetText(
         String key
         )

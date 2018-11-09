@@ -465,27 +465,36 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
-### Dictionaries
+### Definition files
 
-When the `--extract` option is used, all constants declared before the first function of each ".ld" file
-are extracted into ".ld" dictionary files.
+When the `--extract` option is used, all constants definitions declared before the first function of each ".ld" file
+are extracted into `.ld` definition files.
 
-Matching translations must have the same line number.
+Matching definitions must have the same line number.
 
 An empty line is considered as a missing entry.
 
-Newline characters are replaced by "` :: `", so that dictionaries are fully compatible with online translation services like :
+Multiline definitions are split over several lines prefixed with a single space.
 
-*   [Google Translate](https://translate.google.com)
-*   [Bing Translator](https://www.bing.com/translator)
-*   [Online Translator](https://www.online-translator.com)
+Definition files are compatible with the most online translation services :
+
+*   [Bing](https://www.bing.com/translator)
+*   [Google](https://translate.google.com)
+*   [Promt](https://www.online-translator.com)
+*   [Reverso](http://www.reverso.net/text_translation.aspx)
+*   [Yandex](https://translate.yandex.com)
+
+### Translation files
+
+When the `--match` option is used, constants definitions stored in `.lt` translation files are matched
+with each other, and selected by increasing frequency.
 
 ### Mirroring
 
 When the `--mirror` option is used :
 
 *   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations of the dictionaries.
+*   any missing constant is automatically added, using the translations of the definition files.
 
 ### Case conventions
 
@@ -517,7 +526,8 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 
 ```
 --mirror SOURCE_LANGUAGE : mirror the translation constants of this language
---extract : extract the language dictionaries
+--extract : extract the language definitions
+--pick : pick the best translations
 --cs : generate C# files
 --d : generate D files
 --dart : generate Dart files
@@ -551,6 +561,19 @@ lingui --mirror ENGLISH_LANGUAGE --preview language.lg english_language.lg frenc
 ```
 
 Mirrors the translation constants of `english_language.lg` into `french_language.lg` and `spanish_language.lg`.
+
+```bash
+lingui --extract --preview language.lg english_language.lg french_language.lg spanish_language.lg
+```
+
+Extract the constant definitions from these `.lg` files into their matching `.ld` files.
+
+```bash
+lingui --pick japanese_language.lg
+```
+
+Pick the best translations for this `.lg` file using its matching `.lt` file.
+
 
 ## Limitations
 

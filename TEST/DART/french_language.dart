@@ -19,7 +19,7 @@ class FRENCH_LANGUAGE extends LANGUAGE
         TranslationMap[ "French" ] = TRANSLATION( "Français" );
         TranslationMap[ "English" ] = TRANSLATION( "Anglais" );
         TranslationMap[ "Language:" ] = TRANSLATION( "Langue :" );
-        TranslationMap[ "Poem" ] = TRANSLATION( "Le papillon est une chose à contempler,\n" + "avec des couleurs plus belles que l'or.\n" + "Que j'apprécie ta beauté, papillon,\n" + "alors que je suis assis et te regarde flotter." );
+        TranslationMap[ "Poem" ] = TRANSLATION( "Le papillon est une chose à contempler,\navec des couleurs plus belles que l'or.\n" + "Que j'apprécie ta beauté, papillon,\nalors que je suis assis et te regarde flotter." );
     }
 
     // -- INQUIRIES

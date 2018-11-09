@@ -11,10 +11,8 @@ SPANISH_LANGUAGE : LANGUAGE
         "Inglés"
 
     "Poem"
-        "La mariposa es una cosa para contemplar,§"
-        "Con colores más hermosos que el oro.§"
-        "Que me gusta tu belleza, mariposa,§"
-        "Mientras me siento y te veo revolotear."
+        "La mariposa es una cosa para contemplar,§con colores más hermosos que el oro.§"
+        "Que me gusta tu belleza, mariposa,§mientras me siento y te veo revolotear."
 
     // -- INQUIRIES
 

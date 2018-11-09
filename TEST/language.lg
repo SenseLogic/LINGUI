@@ -114,6 +114,10 @@ LANGUAGE
         Dump( 8.5*"vueltas":female )
 
         GetText( "English" ) ~ " / " ~ GetText( "French" ) ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "§"
+        GetText( "Poem" ) ~ "§"
+
+        if HasText( "Haiku" )
+            GetText( "Haiku" ) ~ "§"
 
     :Kings :count
         $result = "reyes"

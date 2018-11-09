@@ -19,8 +19,8 @@ namespace GAME
             TranslationDictionary[ "English" ] = new TRANSLATION( "English" );
             TranslationDictionary[ "French" ] = new TRANSLATION( "French" );
             TranslationDictionary[ "Spanish" ] = new TRANSLATION( "Spanish" );
-            TranslationDictionary[ "Haiku" ] = new TRANSLATION( "Evening light,\nthe blue transparency\nof a dragonfly." );
-            TranslationDictionary[ "Poem" ] = new TRANSLATION( "The butterfly is a thing to behold,\n" + "with colors more beautiful than gold.\n" + "How I enjoy your beauty, butterfly,\n" + "as I sit and watch you flutter by." );
+            TranslationDictionary[ "Haiku" ] = new TRANSLATION( "Limits are created by mind.\nImagination can take you to the heavens.\nNow imagine something." );
+            TranslationDictionary[ "Poem" ] = new TRANSLATION( "The butterfly is a thing to behold,\nwith colors more beautiful than gold.\n" + "How I enjoy your beauty, butterfly,\nas I sit and watch you flutter by." );
         }
 
         // -- INQUIRIES

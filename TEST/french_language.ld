@@ -1,2 +1,4 @@
 "Espagnol"
-"Lumière du soir, :: la transparence bleue :: d'une libellule."
+"Les limites sont créées par l'esprit."
+    "L'imagination peut vous emmener au ciel."
+    "Maintenant, imaginez quelque chose."

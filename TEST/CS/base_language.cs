@@ -329,6 +329,15 @@ namespace GAME
 
         // ~~
 
+        public bool HasText(
+            string key
+            )
+        {
+            return TranslationDictionary.ContainsKey( key );
+        }
+
+        // ~~
+
         public string GetText(
             string key
             )

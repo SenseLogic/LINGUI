@@ -21,7 +21,7 @@
 // -- IMPORTS
 
 import core.stdc.stdlib : exit;
-import std.algorithm : countUntil;
+import std.algorithm : countUntil, sort;
 import std.array : replicate;
 import std.conv : to;
 import std.file : exists, readText, thisExePath, write, FileException;
@@ -2217,8 +2217,8 @@ class BLOCK
 
     dstring GetTargetTranslation(
         dstring source_translation,
-        FILE source_dictionary_file,
-        FILE target_dictionary_file
+        FILE source_definition_file,
+        FILE target_definition_file
         )
     {
         dstring
@@ -2226,38 +2226,38 @@ class BLOCK
         long
             source_line_index;
 
-        source_line_index = source_dictionary_file.LineArray.countUntil( source_translation );
+        source_line_index = source_definition_file.LineArray.countUntil( source_translation );
 
         if ( source_line_index >= 0 )
         {
-            if ( source_line_index < target_dictionary_file.LineArray.length
-                 && target_dictionary_file.LineArray[ source_line_index ].length > 0 )
+            if ( source_line_index < target_definition_file.LineArray.length
+                 && target_definition_file.LineArray[ source_line_index ].length > 0 )
             {
-                target_translation = target_dictionary_file.LineArray[ source_line_index ];
+                target_translation = target_definition_file.LineArray[ source_line_index ];
             }
             else
             {
                 target_translation = "?" ~ source_translation;
 
-                target_dictionary_file.MissingLineArray ~= source_translation;
+                target_definition_file.MissingLineArray ~= source_translation;
             }
         }
         else
         {
             target_translation = "?" ~ source_translation;
 
-            while ( source_dictionary_file.LineArray.length > 0
-                    && source_dictionary_file.LineArray[ $ -1 ].length == 0 )
+            while ( source_definition_file.LineArray.length > 0
+                    && source_definition_file.LineArray[ $ -1 ].length == 0 )
             {
-                --source_dictionary_file.LineArray.length;
+                --source_definition_file.LineArray.length;
             }
 
-            source_dictionary_file.LineArray ~= source_translation;
-            source_dictionary_file.MissingLineArray ~= source_translation;
-            target_dictionary_file.MissingLineArray ~= source_translation;
+            source_definition_file.LineArray ~= source_translation;
+            source_definition_file.MissingLineArray ~= source_translation;
+            target_definition_file.MissingLineArray ~= source_translation;
         }
 
-        return target_translation.replace( " :: ", "\\n" );
+        return target_translation;
     }
 
     // ~~
@@ -2293,13 +2293,9 @@ class BLOCK
                 if ( source_character == '"' )
                 {
                     source_translation ~= source_character;
-                    target_line ~= GetTargetTranslation( source_translation, source_file.DictionaryFile, target_file.DictionaryFile );
+                    target_line ~= GetTargetTranslation( source_translation, source_file.DefinitionFile, target_file.DefinitionFile );
 
                     it_is_in_string_literal = false;
-                }
-                else if ( source_character == '§' )
-                {
-                    source_translation ~= " :: ";
                 }
                 else if ( source_character == '\\' )
                 {
@@ -2398,7 +2394,7 @@ class BLOCK
     // ~~
 
     void ExtractTranslations(
-        FILE dictionary_file
+        FILE definition_file
         )
     {
         bool
@@ -2427,13 +2423,13 @@ class BLOCK
                     if ( character == '"' )
                     {
                         translation ~= character;
-                        dictionary_file.LineArray ~= translation;
+                        definition_file.LineArray ~= translation;
 
                         it_is_in_string_literal = false;
                     }
                     else if ( character == '§' )
                     {
-                        translation ~= " :: ";
+                        translation ~= "\"\n    \"";
                     }
                     else if ( character == '\\' )
                     {
@@ -2479,7 +2475,7 @@ class BLOCK
 
         foreach ( sub_block; SubBlockArray )
         {
-            sub_block.ExtractTranslations( dictionary_file );
+            sub_block.ExtractTranslations( definition_file );
         }
     }
 
@@ -2498,6 +2494,16 @@ class BLOCK
 
 // ~~
 
+class TRANSLATION
+{
+    dstring
+        Name;
+    dstring[]
+        LineArray;
+}
+
+// ~~
+
 class FILE
 {
     // -- ATTRIBUTES
@@ -2507,7 +2513,8 @@ class FILE
     dstring[]
         LineArray;
     FILE
-        DictionaryFile;
+        DefinitionFile,
+        TranslationFile;
     BLOCK
         Block,
         LanguageBlock;
@@ -2585,6 +2592,163 @@ class FILE
 
         assert( Block.GetText() == GetText() );
     }
+
+    // ~~
+
+    void JoinLines(
+        )
+    {
+        long
+            line_index;
+
+        for ( line_index = 0;
+              line_index < LineArray.length;
+              ++line_index )
+        {
+            if ( LineArray[ line_index ].startsWith( "    \"" )
+                 && line_index > 0
+                 && LineArray[ line_index - 1 ].endsWith( "\"" ) )
+            {
+                LineArray[ line_index - 1 ]
+                    = LineArray[ line_index - 1 ][ 0 .. $ - 1 ]
+                      ~ "§"
+                      ~ LineArray[ line_index ][ 5 .. $ ].strip();
+
+                LineArray = LineArray[ 0 .. line_index ] ~ LineArray[ line_index + 1 .. $ ];
+
+                --line_index;
+            }
+        }
+    }
+
+    // ~~
+
+    void PickTranslations(
+        )
+    {
+        long
+            best_line_count,
+            line_count,
+            matched_line_index;
+        dstring
+            best_line,
+            matched_line;
+        dstring[]
+            line_array,
+            best_line_array;
+        TRANSLATION
+            translation;
+        TRANSLATION[]
+            translation_array,
+            matched_translation_array;
+
+        if ( Path.exists() )
+        {
+            LineArray = Path.ReadLineArray();
+
+            foreach ( line_index, line; LineArray )
+            {
+                if ( line.length > 0 )
+                {
+                    if ( line.startsWith( '"' )
+                         || line.startsWith( ' ' ) )
+                    {
+                        if ( translation !is null )
+                        {
+                            translation.LineArray ~= line;
+                        }
+                        else
+                        {
+                            Abort( "Missing name : " ~ Path ~ "(" ~ ( line_index + 1 ).to!dstring() ~ ")" );
+                        }
+                    }
+                    else
+                    {
+                        translation = null;
+
+                        foreach ( prior_translation; translation_array )
+                        {
+                            if ( prior_translation.Name == line )
+                            {
+                                translation = prior_translation;
+
+                                break;
+                            }
+                        }
+
+                        if ( translation is null )
+                        {
+                            translation = new TRANSLATION();
+                            translation.Name = line;
+                            translation_array ~= translation;
+                        }
+                    }
+                }
+            }
+
+            if ( translation_array.length > 0 )
+            {
+                writeln( "Picking translations..." );
+
+                for ( matched_line_index = 0;
+                      matched_line_index < translation_array[ 0 ].LineArray.length;
+                      ++matched_line_index )
+                {
+                    line_array = null;
+
+                    foreach ( matched_translation; translation_array )
+                    {
+                        if ( matched_line_index < matched_translation.LineArray.length )
+                        {
+                            matched_line = matched_translation.LineArray[ matched_line_index ];
+
+                            if ( matched_translation.Name.startsWith( '#' ) )
+                            {
+                                writeln( matched_line.strip(), " :" );
+                            }
+                            else
+                            {
+                                line_array ~= matched_line;
+                            }
+                        }
+                    }
+
+                    if ( line_array.length > 0 )
+                    {
+                        best_line = "";
+                        best_line_count = 0;
+
+                        line_array.sort();
+                        line_count = 0;
+
+                        foreach ( line_index, line; line_array )
+                        {
+                            ++line_count;
+
+                            if ( line_index + 1 >= line_array.length
+                                 || line_array[ line_index + 1 ] != line )
+                            {
+                                writeln( "    ", line.strip(), " (", line_count, ")" );
+
+                                if ( line_count > best_line_count )
+                                {
+                                    best_line_count = line_count;
+                                    best_line = line;
+                                }
+
+                                line_count = 0;
+                            }
+                        }
+
+                        best_line_array ~= best_line;
+                    }
+                }
+
+                writeln( "Best translations :" );
+                writeln( best_line_array.join( '\n' ) );
+            }
+        }
+    }
 }
 
 // ~~
@@ -2634,12 +2798,13 @@ class SCRIPT
             file.Path = file_path;
             file.LineArray = file.Path.ReadLineArray();
             file.ParseBlocks();
-            file.DictionaryFile = new FILE();
-            file.DictionaryFile.Path = file_path.replace( ".lg", ".ld" );
+            file.DefinitionFile = new FILE();
+            file.DefinitionFile.Path = file_path.replace( ".lg", ".ld" );
 
-            if ( file.DictionaryFile.Path.exists() )
+            if ( file.DefinitionFile.Path.exists() )
             {
-                file.DictionaryFile.LineArray = file.DictionaryFile.Path.ReadLineArray();
+                file.DefinitionFile.LineArray = file.DefinitionFile.Path.ReadLineArray();
+                file.DefinitionFile.JoinLines();
             }
 
             foreach ( block; file.Block.SubBlockArray )
@@ -2676,10 +2841,10 @@ class SCRIPT
         foreach ( target_file; FileArray )
         {
             if ( target_file.BaseLanguageName == SourceFile.BaseLanguageName
-                 && target_file.DictionaryFile.MissingLineArray.length > 0 )
+                 && target_file.DefinitionFile.MissingLineArray.length > 0 )
             {
-                PrintError( "Missing entries in dictionary file : " ~ target_file.DictionaryFile.Path );
-                writeln( target_file.DictionaryFile.MissingLineArray.join( '\n' ) );
+                PrintError( "Missing entries in definition file : " ~ target_file.DefinitionFile.Path );
+                writeln( target_file.DefinitionFile.MissingLineArray.join( '\n' ) );
             }
         }
 
@@ -2688,7 +2853,7 @@ class SCRIPT
             if ( target_file.BaseLanguageName == SourceFile.BaseLanguageName
                  && target_file.LanguageName != SourceFile.LanguageName )
             {
-                if ( target_file.DictionaryFile.MissingLineArray.length == 0 )
+                if ( target_file.DefinitionFile.MissingLineArray.length == 0 )
                 {
                     target_file.Write();
                 }
@@ -2798,7 +2963,7 @@ class SCRIPT
         {
             if ( file.LanguageBlock !is null )
             {
-                file.DictionaryFile.LineArray = null;
+                file.DefinitionFile.LineArray = null;
 
                 foreach ( block; file.LanguageBlock.SubBlockArray )
                 {
@@ -2806,7 +2971,7 @@ class SCRIPT
                     {
                         foreach ( sub_block; block.SubBlockArray )
                         {
-                            sub_block.ExtractTranslations( file.DictionaryFile );
+                            sub_block.ExtractTranslations( file.DefinitionFile );
                         }
                     }
                     else if ( !block.IsComment() )
@@ -2815,8 +2980,24 @@ class SCRIPT
                     }
                 }
 
-                file.DictionaryFile.Write();
+                file.DefinitionFile.Write();
             }
+        }
+    }
+
+    // ~~
+
+    void PickTranslations(
+        )
+    {
+        FILE
+            file;
+
+        foreach ( file_path; FilePathArray )
+        {
+            file = new FILE();
+            file.Path = file_path.replace( ".lg", ".lt" );
+            file.PickTranslations();
         }
     }
 
@@ -3013,6 +3194,11 @@ class SCRIPT
             ExtractTranslations();
         }
 
+        if ( PickOptionIsEnabled )
+        {
+            PickTranslations();
+        }
+
         if ( CsOptionIsEnabled
              || DOptionIsEnabled
              || DartOptionIsEnabled )
@@ -3034,6 +3220,7 @@ bool
     ExtractOptionIsEnabled,
     FloatOptionIsEnabled,
     PreviewOptionIsEnabled,
+    PickOptionIsEnabled,
     MirrorOptionIsEnabled,
     UpperCaseOptionIsEnabled;
 dstring
@@ -3217,6 +3404,7 @@ void main(
     MirrorOptionIsEnabled = false;
     ExtractOptionIsEnabled = false;
     SourceLanguageName = "";
+    PickOptionIsEnabled = false;
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
     DartOptionIsEnabled = false;
@@ -3248,6 +3436,10 @@ void main(
         else if ( option == "--extract" )
         {
             ExtractOptionIsEnabled = true;
+        }
+        else if ( option == "--pick" )
+        {
+            PickOptionIsEnabled = true;
         }
         else if ( option == "--cs"
                   && !DOptionIsEnabled
@@ -3351,7 +3543,8 @@ void main(
          && ( ( CsOptionIsEnabled || DOptionIsEnabled || DartOptionIsEnabled )
                 && OutputFolderPath.length > 0 )
               || MirrorOptionIsEnabled
-              || ExtractOptionIsEnabled )
+              || ExtractOptionIsEnabled
+              || PickOptionIsEnabled )
     {
         script = new SCRIPT();
         script.Execute();
@@ -3362,6 +3555,7 @@ void main(
         writeln( "Options :" );
         writeln( "    --mirror ENGLISH_LANGUAGE" );
         writeln( "    --extract" );
+        writeln( "    --pick" );
         writeln( "    --cs" );
         writeln( "    --d" );
         writeln( "    --dart" );
@@ -3374,6 +3568,9 @@ void main(
         writeln( "Examples :" );
         writeln( "    lingui --dart --check --base --namespace game language.lg english_language.lg german_language.lg DART/" );
         writeln( "    lingui --cs --float language.lg english_language.lg german_language.lg CS/" );
+        writeln( "    lingui --mirror ENGLISH_LANGUAGE --preview language.lg english_language.lg french_language.lg spanish_language.lg" );
+        writeln( "    lingui --extract --preview language.lg english_language.lg french_language.lg spanish_language.lg" );
+        writeln( "    lingui --pick japanese_language.lg" );
 
         Abort( "Invalid arguments : " ~ argument_array.to!dstring() );
     }
