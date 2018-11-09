@@ -274,9 +274,9 @@ A translation constant is a quoted string.
 
 It is only declared in actual language classes.
 
-It is defined by concatenated expressions which are evaluated only once.
+Its definition is made of a list of expressions which are evaluated and concatenated only once.
 
-The result of this evaluation is stored inside the translation dictionary of its language.
+The result of this concatenation is stored inside the translation dictionary of its language.
 
 ### Quoted strings
 
