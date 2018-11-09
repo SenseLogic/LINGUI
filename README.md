@@ -486,8 +486,10 @@ Definition files are compatible with most online translation services :
 
 ### Translation files
 
-When the `--match` option is used, constants definitions stored in `.lt` translation files are matched
-with each other, and selected by increasing frequency.
+When the `--match` option is used, the constants definitions stored in the `.lt` translation files are matched
+with each other.
+
+They are sorted by frequency, and the most used are automatically selected.
 
 ### Mirroring
 
