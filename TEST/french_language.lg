@@ -14,9 +14,9 @@ FRENCH_LANGUAGE : LANGUAGE
         "Langue :"
 
     "Poem"
-        "Le papillon est une chose à contempler,\n"
-        "avec des couleurs plus belles que l'or.\n"
-        "Que j'apprécie ta beauté, papillon,\n"
+        "Le papillon est une chose à contempler,§"
+        "avec des couleurs plus belles que l'or.§"
+        "Que j'apprécie ta beauté, papillon,§"
         "alors que je suis assis et te regarde flotter."
 
     // -- INQUIRIES
@@ -78,4 +78,4 @@ FRENCH_LANGUAGE : LANGUAGE
         TheItems( items )
         Have( items )
         BeenFound( items )
-        ".\n"
+        ".§"

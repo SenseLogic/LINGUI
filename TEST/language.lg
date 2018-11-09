@@ -26,7 +26,7 @@ LANGUAGE
         if .this
             GetRealText( %this ) ~ " / "
 
-        GetPluralityText( @this ) ~ " / " ~ GetPluralityText( °this ) ~ " / " ~ GetGenreText( &this ) ~ "\n"
+        GetPluralityText( @this ) ~ " / " ~ GetPluralityText( °this ) ~ " / " ~ GetGenreText( &this ) ~ "§"
 
     !GetOppositeBoolean !value
         var !result
@@ -78,7 +78,7 @@ LANGUAGE
                 " > 0"
         else
             " = 0"
-        "\n"
+        "§"
 
     TestFunctions
         var !opposite_boolean #opposite_integer %opposite_real opposite_string :opposite_translation :inverse_translation
@@ -88,14 +88,14 @@ LANGUAGE
         opposite_string = GetOppositeString( "one" )
         opposite_translation = GetOppositeTranslation( 1*"one":neutral )
         inverse_translation = GetInverseTranslation( 1*"x":neutral )
-        $opposite_boolean ~ " / " ~ $opposite_integer ~ " / " ~ $opposite_real ~ " / " ~ opposite_string ~ " / " ~ $opposite_translation ~ " / " ~ $inverse_translation ~ "\n"
-        GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "\n"
-        GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "\n"
-        GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, 0 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " \n"
-        GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DotCharacter ) ~ "\n"
-        GetRealText( -12.000123456, 0, 3 ) ~ " / " ~ GetRealText( -12.000123456, 1, 3 ) ~ " / " ~ GetRealText( -12.000123456, 3, 3 ) ~ " / " ~ GetRealText( -12.000123456 ) ~ " \n"
-        GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "\n"
-        GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "\n"
+        $opposite_boolean ~ " / " ~ $opposite_integer ~ " / " ~ $opposite_real ~ " / " ~ opposite_string ~ " / " ~ $opposite_translation ~ " / " ~ $inverse_translation ~ "§"
+        GetBooleanText( false ) ~ " / " ~ GetBooleanText( true ) ~ "§"
+        GetIntegerText( -12, 4 ) ~ " / " ~ GetIntegerText( 12, 4 ) ~ "§"
+        GetIntegerText( -12 ) ~ " / " ~ GetRealText( -12.0, 0 ) ~ " / " ~ GetRealText( -12.0 ) ~ " / " ~ GetRealText( -12.0, 3 ) ~ " §"
+        GetRealText( -12.3, 3, 3, '_' ) ~ " / " ~ GetRealText( -12.345 ) ~ " / " ~ GetRealText( -12.3456789, 0, 3, DotCharacter ) ~ "§"
+        GetRealText( -12.000123456, 0, 3 ) ~ " / " ~ GetRealText( -12.000123456, 1, 3 ) ~ " / " ~ GetRealText( -12.000123456, 3, 3 ) ~ " / " ~ GetRealText( -12.000123456 ) ~ " §"
+        GetLowerCase( "jack SPARROW" ) ~ " / " ~ GetUpperCase( "john MCLANE" ) ~ "§"
+        GetSentenceCase( "jason bourne" ) ~ " / " ~ GetTitleCase( "james kirk" ) ~ "§"
 
         Dump( MakeTranslation( "cm" ) )
         Dump( MakeTranslation( "cm", "0" ) )
@@ -113,7 +113,7 @@ LANGUAGE
         Dump( 7.5*"metros" )
         Dump( 8.5*"vueltas":female )
 
-        GetText( "English" ) ~ " / " ~ GetText( "French" ) ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "\n"
+        GetText( "English" ) ~ " / " ~ GetText( "French" ) ~ " / " ~ GetDate( "18", "2", "2018" ) ~ "§"
 
     :Kings :count
         $result = "reyes"
@@ -149,4 +149,4 @@ LANGUAGE
         &queens = female
         princes = 3*"príncipes":male
 
-        $kings ~ " " ~ $queens ~ " " ~ $princes ~ "\n"
+        $kings ~ " " ~ $queens ~ " " ~ $princes ~ "§"

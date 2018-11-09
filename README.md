@@ -278,12 +278,20 @@ It is defined by concatenated expressions which are evaluated only once.
 
 The result of this evaluation is stored inside the translation dictionary of its language.
 
+### Quoted strings
+
+A quoted string is enclosed in double quote characters.
+
+The new line character is `§`.
+
+Prefixing a character with `\` escapes it.
+
 ### Function statements
 
 *   Textual expressions
 
     ```lua
-    "Some text...\n"
+    "Some text...§"
     GetTitleCase( Swords( 2* ) )
     ```
 
@@ -377,7 +385,7 @@ or     logical or
 ### Literals
 
 ```lua
-"Some text.\n"          text
+"Some text.§"          text
 '.'                     character
 1                       integer
 2.5                     real

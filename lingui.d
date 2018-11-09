@@ -288,6 +288,20 @@ class RULE
 
     // ~~
 
+    bool IsString(
+        dstring text
+        )
+    {
+        return
+            text.length >= 2
+            && ( ( text.startsWith( '"' )
+                   && text.endsWith( '"' ) )
+                 || ( text.startsWith( '\'' )
+                      && text.endsWith( '\'' ) ) );
+    }
+
+    // ~~
+
     bool IsNumber(
         dstring text
         )
@@ -694,6 +708,49 @@ class RULE
 
     // ~~
 
+    dstring GetStringCode(
+        dstring token
+        )
+    {
+        dchar
+            character;
+        dstring
+            code;
+        long
+            character_index;
+
+        for ( character_index = 0;
+              character_index < token.length;
+              ++character_index )
+        {
+            character = token[ character_index ];
+
+            if ( character == '§' )
+            {
+                code ~= "\\n";
+            }
+            else if ( character == '\\' )
+            {
+                code ~= character;
+
+                if ( character_index + 1 < token.length )
+                {
+                    ++character_index;
+
+                    code ~= token[ character_index ];
+                }
+            }
+            else
+            {
+                code ~= character;
+            }
+        }
+
+        return code;
+    }
+
+    // ~~
+
     dstring GetExpressionCode(
         dstring[] token_array
         )
@@ -793,6 +850,10 @@ class RULE
             {
                 code_token = GetVariableCode( token );
             }
+            else if ( IsString( token ) )
+            {
+                code_token = GetStringCode( token );
+            }
             else
             {
                 code_token = token;
@@ -818,7 +879,7 @@ class RULE
 
     // ~~
 
-    dstring GetConstantCode(
+    dstring GetStringExpressionCode(
         )
     {
         dstring
@@ -1289,16 +1350,16 @@ class RULE
             {
                 if ( CsOptionIsEnabled )
                 {
-                    code.AddText( "new TRANSLATION( " ~ GetConstantCode() ~ " );" );
+                    code.AddText( "new TRANSLATION( " ~ GetStringExpressionCode() ~ " );" );
                 }
                 else if ( DOptionIsEnabled || DartOptionIsEnabled )
                 {
-                    code.AddText( "TRANSLATION( " ~ GetConstantCode() ~ " );" );
+                    code.AddText( "TRANSLATION( " ~ GetStringExpressionCode() ~ " );" );
                 }
             }
             else
             {
-                code.AddText( GetConstantCode() ~ ";" );
+                code.AddText( GetStringExpressionCode() ~ ";" );
             }
         }
         else
@@ -2236,26 +2297,22 @@ class BLOCK
 
                     it_is_in_string_literal = false;
                 }
+                else if ( source_character == '§' )
+                {
+                    source_translation ~= " :: ";
+                }
                 else if ( source_character == '\\' )
                 {
+                    source_translation ~= source_character;
+
                     if ( source_character_index + 1 < source_line.length )
                     {
                         ++source_character_index;
-                        source_character = source_line[ source_character_index ];
 
-                        if ( source_character == 'n' )
-                        {
-                            source_translation ~= " :: ";
-                        }
-                        else
-                        {
-                            source_translation ~= '\\';
-                            source_translation ~= source_character;
-                        }
+                        source_translation ~= source_line[ source_character_index ];
                     }
                     else
                     {
-                        source_translation ~= source_character;
                         target_line ~= source_translation;
                     }
                 }
@@ -2374,26 +2431,19 @@ class BLOCK
 
                         it_is_in_string_literal = false;
                     }
+                    else if ( character == '§' )
+                    {
+                        translation ~= " :: ";
+                    }
                     else if ( character == '\\' )
                     {
+                        translation ~= character;
+
                         if ( character_index + 1 < line.length )
                         {
                             ++character_index;
-                            character = line[ character_index ];
 
-                            if ( character == 'n' )
-                            {
-                                translation ~= " :: ";
-                            }
-                            else
-                            {
-                                translation ~= '\\';
-                                translation ~= character;
-                            }
-                        }
-                        else
-                        {
-                            translation ~= character;
+                            translation ~= line[ character_index ];
                         }
                     }
                     else

@@ -11,9 +11,9 @@ SPANISH_LANGUAGE : LANGUAGE
         "Inglés"
 
     "Poem"
-        "La mariposa es una cosa para contemplar,\n"
-        "Con colores más hermosos que el oro.\n"
-        "Que me gusta tu belleza, mariposa,\n"
+        "La mariposa es una cosa para contemplar,§"
+        "Con colores más hermosos que el oro.§"
+        "Que me gusta tu belleza, mariposa,§"
         "Mientras me siento y te veo revolotear."
 
     // -- INQUIRIES
@@ -76,4 +76,4 @@ SPANISH_LANGUAGE : LANGUAGE
         TheItems( items )
         Have( items )
         BeenFound( items )
-        ".\n"
+        ".§"

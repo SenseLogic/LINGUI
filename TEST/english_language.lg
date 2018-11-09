@@ -17,12 +17,12 @@ ENGLISH_LANGUAGE : LANGUAGE
         "Spanish"
 
     "Haiku"
-        "Evening light,\nthe blue transparency\nof a dragonfly."
+        "Evening light,§the blue transparency§of a dragonfly."
 
     "Poem"
-        "The butterfly is a thing to behold,\n"
-        "with colors more beautiful than gold.\n"
-        "How I enjoy your beauty, butterfly,\n"
+        "The butterfly is a thing to behold,§"
+        "with colors more beautiful than gold.§"
+        "How I enjoy your beauty, butterfly,§"
         "as I sit and watch you flutter by."
 
     // -- INQUIRIES
@@ -61,4 +61,4 @@ ENGLISH_LANGUAGE : LANGUAGE
             " has"
         else
             " have"
-        " been found.\n"
+        " been found.§"
