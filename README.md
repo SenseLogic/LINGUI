@@ -467,16 +467,16 @@ GetOrdinalPlurality( translation )
 
 ### Definition files
 
-When the `--extract` option is used, all constants definitions declared before the first function of each ".ld" file
-are extracted into `.ld` definition files.
+When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
+are extracted into their `.ld` definition files.
 
-Matching definitions must have the same line number.
+Matching definitions have the same line number.
 
 An empty line is considered as a missing entry.
 
-Multiline definitions are split over several lines prefixed with a single space.
+Multiline definitions are split over several lines prefixed with four spaces.
 
-Definition files are compatible with the most online translation services :
+Definition files are compatible with most online translation services :
 
 *   [Bing](https://www.bing.com/translator)
 *   [Google](https://translate.google.com)
