@@ -504,7 +504,7 @@ The definition file syntax is compatible with the following online translators :
 
 *   [Bing](https://www.bing.com/translator)
 *   [Collins](https://www.collinsdictionary.com/translator)
-*   [DatTranslations](https://www.daytranslations.com/freetranslation)
+*   [DayTranslations](https://www.daytranslations.com/freetranslation)
 *   [DeepL](https://www.deepl.com/translator)
 *   [Google](https://translate.google.com)
 *   [Promt](https://www.online-translator.com)
