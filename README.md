@@ -482,7 +482,14 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
-### Definition files
+### Constant mirroring
+
+When the `--mirror` option is used :
+
+*   all constants declared before the first function are sorted in the same order as in the source language;
+*   any missing constant is automatically added, using the translations of the definition files.
+
+### Definition extraction
 
 When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
 are extracted into their `.ld` definition files.
@@ -501,19 +508,48 @@ Definition files are compatible with most online translation services :
 *   [Reverso](http://www.reverso.net/text_translation.aspx)
 *   [Yandex](https://translate.yandex.com)
 
-### Translation files
+### Definition picking
 
-When the `--match` option is used, the constants definitions stored in the `.lt` translation files are matched
+When the `--pick` option is used, the constants definitions stored in the `.lt` translation files are matched
 with each other.
 
 They are sorted by frequency, and the most used are automatically selected.
 
-### Mirroring
+Definitions are provided in groups.
 
-When the `--mirror` option is used :
+Source groups start by `<`, while target groups start by `>`.
 
-*   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations of the definition files.
+Only target definitions will be picked.
+
+```lua
+< English
+
+"Spanish language"
+"Limits are created by mind."
+    "Imagination can take you to the heavens."
+    "Now imagine something."
+
+> Yandex/English
+
+"スペイン語"
+"制限は心によって作成されます。"
+    "想像力は天に連れて行くことができます。"
+    "今何かを想像してみてください。"
+
+> Google/English
+
+"スペイン語"
+"限界は心で作られている。"
+    "想像力はあなたを天に連れて行くことができます。"
+    "今、何かを想像してください。"
+
+> Reverso/English
+
+"スペインの言語"
+"限度が心によって作られます。"
+    "想像力があなたを天に導くことができます。"
+    "今何かを想像してください。"
+```
 
 ### Case conventions
 

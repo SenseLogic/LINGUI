@@ -2301,36 +2301,36 @@ class BLOCK
 
     // ~~
 
-    dstring GetTargetTranslation(
-        dstring source_translation,
+    dstring GetTargetDefinition(
+        dstring source_definition,
         FILE source_definition_file,
         FILE target_definition_file
         )
     {
         dstring
-            target_translation;
+            target_definition;
         long
             source_line_index;
 
-        source_line_index = source_definition_file.LineArray.countUntil( source_translation );
+        source_line_index = source_definition_file.LineArray.countUntil( source_definition );
 
         if ( source_line_index >= 0 )
         {
             if ( source_line_index < target_definition_file.LineArray.length
                  && target_definition_file.LineArray[ source_line_index ].length > 0 )
             {
-                target_translation = target_definition_file.LineArray[ source_line_index ];
+                target_definition = target_definition_file.LineArray[ source_line_index ];
             }
             else
             {
-                target_translation = "?" ~ source_translation;
+                target_definition = "?" ~ source_definition;
 
-                target_definition_file.MissingLineArray ~= source_translation;
+                target_definition_file.MissingLineArray ~= source_definition;
             }
         }
         else
         {
-            target_translation = "?" ~ source_translation;
+            target_definition = "?" ~ source_definition;
 
             while ( source_definition_file.LineArray.length > 0
                     && source_definition_file.LineArray[ $ -1 ].length == 0 )
@@ -2338,12 +2338,12 @@ class BLOCK
                 --source_definition_file.LineArray.length;
             }
 
-            source_definition_file.LineArray ~= source_translation;
-            source_definition_file.MissingLineArray ~= source_translation;
-            target_definition_file.MissingLineArray ~= source_translation;
+            source_definition_file.LineArray ~= source_definition;
+            source_definition_file.MissingLineArray ~= source_definition;
+            target_definition_file.MissingLineArray ~= source_definition;
         }
 
-        return target_translation;
+        return target_definition;
     }
 
     // ~~
@@ -2360,7 +2360,7 @@ class BLOCK
         dchar
             source_character;
         dstring
-            source_translation,
+            source_definition,
             target_line;
         long
             source_character_index;
@@ -2378,29 +2378,29 @@ class BLOCK
             {
                 if ( source_character == '"' )
                 {
-                    source_translation ~= source_character;
-                    target_line ~= GetTargetTranslation( source_translation, source_file.DefinitionFile, target_file.DefinitionFile );
+                    source_definition ~= source_character;
+                    target_line ~= GetTargetDefinition( source_definition, source_file.DefinitionFile, target_file.DefinitionFile );
 
                     it_is_in_string_literal = false;
                 }
                 else if ( source_character == '\\' )
                 {
-                    source_translation ~= source_character;
+                    source_definition ~= source_character;
 
                     if ( source_character_index + 1 < source_line.length )
                     {
                         ++source_character_index;
 
-                        source_translation ~= source_line[ source_character_index ];
+                        source_definition ~= source_line[ source_character_index ];
                     }
                     else
                     {
-                        target_line ~= source_translation;
+                        target_line ~= source_definition;
                     }
                 }
                 else
                 {
-                    source_translation ~= source_character;
+                    source_definition ~= source_character;
                 }
             }
             else if ( it_is_in_character_literal )
@@ -2421,8 +2421,8 @@ class BLOCK
             }
             else if ( source_character == '"' )
             {
-                source_translation = "";
-                source_translation ~= source_character;
+                source_definition = "";
+                source_definition ~= source_character;
 
                 it_is_in_string_literal = true;
             }
@@ -2479,7 +2479,7 @@ class BLOCK
 
     // ~~
 
-    void ExtractTranslations(
+    void ExtractDefinitions(
         FILE definition_file
         )
     {
@@ -2489,7 +2489,7 @@ class BLOCK
         dchar
             character;
         dstring
-            translation;
+            definition;
         long
             character_index;
 
@@ -2508,29 +2508,29 @@ class BLOCK
                 {
                     if ( character == '"' )
                     {
-                        translation ~= character;
-                        definition_file.LineArray ~= translation;
+                        definition ~= character;
+                        definition_file.LineArray ~= definition;
 
                         it_is_in_string_literal = false;
                     }
                     else if ( character == '§' )
                     {
-                        translation ~= "\"\n    \"";
+                        definition ~= "\"\n    \"";
                     }
                     else if ( character == '\\' )
                     {
-                        translation ~= character;
+                        definition ~= character;
 
                         if ( character_index + 1 < line.length )
                         {
                             ++character_index;
 
-                            translation ~= line[ character_index ];
+                            definition ~= line[ character_index ];
                         }
                     }
                     else
                     {
-                        translation ~= character;
+                        definition ~= character;
                     }
                 }
                 else if ( it_is_in_character_literal )
@@ -2547,8 +2547,8 @@ class BLOCK
                 }
                 else if ( character == '"' )
                 {
-                    translation = "";
-                    translation ~= character;
+                    definition = "";
+                    definition ~= character;
 
                     it_is_in_string_literal = true;
                 }
@@ -2561,7 +2561,7 @@ class BLOCK
 
         foreach ( sub_block; SubBlockArray )
         {
-            sub_block.ExtractTranslations( definition_file );
+            sub_block.ExtractDefinitions( definition_file );
         }
     }
 
@@ -2580,7 +2580,7 @@ class BLOCK
 
 // ~~
 
-class TRANSLATION
+class DEFINITION
 {
     dstring
         Name;
@@ -2709,7 +2709,7 @@ class FILE
 
     // ~~
 
-    void PickTranslations(
+    void PickDefinitions(
         )
     {
         long
@@ -2722,11 +2722,11 @@ class FILE
         dstring[]
             line_array,
             picked_line_array;
-        TRANSLATION
-            translation;
-        TRANSLATION[]
-            translation_array,
-            matched_translation_array;
+        DEFINITION
+            definition;
+        DEFINITION[]
+            definition_array,
+            matched_definition_array;
 
         if ( Path.exists() )
         {
@@ -2736,57 +2736,62 @@ class FILE
             {
                 if ( line.length > 0 )
                 {
-                    if ( line.startsWith( '"' )
-                         || line.startsWith( ' ' ) )
+                    if ( line.startsWith( '<' )
+                         || line.startsWith( '>' ) )
                     {
-                        if ( translation !is null )
-                        {
-                            translation.LineArray ~= line;
-                        }
-                        else
-                        {
-                            Abort( "Missing name : " ~ Path ~ "(" ~ ( line_index + 1 ).to!dstring() ~ ")" );
-                        }
-                    }
-                    else
-                    {
-                        translation = null;
+                        definition = null;
 
-                        foreach ( prior_translation; translation_array )
+                        foreach ( prior_definition; definition_array )
                         {
-                            if ( prior_translation.Name == line )
+                            if ( prior_definition.Name == line )
                             {
-                                translation = prior_translation;
+                                definition = prior_definition;
 
                                 break;
                             }
                         }
 
-                        if ( translation is null )
+                        if ( definition is null )
                         {
-                            translation = new TRANSLATION();
-                            translation.Name = line;
-                            translation_array ~= translation;
+                            definition = new DEFINITION();
+                            definition.Name = line;
+                            definition_array ~= definition;
                         }
+                    }
+                    else if ( line.startsWith( '"' )
+                         || line.startsWith( "    \"" ) )
+                    {
+                        if ( definition !is null )
+                        {
+                            definition.LineArray ~= line;
+                        }
+                        else
+                        {
+                            Abort( "Missing group : " ~ Path ~ "(" ~ ( line_index + 1 ).to!dstring() ~ ")" );
+                        }
+                    }
+                    else
+                    {
+                        Abort( "Invalid syntax : " ~ Path ~ "(" ~ ( line_index + 1 ).to!dstring() ~ ")" );
                     }
                 }
             }
 
-            if ( translation_array.length > 0 )
+            if ( definition_array.length > 0 )
             {
                 for ( matched_line_index = 0;
-                      matched_line_index < translation_array[ 0 ].LineArray.length;
+                      matched_line_index < definition_array[ 0 ].LineArray.length;
                       ++matched_line_index )
                 {
                     line_array = null;
 
-                    foreach ( matched_translation; translation_array )
+                    foreach ( matched_definition; definition_array )
                     {
-                        if ( matched_line_index < matched_translation.LineArray.length )
+                        if ( matched_line_index < matched_definition.LineArray.length )
                         {
-                            matched_line = matched_translation.LineArray[ matched_line_index ];
+                            matched_line = matched_definition.LineArray[ matched_line_index ];
 
-                            if ( matched_translation.Name.startsWith( '#' ) )
+                            if ( matched_definition.Name.startsWith( '<' ) )
                             {
                                 writeln( matched_line.strip(), " :" );
                             }
@@ -2828,7 +2833,7 @@ class FILE
                     }
                 }
 
-                writeln( "Picked translations :" );
+                writeln( "Picked definitions :" );
                 writeln( picked_line_array.join( '\n' ) );
             }
         }
@@ -3038,7 +3043,7 @@ class SCRIPT
 
     // ~~
 
-    void ExtractTranslations(
+    void ExtractDefinitions(
         )
     {
         ParseBlocks();
@@ -3055,7 +3060,7 @@ class SCRIPT
                     {
                         foreach ( sub_block; block.SubBlockArray )
                         {
-                            sub_block.ExtractTranslations( file.DefinitionFile );
+                            sub_block.ExtractDefinitions( file.DefinitionFile );
                         }
                     }
                     else if ( !block.IsComment() )
@@ -3071,7 +3076,7 @@ class SCRIPT
 
     // ~~
 
-    void PickTranslations(
+    void PickDefinitions(
         )
     {
         FILE
@@ -3081,7 +3086,7 @@ class SCRIPT
         {
             file = new FILE();
             file.Path = file_path.replace( ".lg", ".lt" );
-            file.PickTranslations();
+            file.PickDefinitions();
         }
     }
 
@@ -3275,12 +3280,12 @@ class SCRIPT
 
         if ( ExtractOptionIsEnabled )
         {
-            ExtractTranslations();
+            ExtractDefinitions();
         }
 
         if ( PickOptionIsEnabled )
         {
-            PickTranslations();
+            PickDefinitions();
         }
 
         if ( CsOptionIsEnabled
