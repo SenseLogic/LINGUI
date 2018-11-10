@@ -223,6 +223,9 @@ class RULE
         IsRealFunction,
         IsStringFunction,
         IsTranslationFunction,
+        IsNativeFunction,
+        IsNativeAttribute,
+        IsNativeImport,
         IsBaseFunction;
     RULE
         FunctionRule;
@@ -1370,6 +1373,31 @@ class RULE
 
     // ~~
 
+    void AddNativeCode(
+        CODE code,
+        bool text_is_added
+        )
+    {
+        if ( text_is_added )
+        {
+            code.AddLine( Text );
+        }
+
+        if ( SubRuleArray.length > 0 )
+        {
+            code.AddLine( "{" );
+
+            foreach ( sub_rule; SubRuleArray )
+            {
+                sub_rule.AddNativeCode( code, true );
+            }
+
+            code.AddLine( "}" );
+        }
+    }
+
+    // ~~
+
     void AddFunctionCode(
         CODE code
         )
@@ -1377,196 +1405,227 @@ class RULE
         bool
             function_has_result_variable;
 
-        if ( CsOptionIsEnabled )
-        {
-            if ( IsBaseFunction )
-            {
-                code.AddLine( "public virtual " );
-            }
-            else
-            {
-                code.AddLine( "public override " );
-            }
-        }
-        else if ( DOptionIsEnabled )
-        {
-            if ( IsBaseFunction )
-            {
-                code.AddLine( "" );
-            }
-            else
-            {
-                code.AddLine( "override " );
-            }
-        }
-        else if ( DartOptionIsEnabled )
-        {
-            code.AddLine( "" );
-        }
-
-        if ( IsBooleanFunction )
-        {
-            code.AddText( "bool " );
-        }
-        else if ( IsIntegerFunction )
-        {
-            code.AddText( "int " );
-        }
-        else if ( IsRealFunction )
-        {
-            code.AddText( GetRealType() ~ " " );
-        }
-        else if ( IsStringFunction )
+        if ( IsNativeAttribute )
         {
             if ( CsOptionIsEnabled )
             {
-                code.AddText( "string " );
+                code.AddLine( "public " );
+            }
+            else
+            {
+                code.AddLine( "" );
+            }
+        }
+        else
+        {
+            if ( CsOptionIsEnabled )
+            {
+                if ( IsBaseFunction )
+                {
+                    code.AddLine( "public virtual " );
+                }
+                else
+                {
+                    code.AddLine( "public override " );
+                }
             }
             else if ( DOptionIsEnabled )
             {
-                code.AddText( "dstring " );
+                if ( IsBaseFunction )
+                {
+                    code.AddLine( "" );
+                }
+                else
+                {
+                    code.AddLine( "override " );
+                }
             }
             else if ( DartOptionIsEnabled )
             {
-                code.AddText( "String " );
+                code.AddLine( "" );
+            }
+        }
+
+        if ( IsNativeFunction )
+        {
+            code.AddText( Text );
+
+            if ( SubRuleArray.length > 0 )
+            {
+                AddNativeCode( code, false );
+            }
+            else if ( !IsNativeAttribute )
+            {
+                code.AddLine( "{" );
+                code.AddLine( "}" );
             }
         }
         else
-        {
-            code.AddText( "TRANSLATION " );
-        }
-
-        code.AddText( FunctionName ~ "(" );
-
-        foreach ( parameter_index, parameter_name; ParameterNameArray )
-        {
-            code.AddLine( "    " );
-
-            if ( parameter_name.startsWith( ':' ) )
-            {
-                code.AddText( "TRANSLATION " ~ parameter_name[ 1 .. $ ] ~ "_translation" );
-            }
-            else if ( parameter_name.startsWith( '!' ) )
-            {
-                code.AddText( "bool " ~ parameter_name[ 1 .. $ ] );
-            }
-            else if ( parameter_name.startsWith( '#' ) )
-            {
-                code.AddText( "int " ~ parameter_name[ 1 .. $ ] );
-            }
-            else if ( parameter_name.startsWith( '%' ) )
-            {
-                code.AddText( GetRealType() ~ " " ~ parameter_name[ 1 .. $ ] );
-            }
-            else
-            {
-                if ( CsOptionIsEnabled )
-                {
-                    code.AddText( "string " ~ parameter_name );
-                }
-                else if ( DOptionIsEnabled )
-                {
-                    code.AddText( "dstring " ~ parameter_name );
-                }
-                else if ( DartOptionIsEnabled )
-                {
-                    code.AddText( "String " ~ parameter_name );
-                }
-            }
-
-            if ( parameter_index + 1 < ParameterNameArray.length )
-            {
-                code.AddText( "," );
-            }
-        }
-
-        code.AddLine( "    )" );
-        code.AddLine( "{" );
-
-        if ( SubRuleArray.length == 0 )
         {
             if ( IsBooleanFunction )
             {
-                code.AddLine( "return false;" );
+                code.AddText( "bool " );
             }
             else if ( IsIntegerFunction )
             {
-                code.AddLine( "return 0;" );
+                code.AddText( "int " );
             }
             else if ( IsRealFunction )
             {
-                if ( FloatOptionIsEnabled )
-                {
-                    code.AddLine( "return 0.0f;" );
-                }
-                else if ( DartOptionIsEnabled )
-                {
-                    code.AddLine( "return 0.0;" );
-                }
+                code.AddText( GetRealType() ~ " " );
             }
             else if ( IsStringFunction )
             {
-                code.AddLine( "return \"\";" );
+                if ( CsOptionIsEnabled )
+                {
+                    code.AddText( "string " );
+                }
+                else if ( DOptionIsEnabled )
+                {
+                    code.AddText( "dstring " );
+                }
+                else if ( DartOptionIsEnabled )
+                {
+                    code.AddText( "String " );
+                }
             }
             else
             {
-                code.AddLine( "return TRANSLATION.Null;" );
+                code.AddText( "TRANSLATION " );
             }
-        }
-        else if ( SubRuleArray.length == 1
-                  && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression
-                  && SubRuleArray[ 0 ].IsStringExpression()
-                  && ( IsStringFunction || IsTranslationFunction ) )
-        {
-            if ( IsStringFunction )
+
+            code.AddText( FunctionName ~ "(" );
+
+            foreach ( parameter_index, parameter_name; ParameterNameArray )
             {
-                code.AddLine( "return " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
-            }
-            else if ( IsTranslationFunction )
-            {
-                if ( CsOptionIsEnabled )
+                code.AddLine( "    " );
+
+                if ( parameter_name.startsWith( ':' ) )
                 {
-                    code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    code.AddText( "TRANSLATION " ~ parameter_name[ 1 .. $ ] ~ "_translation" );
                 }
-                else if ( DOptionIsEnabled || DartOptionIsEnabled )
+                else if ( parameter_name.startsWith( '!' ) )
                 {
-                    code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    code.AddText( "bool " ~ parameter_name[ 1 .. $ ] );
+                }
+                else if ( parameter_name.startsWith( '#' ) )
+                {
+                    code.AddText( "int " ~ parameter_name[ 1 .. $ ] );
+                }
+                else if ( parameter_name.startsWith( '%' ) )
+                {
+                    code.AddText( GetRealType() ~ " " ~ parameter_name[ 1 .. $ ] );
+                }
+                else
+                {
+                    if ( CsOptionIsEnabled )
+                    {
+                        code.AddText( "string " ~ parameter_name );
+                    }
+                    else if ( DOptionIsEnabled )
+                    {
+                        code.AddText( "dstring " ~ parameter_name );
+                    }
+                    else if ( DartOptionIsEnabled )
+                    {
+                        code.AddText( "String " ~ parameter_name );
+                    }
+                }
+
+                if ( parameter_index + 1 < ParameterNameArray.length )
+                {
+                    code.AddText( "," );
                 }
             }
-        }
-        else
-        {
-            function_has_result_variable
-                = ( IsStringFunction || IsTranslationFunction )
-                  && !ForbidsResultVariable()
-                  && RequiresResultVariable();
 
-            if ( function_has_result_variable )
+            code.AddLine( "    )" );
+            code.AddLine( "{" );
+
+            if ( SubRuleArray.length == 0 )
             {
-                VariableNameArray ~= ":result";
+                if ( IsBooleanFunction )
+                {
+                    code.AddLine( "return false;" );
+                }
+                else if ( IsIntegerFunction )
+                {
+                    code.AddLine( "return 0;" );
+                }
+                else if ( IsRealFunction )
+                {
+                    if ( FloatOptionIsEnabled )
+                    {
+                        code.AddLine( "return 0.0f;" );
+                    }
+                    else if ( DartOptionIsEnabled )
+                    {
+                        code.AddLine( "return 0.0;" );
+                    }
+                }
+                else if ( IsStringFunction )
+                {
+                    code.AddLine( "return \"\";" );
+                }
+                else
+                {
+                    code.AddLine( "return TRANSLATION.Null;" );
+                }
             }
-
-            AddVarCode( code );
-
-            foreach ( sub_rule; SubRuleArray )
-            {
-                sub_rule.AddStatementCode( code );
-            }
-
-            if ( function_has_result_variable )
+            else if ( SubRuleArray.length == 1
+                      && SubRuleArray[ 0 ].Type == RULE_TYPE.Expression
+                      && SubRuleArray[ 0 ].IsStringExpression()
+                      && ( IsStringFunction || IsTranslationFunction ) )
             {
                 if ( IsStringFunction )
                 {
-                    code.AddLine( "return result_translation.Text;" );
+                    code.AddLine( "return " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ ";" );
                 }
                 else if ( IsTranslationFunction )
                 {
-                    code.AddLine( "return result_translation;" );
+                    if ( CsOptionIsEnabled )
+                    {
+                        code.AddLine( "return new TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    }
+                    else if ( DOptionIsEnabled || DartOptionIsEnabled )
+                    {
+                        code.AddLine( "return TRANSLATION( " ~ SubRuleArray[ 0 ].GetExpressionCode( 0 ) ~ " );" );
+                    }
                 }
             }
-        }
+            else
+            {
+                function_has_result_variable
+                    = ( IsStringFunction || IsTranslationFunction )
+                      && !ForbidsResultVariable()
+                      && RequiresResultVariable();
 
-        code.AddLine( "}" );
+                if ( function_has_result_variable )
+                {
+                    VariableNameArray ~= ":result";
+                }
+
+                AddVarCode( code );
+
+                foreach ( sub_rule; SubRuleArray )
+                {
+                    sub_rule.AddStatementCode( code );
+                }
+
+                if ( function_has_result_variable )
+                {
+                    if ( IsStringFunction )
+                    {
+                        code.AddLine( "return result_translation.Text;" );
+                    }
+                    else if ( IsTranslationFunction )
+                    {
+                        code.AddLine( "return result_translation;" );
+                    }
+                }
+            }
+
+            code.AddLine( "}" );
+        }
 
         if ( !IsLastSubRule() )
         {
@@ -1578,7 +1637,7 @@ class RULE
 
     // ~~
 
-    void AddLanguageCode(
+    void AddImportCode(
         CODE code
         )
     {
@@ -1593,7 +1652,6 @@ class RULE
             }
 
             code.AddLine( "using " ~ Namespace ~ ";" );
-            code.AddLine( "" );
         }
         else if ( DOptionIsEnabled )
         {
@@ -1614,8 +1672,6 @@ class RULE
             code.AddLine( "import " ~ BaseNamespace ~ ".genre;" );
             code.AddLine( "import " ~ BaseNamespace ~ ".plurality;" );
             code.AddLine( "import " ~ BaseNamespace ~ ".translation;" );
-
-            code.AddLine( "" );
         }
         else if ( DartOptionIsEnabled )
         {
@@ -1634,9 +1690,26 @@ class RULE
             code.AddLine( "import \"genre.dart\";" );
             code.AddLine( "import \"plurality.dart\";" );
             code.AddLine( "import \"translation.dart\";" );
-            code.AddLine( "" );
         }
 
+        foreach ( sub_rule; SubRuleArray )
+        {
+            if ( sub_rule.IsNativeImport )
+            {
+                code.AddLine( sub_rule.Text );
+            }
+        }
+    }
+
+    // ~~
+
+    void AddLanguageCode(
+        CODE code
+        )
+    {
+        AddImportCode( code );
+
+        code.AddLine( "" );
         code.AddLine( "// -- TYPES" );
         code.AddLine( "" );
 
@@ -1682,7 +1755,6 @@ class RULE
         }
 
         code.AddLine( "    )" );
-
 
         if ( CsOptionIsEnabled )
         {
@@ -1772,7 +1844,8 @@ class RULE
 
         foreach ( sub_rule; SubRuleArray )
         {
-            if ( !sub_rule.IsStringConstant() )
+            if ( !sub_rule.IsStringConstant()
+                 && !sub_rule.IsNativeImport )
             {
                 sub_rule.AddFunctionCode( code );
             }
@@ -1985,6 +2058,8 @@ class RULE
         IsRealFunction = false;
         IsStringFunction = false;
         IsTranslationFunction = false;
+        IsNativeFunction = false;
+        IsNativeAttribute = false;
 
         if ( first_token.startsWith( "!" ) )
         {
@@ -1993,23 +2068,32 @@ class RULE
             Text = Text[ 1 .. $ ];
             TokenArray[ 0 ] = first_token[ 1 .. $ ];
         }
-        else if ( first_token.startsWith( "#" ) )
+        else if ( first_token.startsWith( '#' ) )
         {
             IsIntegerFunction = true;
 
             Text = Text[ 1 .. $ ];
             TokenArray[ 0 ] = first_token[ 1 .. $ ];
         }
-        else if ( first_token.startsWith( "%" ) )
+        else if ( first_token.startsWith( '%' ) )
         {
             IsRealFunction = true;
 
             Text = Text[ 1 .. $ ];
             TokenArray[ 0 ] = first_token[ 1 .. $ ];
         }
-        else if ( first_token.startsWith( ":" ) )
+        else if ( first_token.startsWith( ':' ) )
         {
             IsTranslationFunction = true;
+
+            Text = Text[ 1 .. $ ];
+            TokenArray[ 0 ] = first_token[ 1 .. $ ];
+        }
+        else if ( first_token.startsWith( '@' ) )
+        {
+            IsNativeFunction = true;
+            IsNativeAttribute = !Text.endsWith( ')' );
+            IsNativeImport = Text.startsWith( "@import " );
 
             Text = Text[ 1 .. $ ];
             TokenArray[ 0 ] = first_token[ 1 .. $ ];
@@ -2033,7 +2117,8 @@ class RULE
                          || base_function_rule.IsIntegerFunction != IsIntegerFunction
                          || base_function_rule.IsRealFunction != IsRealFunction
                          || base_function_rule.IsStringFunction != IsStringFunction
-                         || base_function_rule.IsTranslationFunction != IsTranslationFunction )
+                         || base_function_rule.IsTranslationFunction != IsTranslationFunction
+                         || base_function_rule.IsNativeFunction != IsNativeFunction )
                     {
                         Abort( "Invalid base function" );
                     }
@@ -2116,7 +2201,8 @@ class RULE
             FunctionRule = SuperRule.FunctionRule;
         }
 
-        if ( Type == RULE_TYPE.Var )
+        if ( Type == RULE_TYPE.Var
+             && !FunctionRule.IsNativeFunction )
         {
             FunctionRule.VariableNameArray ~= TokenArray[ 1 .. $ ];
         }
@@ -2627,15 +2713,15 @@ class FILE
         )
     {
         long
-            best_line_count,
+            picked_line_count,
             line_count,
             matched_line_index;
         dstring
-            best_line,
+            picked_line,
             matched_line;
         dstring[]
             line_array,
-            best_line_array;
+            picked_line_array;
         TRANSLATION
             translation;
         TRANSLATION[]
@@ -2688,8 +2774,6 @@ class FILE
 
             if ( translation_array.length > 0 )
             {
-                writeln( "Picking translations..." );
-
                 for ( matched_line_index = 0;
                       matched_line_index < translation_array[ 0 ].LineArray.length;
                       ++matched_line_index )
@@ -2715,8 +2799,8 @@ class FILE
 
                     if ( line_array.length > 0 )
                     {
-                        best_line = "";
-                        best_line_count = 0;
+                        picked_line = "";
+                        picked_line_count = 0;
 
                         line_array.sort();
                         line_count = 0;
@@ -2730,22 +2814,22 @@ class FILE
                             {
                                 writeln( "    ", line.strip(), " (", line_count, ")" );
 
-                                if ( line_count > best_line_count )
+                                if ( line_count > picked_line_count )
                                 {
-                                    best_line_count = line_count;
-                                    best_line = line;
+                                    picked_line_count = line_count;
+                                    picked_line = line;
                                 }
 
                                 line_count = 0;
                             }
                         }
 
-                        best_line_array ~= best_line;
+                        picked_line_array ~= picked_line;
                     }
                 }
 
-                writeln( "Best translations :" );
-                writeln( best_line_array.join( '\n' ) );
+                writeln( "Picked translations :" );
+                writeln( picked_line_array.join( '\n' ) );
             }
         }
     }

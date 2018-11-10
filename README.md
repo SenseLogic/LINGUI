@@ -259,6 +259,23 @@ The type of the functions, function parameters and local variables is defined th
 *   `#` : integer
 *   `%` : real
 *   `:` : translation
+*   `@` : native
+
+Native imports, attributes and methods are written in the target programming language, using indentations for blocks.
+
+```lua
+@import "dart:core";
+
+@String Separator;
+
+@String GetDate( int day, int month, int year )
+    if ( Separator == "" )
+        Separator = "-";
+    return "${day}${Separator}${month}${Separator}${year}";
+
+@String GetDate( DateTime date )
+    return GetCustomDate( date.day, date.month, date.year );
+```
 
 ### Translation value
 
