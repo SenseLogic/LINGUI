@@ -482,14 +482,12 @@ GetOrdinalPlurality( translation )
 // This is a comment.
 ```
 
-### Constant mirroring
+### Definition extraction
 
-When the `--mirror` option is used :
+When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
+are extracted into their `.ld` definition files.
 
-*   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations provided the `.ld` definition files.
-
-Matching definitions must have the same line number in all `.ld` files.
+Matching definitions must have the same line number.
 
 An empty line is considered as a missing entry.
 
@@ -510,10 +508,13 @@ The definition file syntax is compatible with :
 *   [Reverso](http://www.reverso.net/text_translation.aspx)
 *   [Yandex](https://translate.yandex.com)
 
-### Definition extraction
+### Constant mirroring
 
-When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
-are extracted into their `.ld` definition files.
+When the `--mirror` option is used :
+
+*   all constants declared before the first function are sorted in the same order as in the source language;
+*   any missing constant is automatically added, using the translations provided the `.ld` definition files.
+
 
 ### Definition picking
 
