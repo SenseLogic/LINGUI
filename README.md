@@ -487,26 +487,33 @@ GetOrdinalPlurality( translation )
 When the `--mirror` option is used :
 
 *   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations of the definition files.
+*   any missing constant is automatically added, using the translations provided the `.ld` definition files.
 
-### Definition extraction
-
-When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
-are extracted into their `.ld` definition files.
-
-Matching definitions have the same line number.
+Matching definitions must have the same line number in all `.ld` files.
 
 An empty line is considered as a missing entry.
 
 Multiline definitions are split over several lines prefixed with four spaces.
 
-Definition files are compatible with most online translation services :
+```lua
+"Spanish language"
+"Limits are created by mind."
+    "Imagination can take you to the heavens."
+    "Now imagine something."
+```
+
+The definition file syntax is compatible with :
 
 *   [Bing](https://www.bing.com/translator)
 *   [Google](https://translate.google.com)
 *   [Promt](https://www.online-translator.com)
 *   [Reverso](http://www.reverso.net/text_translation.aspx)
 *   [Yandex](https://translate.yandex.com)
+
+### Definition extraction
+
+When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
+are extracted into their `.ld` definition files.
 
 ### Definition picking
 
