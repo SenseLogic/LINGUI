@@ -484,8 +484,8 @@ GetOrdinalPlurality( translation )
 
 ### Definition extraction
 
-When the `--extract` option is used, all constants definitions declared before the first function of each `.ld` file
-are extracted into their `.ld` definition files.
+When the `--extract` option is used, all constants definitions declared before the first function of each `.lg` file
+are extracted into matching `.ld` definition files.
 
 Matching definitions must have the same line number.
 
