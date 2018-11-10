@@ -502,16 +502,16 @@ Multiline definitions are split over several lines prefixed with four spaces.
 
 The definition file syntax is compatible with the following online translators :
 
-*   [DeepL](https://www.deepl.com/translator)
 *   [Reverso](http://www.reverso.net/text_translation.aspx)
 *   [Collins](https://www.collinsdictionary.com/translator)
 *   [Yandex](https://translate.yandex.com)
 *   [Promt](https://www.online-translator.com)
 *   [Google](https://translate.google.com)
 *   [Bing](https://www.bing.com/translator)
+*   [Systran](http://www.systranet.com/translate)
+*   [DeepL](https://www.deepl.com/translator)
 *   [WorldLingo](http://www.worldlingo.com/products_services/worldlingo_translator.html)
 *   [DayTranslations](https://www.daytranslations.com/freetranslation)
-*   [Systran](http://www.systranet.com/translate)
 
 ### Constant mirroring
 
