@@ -513,7 +513,7 @@ The definition file syntax is compatible with :
 When the `--mirror` option is used :
 
 *   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations provided the `.ld` definition files.
+*   any missing constant is automatically added, using the translations provided by the `.ld` definition files.
 
 
 ### Definition picking
