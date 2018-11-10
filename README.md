@@ -500,12 +500,16 @@ Multiline definitions are split over several lines prefixed with four spaces.
     "Now imagine something."
 ```
 
-The definition file syntax is compatible with :
+The definition file syntax is compatible with the following online translators :
 
 *   [Bing](https://www.bing.com/translator)
+*   [Collins](https://www.collinsdictionary.com/translator)
+*   [DatTranslations](https://www.daytranslations.com/freetranslation)
+*   [DeepL](https://www.deepl.com/translator)
 *   [Google](https://translate.google.com)
 *   [Promt](https://www.online-translator.com)
 *   [Reverso](http://www.reverso.net/text_translation.aspx)
+*   [Systran](http://www.systranet.com/translate)
 *   [Yandex](https://translate.yandex.com)
 
 ### Constant mirroring
@@ -515,13 +519,14 @@ When the `--mirror` option is used :
 *   all constants declared before the first function are sorted in the same order as in the source language;
 *   any missing constant is automatically added, using the translations provided by the `.ld` definition files.
 
-
 ### Definition picking
 
 When the `--pick` option is used, the constants definitions stored in the `.lt` translation files are matched
 with each other.
 
 They are sorted by frequency, and the most used are automatically selected.
+
+When several definitions have the same frequency, the first one is picked.
 
 Definitions are provided in groups.
 
