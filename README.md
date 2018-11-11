@@ -491,7 +491,7 @@ Matching definitions must have the same line number.
 
 An empty line is considered as a missing entry.
 
-Multiline definitions are split over several lines prefixed with four spaces.
+Definitions which include the newline character (`§`) are split over several lines, using a four space indentation.
 
 ```lua
 "Spanish language"
@@ -517,23 +517,21 @@ The definition file syntax is compatible with the following online translators :
 
 When the `--mirror` option is used :
 
-*   all constants declared before the first function are sorted in the same order as in the source language;
-*   any missing constant is automatically added, using the translations provided by the `.ld` definition files.
+*   all constants declared before the first function are sorted in the target language using the same order as in the source language;
+*   missing constants are automatically added, using the definitions provided by the matching `.ld` files.
 
 ### Definition picking
 
 When the `--pick` option is used, the constants definitions stored in the `.lt` translation files are matched
-with each other.
+by line number.
 
-They are sorted by frequency, and the most used are automatically selected.
+Definitions are provided in named groups.
 
-When several definitions have the same frequency, the first one is picked.
+A source group name starts with `<`, while a target group name starts with `>`.
 
-Definitions are provided in groups.
+The most used target definitions are picked.
 
-Source groups start by `<`, while target groups start by `>`.
-
-Only target definitions will be picked.
+When several definitions share the same high frequency, only the first one is picked.
 
 ```lua
 < English
