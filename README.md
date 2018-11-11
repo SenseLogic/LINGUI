@@ -531,7 +531,7 @@ A source group name starts with `<`, while a target group name starts with `>`.
 
 The most used target definitions are picked.
 
-When several definitions share the same high frequency, only the first one is picked.
+If several definitions have the same highest frequency, the first one is picked.
 
 ```lua
 < English
