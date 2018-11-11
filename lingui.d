@@ -2780,6 +2780,16 @@ class FILE
 
             if ( definition_array.length > 0 )
             {
+                foreach ( checked_definition; definition_array )
+                {
+                    writeln( checked_definition.Name, " (", checked_definition.LineArray.length, ")" );
+
+                    if ( checked_definition.LineArray.length != definition_array[ 0 ].LineArray.length )
+                    {
+                        Abort( "Invalid line count : " ~ checked_definition.Name );
+                    }
+                }
+
                 for ( matched_line_index = 0;
                       matched_line_index < definition_array[ 0 ].LineArray.length;
                       ++matched_line_index )

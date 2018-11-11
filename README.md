@@ -541,6 +541,27 @@ If several definitions have the same highest frequency, the first one is picked.
     "Imagination can take you to the heavens."
     "Now imagine something."
 
+< French
+
+"Langue espagnole"
+"Les limites sont créées par l'esprit."
+    "L'imagination peut vous emmener au ciel."
+    "Maintenant imaginez quelque chose."
+
+> Collins/English
+
+"スペイン語"
+"限界は心によって作成される。"
+    "想像力は天に連れて行くことができます。"
+    "今は何かを想像する"
+
+> Collins/French
+
+"スペイン語"
+"限界は精神によって作成される。"
+    "想像力は天国に連れて行くことができます。"
+    "今は何かを想像する"
+
 > Yandex/English
 
 "スペイン語"
@@ -548,18 +569,25 @@ If several definitions have the same highest frequency, the first one is picked.
     "想像力は天に連れて行くことができます。"
     "今何かを想像してみてください。"
 
-> Google/English
+> Yandex/French
 
 "スペイン語"
-"限界は心で作られている。"
-    "想像力はあなたを天に連れて行くことができます。"
-    "今、何かを想像してください。"
+"境界は心によって作成されます。"
+    "想像力は天国にあなたを取ることができます。"
+    "今何かを想像してください。"
 
 > Reverso/English
 
 "スペインの言語"
 "限度が心によって作られます。"
     "想像力があなたを天に導くことができます。"
+    "今何かを想像してください。"
+
+> Reverso/French
+
+"スペインの言語"
+"限界は精神によって作られます。"
+    "想像力はあなたを空に導くことができます。"
     "今何かを想像してください。"
 ```
 

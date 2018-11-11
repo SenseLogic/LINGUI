@@ -96,11 +96,18 @@
     "想像力は天国に行くことができます。"
     "今何かを想像してください。"
 
-> WordLingo
+> WorldLingo/English
 
-"スペイン語の"
+"スペイン語"
 "限界は心によって作成される。"
-    "想像天に連れて行くことができる。は"
+    "想像天に連れて行くことができる。"
+    "今想像しなさい何かを。"
+
+> WorldLingo/French
+
+"スペイン語」は"
+"精神によって「限界作成される。"
+    "想像空に連れて行くことができる。"
     "今想像しなさい何かを。"
 
 > DayTranslations/English
@@ -129,6 +136,30 @@
 "Langue coréenne"
 "Langue chinoise"
 
+> Reverso/English
+
+"日本語"
+"韓国語"
+"中国語"
+
+> Reverso/French
+
+"日本語"
+"韓国語"
+"中国語"
+
+> Collins/English
+
+"国語"
+"韓国語"
+"中国語の言語"
+
+> Collins/French
+
+"国語"
+"韓国語"
+"中国語の言語"
+
 > Yandex/English
 
 "日本語"
@@ -141,6 +172,18 @@
 "韓国語"
 "中国語"
 
+> Promt/English
+
+"日本語"
+"韓国の言語"
+"中国の言語"
+
+> Promt/French
+
+"日本語"
+"韓国の言語"
+"中国の言語"
+
 > Google/English
 
 "日本語"
@@ -148,18 +191,6 @@
 "中国語"
 
 > Google/French
-
-"日本語"
-"韓国語"
-"中国語"
-
-> Reverso/English
-
-"日本語"
-"韓国語"
-"中国語"
-
-> Reverso/French
 
 "日本語"
 "韓国語"
@@ -177,15 +208,26 @@
 "韓国語"
 "中国語の言語"
 
-> Promt/English
+> WorldLingo/English
 
 "日本語"
-"韓国の言語"
-"中国の言語"
+"韓国語の言語"
+"中国語の言語"
 
-> Promt/French
+> WorldLingo/French
 
 "日本語"
-"韓国の言語"
-"中国の言語"
+"韓国語の言語"
+"中国語の言語"
 
+> DayTranslations/English
+
+"日本語"
+"韓国語"
+"中国語"
+
+> Systran/English
+
+"日本語"
+"韓国語の言語"
+"中国語"
