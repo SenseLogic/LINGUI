@@ -2758,8 +2758,9 @@ class FILE
                             definition_array ~= definition;
                         }
                     }
-                    else if ( line.startsWith( '"' )
-                         || line.startsWith( "    \"" ) )
+                    else if ( ( line.startsWith( '"' )
+                                || line.startsWith( "    \"" ) )
+                              && line.endsWith( '"' ) )
                     {
                         if ( definition !is null )
                         {
