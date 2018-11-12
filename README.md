@@ -502,16 +502,16 @@ Definitions which include the newline character (`§`) are split over several li
 
 The definition file syntax is compatible with the following online translators :
 
-*   [Reverso](http://www.reverso.net/text_translation.aspx)
-*   [Collins](https://www.collinsdictionary.com/translator)
-*   [Yandex](https://translate.yandex.com)
-*   [Promt](https://www.online-translator.com)
-*   [Google](https://translate.google.com)
 *   [Bing](https://www.bing.com/translator)
-*   [Systran](http://www.systranet.com/translate)
-*   [DeepL](https://www.deepl.com/translator)
-*   [WorldLingo](http://www.worldlingo.com/products_services/worldlingo_translator.html)
+*   [Collins](https://www.collinsdictionary.com/translator)
 *   [DayTranslations](https://www.daytranslations.com/freetranslation)
+*   [DeepL](https://www.deepl.com/translator)
+*   [Google](https://translate.google.com)
+*   [Promt](https://www.online-translator.com)
+*   [Reverso](http://www.reverso.net/text_translation.aspx)
+*   [Systran](http://www.systranet.com/translate)
+*   [WorldLingo](http://www.worldlingo.com/products_services/worldlingo_translator.html)
+*   [Yandex](https://translate.yandex.com)
 
 ### Constant mirroring
 
