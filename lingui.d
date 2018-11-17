@@ -985,6 +985,28 @@ class RULE
 
     // ~~
 
+    void FindDuplicateConstants(
+        )
+    {
+        foreach ( constant_rule_index, constant_rule; SubRuleArray )
+        {
+            if ( constant_rule.IsStringConstant() )
+            {
+                foreach ( other_constant_rule_index, other_constant_rule; SubRuleArray )
+                {
+                    if ( other_constant_rule_index > constant_rule_index
+                         && other_constant_rule.IsStringConstant()
+                         && other_constant_rule.Text == constant_rule.Text )
+                    {
+                        Warn( "Duplicate " ~ TokenArray[ 0 ] ~ " constant : " ~ constant_rule.Text );
+                    }
+                }
+            }
+        }
+    }
+
+    // ~~
+
     void FindMissingConstants(
         )
     {
@@ -997,7 +1019,7 @@ class RULE
             {
                 foreach ( language_rule; SuperRule.SubRuleArray )
                 {
-                    if ( language_rule != this
+                    if ( language_rule !is this
                          && language_rule.BaseLanguageRule == BaseLanguageRule )
                     {
                         constant_is_found = false;
@@ -2873,6 +2895,7 @@ class SCRIPT
         {
             if ( language_rule.BaseLanguageRule !is null )
             {
+                language_rule.FindDuplicateConstants();
                 language_rule.FindMissingConstants();
                 language_rule.FindMissingFunctions();
             }
