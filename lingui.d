@@ -3289,6 +3289,8 @@ class SCRIPT
         dstring
             input_folder_path;
 
+        ParseRules();
+
         if ( Rule.SubRuleArray.length > 0 )
         {
             foreach( language_rule; Rule.SubRuleArray )
@@ -3338,8 +3340,6 @@ class SCRIPT
             prefix_character_index,
             character_index,
             first_character_index;
-
-        ParseRules();
 
         foreach ( prefix; [ "HasTranslation(", "GetTranslation(", "GetText(" ] )
         {
@@ -3421,6 +3421,8 @@ class SCRIPT
     void FindConstants(
         )
     {
+        ParseRules();
+
         foreach ( folder_path; FolderPathArray )
         {
             foreach ( file_filter; [ "*.cs", "*.d", "*.dart" ] )
@@ -3460,7 +3462,6 @@ class SCRIPT
              || DOptionIsEnabled
              || DartOptionIsEnabled )
         {
-            ParseRules();
             WriteFiles();
         }
 
