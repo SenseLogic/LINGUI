@@ -24,7 +24,7 @@ import core.stdc.stdlib : exit;
 import std.algorithm : countUntil, sort;
 import std.array : replicate;
 import std.conv : to;
-import std.file : exists, readText, thisExePath, write, FileException;
+import std.file : dirEntries, exists, readText, thisExePath, write, SpanMode, FileException;
 import std.path : dirName;
 import std.stdio : writeln;
 import std.string : endsWith, indexOf, join, replace, startsWith, split, strip, stripRight, toLower, toUpper;
@@ -1088,6 +1088,27 @@ class RULE
 
     // ~~
 
+    bool FindConstant(
+        dstring constant_name
+        )
+    {
+        foreach ( language_rule; SubRuleArray )
+        {
+            foreach ( constant_rule; language_rule.SubRuleArray )
+            {
+                if ( constant_rule.IsStringConstant()
+                     && constant_rule.Text == constant_name )
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // ~~
+
     void AddVarCode(
         CODE code
         )
@@ -1953,14 +1974,14 @@ class RULE
         )
     {
         bool
-            it_is_in_string_literal;
+            character_is_in_string_literal;
         dchar
             character,
             delimiter_character;
         long
             character_index;
 
-        it_is_in_string_literal = false;
+        character_is_in_string_literal = false;
 
         TokenArray.length = 0;
         TokenArray ~= "";
@@ -1971,7 +1992,7 @@ class RULE
         {
             character = Text[ character_index ];
 
-            if ( it_is_in_string_literal )
+            if ( character_is_in_string_literal )
             {
                 TokenArray[ $ - 1 ] ~= character;
 
@@ -1984,7 +2005,7 @@ class RULE
                 }
                 else if ( character == delimiter_character )
                 {
-                    it_is_in_string_literal = false;
+                    character_is_in_string_literal = false;
                 }
             }
             else if ( character == ' ' )
@@ -2002,7 +2023,7 @@ class RULE
                 {
                     delimiter_character = character;
 
-                    it_is_in_string_literal = true;
+                    character_is_in_string_literal = true;
                 }
                 else if ( character == ',' )
                 {
@@ -2377,8 +2398,8 @@ class BLOCK
         )
     {
         bool
-            it_is_in_character_literal,
-            it_is_in_string_literal;
+            character_is_in_character_literal,
+            character_is_in_string_literal;
         dchar
             source_character;
         dstring
@@ -2387,8 +2408,8 @@ class BLOCK
         long
             source_character_index;
 
-        it_is_in_string_literal = false;
-        it_is_in_character_literal = false;
+        character_is_in_string_literal = false;
+        character_is_in_character_literal = false;
 
         for ( source_character_index = 0;
               source_character_index < source_line.length;
@@ -2396,14 +2417,14 @@ class BLOCK
         {
             source_character = source_line[ source_character_index ];
 
-            if ( it_is_in_string_literal )
+            if ( character_is_in_string_literal )
             {
                 if ( source_character == '"' )
                 {
                     source_definition ~= source_character;
                     target_line ~= GetTargetDefinition( source_definition, source_file.DefinitionFile, target_file.DefinitionFile );
 
-                    it_is_in_string_literal = false;
+                    character_is_in_string_literal = false;
                 }
                 else if ( source_character == '\\' )
                 {
@@ -2425,13 +2446,13 @@ class BLOCK
                     source_definition ~= source_character;
                 }
             }
-            else if ( it_is_in_character_literal )
+            else if ( character_is_in_character_literal )
             {
                 target_line ~= source_character;
 
                 if ( source_character == '\'' )
                 {
-                    it_is_in_character_literal = false;
+                    character_is_in_character_literal = false;
                 }
                 else if ( source_character == '\\'
                           && source_character_index + 1 < source_line.length )
@@ -2446,13 +2467,13 @@ class BLOCK
                 source_definition = "";
                 source_definition ~= source_character;
 
-                it_is_in_string_literal = true;
+                character_is_in_string_literal = true;
             }
             else if ( source_character == '\'' )
             {
                 target_line ~= source_character;
 
-                it_is_in_character_literal = true;
+                character_is_in_character_literal = true;
             }
             else
             {
@@ -2506,8 +2527,8 @@ class BLOCK
         )
     {
         bool
-            it_is_in_character_literal,
-            it_is_in_string_literal;
+            character_is_in_character_literal,
+            character_is_in_string_literal;
         dchar
             character;
         dstring
@@ -2515,8 +2536,8 @@ class BLOCK
         long
             character_index;
 
-        it_is_in_string_literal = false;
-        it_is_in_character_literal = false;
+        character_is_in_string_literal = false;
+        character_is_in_character_literal = false;
 
         foreach ( line; LineArray )
         {
@@ -2526,14 +2547,14 @@ class BLOCK
             {
                 character = line[ character_index ];
 
-                if ( it_is_in_string_literal )
+                if ( character_is_in_string_literal )
                 {
                     if ( character == '"' )
                     {
                         definition ~= character;
                         definition_file.LineArray ~= definition;
 
-                        it_is_in_string_literal = false;
+                        character_is_in_string_literal = false;
                     }
                     else if ( character == '§' )
                     {
@@ -2555,11 +2576,11 @@ class BLOCK
                         definition ~= character;
                     }
                 }
-                else if ( it_is_in_character_literal )
+                else if ( character_is_in_character_literal )
                 {
                     if ( character == '\'' )
                     {
-                        it_is_in_character_literal = false;
+                        character_is_in_character_literal = false;
                     }
                     else if ( character == '\\'
                               && character_index + 1 < line.length )
@@ -2572,11 +2593,11 @@ class BLOCK
                     definition = "";
                     definition ~= character;
 
-                    it_is_in_string_literal = true;
+                    character_is_in_string_literal = true;
                 }
                 else if ( character == '\'' )
                 {
-                    it_is_in_character_literal = true;
+                    character_is_in_character_literal = true;
                 }
             }
         }
@@ -3302,6 +3323,119 @@ class SCRIPT
         }
     }
 
+    // ~~
+
+    void FindConstants(
+        dstring text
+        )
+    {
+        dchar
+            character,
+            delimiter_character;
+        dstring
+            constant_name;
+        long
+            prefix_character_index,
+            character_index,
+            first_character_index;
+
+        ParseRules();
+
+        foreach ( prefix; [ "HasTranslation(", "GetTranslation(", "GetText(" ] )
+        {
+            first_character_index = 0;
+
+            while ( first_character_index < text.length )
+            {
+                prefix_character_index = text.indexOf( prefix, first_character_index );
+
+                if ( prefix_character_index >= 0 )
+                {
+                    first_character_index = prefix_character_index + prefix.length;
+                    character_index = first_character_index;
+
+                    while ( character_index < text.length
+                            && IsBlankCharacter( text[ character_index ] ) )
+                    {
+                        ++character_index;
+                    }
+
+                    if ( character_index < text.length )
+                    {
+                        delimiter_character = text[ character_index ];
+
+                        if ( delimiter_character == '\''
+                             || delimiter_character == '"' )
+                        {
+                            constant_name = "\"";
+
+                            ++character_index;
+
+                            while ( character_index < text.length )
+                            {
+                                character = text[ character_index ];
+
+                                if ( character == delimiter_character )
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    constant_name ~= character;
+
+                                    ++character_index;
+
+                                    if ( character == '\\' )
+                                    {
+                                        if ( character_index < text.length )
+                                        {
+                                            constant_name ~= text[ character_index ];
+
+                                            ++character_index;
+                                        }
+                                    }
+                                }
+                            }
+
+                            constant_name ~= "\"";
+
+                            first_character_index = character_index;
+
+                            if ( !Rule.FindConstant( constant_name ) )
+                            {
+                                Warn( "Unknown constant : " ~ constant_name );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    // ~~
+
+    void FindConstants(
+        )
+    {
+        foreach ( folder_path; FolderPathArray )
+        {
+            foreach ( file_filter; [ "*.cs", "*.d", "*.dart" ] )
+            {
+                foreach ( folder_entry; dirEntries( folder_path.to!string(), file_filter, SpanMode.depth ) )
+                {
+                    if ( folder_entry.isFile() )
+                    {
+                        FindConstants( ReadText( folder_entry.name().to!dstring() ) );
+                    }
+                }
+            }
+        }
+    }
+
     // -- OPERATIONS
 
     void Execute(
@@ -3329,6 +3463,11 @@ class SCRIPT
             ParseRules();
             WriteFiles();
         }
+
+        if ( FindOptionIsEnabled )
+        {
+            FindConstants();
+        }
     }
 }
 
@@ -3341,6 +3480,7 @@ bool
     DOptionIsEnabled,
     DartOptionIsEnabled,
     ExtractOptionIsEnabled,
+    FindOptionIsEnabled,
     FloatOptionIsEnabled,
     PreviewOptionIsEnabled,
     PickOptionIsEnabled,
@@ -3352,6 +3492,7 @@ dstring
     OutputFolderPath,
     SourceLanguageName;
 dstring[]
+    FolderPathArray,
     FilePathArray;
 
 // -- FUNCTIONS
@@ -3398,6 +3539,19 @@ void Abort(
 
 // ~~
 
+bool IsBlankCharacter(
+    dchar character
+    )
+{
+    return
+        character == ' '
+        || character == '\t'
+        || character == '\r'
+        || character == '\n';
+}
+
+// ~~
+
 long GetIndentationSpaceCount(
     dstring text
     )
@@ -3414,29 +3568,6 @@ long GetIndentationSpaceCount(
     }
 
     return indentation_space_count;
-}
-
-// ~~
-
-dstring ReadText(
-    dstring file_path
-    )
-{
-    dstring
-        file_text;
-
-    writeln( "Reading file : ", file_path );
-
-    try
-    {
-        file_text = file_path.readText().to!dstring();
-    }
-    catch ( FileException file_exception )
-    {
-        Abort( "Can't read file : " ~ file_path, file_exception );
-    }
-
-    return file_text;
 }
 
 // ~~
@@ -3463,6 +3594,29 @@ void WriteText(
             Abort( "Can't write file : " ~ file_path, file_exception );
         }
     }
+}
+
+// ~~
+
+dstring ReadText(
+    dstring file_path
+    )
+{
+    dstring
+        file_text;
+
+    writeln( "Reading file : ", file_path );
+
+    try
+    {
+        file_text = file_path.readText().to!dstring();
+    }
+    catch ( FileException file_exception )
+    {
+        Abort( "Can't read file : " ~ file_path, file_exception );
+    }
+
+    return file_text;
 }
 
 // ~~
@@ -3524,10 +3678,6 @@ void main(
 
     argument_array = argument_array[ 1 .. $ ];
 
-    MirrorOptionIsEnabled = false;
-    ExtractOptionIsEnabled = false;
-    SourceLanguageName = "";
-    PickOptionIsEnabled = false;
     CsOptionIsEnabled = false;
     DOptionIsEnabled = false;
     DartOptionIsEnabled = false;
@@ -3538,6 +3688,12 @@ void main(
     UpperCaseOptionIsEnabled = false;
     CheckOptionIsEnabled = false;
     PreviewOptionIsEnabled = false;
+    FindOptionIsEnabled = false;
+    FolderPathArray = null;
+    MirrorOptionIsEnabled = false;
+    ExtractOptionIsEnabled = false;
+    SourceLanguageName = "";
+    PickOptionIsEnabled = false;
     FilePathArray = null;
     OutputFolderPath = "";
 
@@ -3548,23 +3704,7 @@ void main(
 
         argument_array = argument_array[ 1 .. $ ];
 
-        if ( option == "--mirror"
-             && argument_array.length >= 1 )
-        {
-            MirrorOptionIsEnabled = true;
-            SourceLanguageName = argument_array[ 0 ].to!dstring();
-
-            argument_array = argument_array[ 1 .. $ ];
-        }
-        else if ( option == "--extract" )
-        {
-            ExtractOptionIsEnabled = true;
-        }
-        else if ( option == "--pick" )
-        {
-            PickOptionIsEnabled = true;
-        }
-        else if ( option == "--cs"
+        if ( option == "--cs"
                   && !DOptionIsEnabled
                   && !DartOptionIsEnabled )
         {
@@ -3608,6 +3748,30 @@ void main(
         else if ( option == "--preview" )
         {
             PreviewOptionIsEnabled = true;
+        }
+        else if ( option == "--find"
+             && argument_array.length >= 1 )
+        {
+            FindOptionIsEnabled = true;
+            FolderPathArray ~= argument_array[ 0 ].to!dstring();
+
+            argument_array = argument_array[ 1 .. $ ];
+        }
+        else if ( option == "--mirror"
+             && argument_array.length >= 1 )
+        {
+            MirrorOptionIsEnabled = true;
+            SourceLanguageName = argument_array[ 0 ].to!dstring();
+
+            argument_array = argument_array[ 1 .. $ ];
+        }
+        else if ( option == "--extract" )
+        {
+            ExtractOptionIsEnabled = true;
+        }
+        else if ( option == "--pick" )
+        {
+            PickOptionIsEnabled = true;
         }
         else
         {
@@ -3667,7 +3831,8 @@ void main(
                 && OutputFolderPath.length > 0 )
               || MirrorOptionIsEnabled
               || ExtractOptionIsEnabled
-              || PickOptionIsEnabled )
+              || PickOptionIsEnabled
+              || FindOptionIsEnabled )
     {
         script = new SCRIPT();
         script.Execute();
@@ -3676,9 +3841,6 @@ void main(
     {
         writeln( "Usage : lingui [options] language.lg first_language.lg second_language.lg ... OUTPUT_FOLDER/" );
         writeln( "Options :" );
-        writeln( "    --mirror ENGLISH_LANGUAGE" );
-        writeln( "    --extract" );
-        writeln( "    --pick" );
         writeln( "    --cs" );
         writeln( "    --d" );
         writeln( "    --dart" );
@@ -3688,9 +3850,14 @@ void main(
         writeln( "    --uppercase" );
         writeln( "    --check" );
         writeln( "    --preview" );
+        writeln( "    --find CODE_FOLDER/" );
+        writeln( "    --mirror ENGLISH_LANGUAGE" );
+        writeln( "    --extract" );
+        writeln( "    --pick" );
         writeln( "Examples :" );
         writeln( "    lingui --dart --check --base --namespace game language.lg english_language.lg german_language.lg DART/" );
         writeln( "    lingui --cs --float language.lg english_language.lg german_language.lg CS/" );
+        writeln( "    lingui --find CODE_FOLDER/ language.lg english_language.lg french_language.lg spanish_language.lg" );
         writeln( "    lingui --mirror ENGLISH_LANGUAGE --preview language.lg english_language.lg french_language.lg spanish_language.lg" );
         writeln( "    lingui --extract --preview language.lg english_language.lg french_language.lg spanish_language.lg" );
         writeln( "    lingui --pick japanese_language.lg" );

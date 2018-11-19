@@ -620,9 +620,6 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 ### Options
 
 ```
---mirror SOURCE_LANGUAGE : mirror the translation constants of this language
---extract : extract the language definitions
---pick : pick the best translations
 --cs : generate C# files
 --d : generate D files
 --dart : generate Dart files
@@ -632,6 +629,10 @@ lingui [options] language.lg language.lg first_language.lg second_language.lg ..
 --uppercase : generate uppercase filenames
 --check : check for missing constants or functions
 --preview : preview the changes without applying them
+--find CODE_FOLDER/ : find the constants used by the code inside this folder
+--mirror SOURCE_LANGUAGE : mirror the translation constants of this language
+--extract : extract the language definitions
+--pick : pick the best translations
 ```
 
 The `--cs`, `--d` and `--dart` options are mutually exclusive.
@@ -652,6 +653,12 @@ lingui --cs --float language.lg english_language.lg german_language.lg CS/
 Converts Lingui files to C# source code files, using single precision numbers.
 
 ```bash
+lingui --find CODE_FOLDER/ language.lg english_language.lg french_language.lg spanish_language.lg
+```
+
+Find the constants used by the code inside "CODE_FOLDER/".
+
+```bash
 lingui --mirror ENGLISH_LANGUAGE --preview language.lg english_language.lg french_language.lg spanish_language.lg
 ```
 
@@ -668,7 +675,6 @@ lingui --pick japanese_language.lg
 ```
 
 Pick the best translations for this `.lg` file using its matching `.lt` file.
-
 
 ## Limitations
 
