@@ -3331,86 +3331,144 @@ class SCRIPT
         dstring text
         )
     {
+        bool
+            character_is_in_long_comment,
+            character_is_in_short_comment,
+            character_is_in_string_literal;
         dchar
             character,
             delimiter_character;
         dstring
             constant_name;
         long
-            prefix_character_index,
             character_index,
-            first_character_index;
+            line_index,
+            next_character_index;
 
-        foreach ( prefix; [ "HasTranslation(", "GetTranslation(", "GetText(" ] )
+        character_is_in_short_comment = false;
+        character_is_in_long_comment = false;
+        character_is_in_string_literal = false;
+
+        for ( character_index = 0;
+              character_index < text.length;
+              ++character_index )
         {
-            first_character_index = 0;
+            character = text[ character_index ];
 
-            while ( first_character_index < text.length )
+            if ( character_is_in_short_comment )
             {
-                prefix_character_index = text.indexOf( prefix, first_character_index );
-
-                if ( prefix_character_index >= 0 )
+                if ( character == '\n' )
                 {
-                    first_character_index = prefix_character_index + prefix.length;
-                    character_index = first_character_index;
-
-                    while ( character_index < text.length
-                            && IsBlankCharacter( text[ character_index ] ) )
+                    character_is_in_short_comment = false;
+                }
+            }
+            else if ( character_is_in_long_comment )
+            {
+                if ( character == '*'
+                     && character_index + 1 < text.length
+                     && text[ character_index + 1 ] == '/' )
+                {
+                    character_is_in_long_comment = false;
+                    ++character_index;
+                }
+            }
+            else if ( character_is_in_string_literal )
+            {
+                if ( character == delimiter_character )
+                {
+                    character_is_in_string_literal = false;
+                }
+                else if ( character == '\\' )
+                {
+                    ++character_index;
+                }
+            }
+            else if ( character == '/'
+                      && character_index + 1 < text.length
+                      && text[ character_index + 1 ] == '/' )
+            {
+                character_is_in_short_comment = true;
+                ++character_index;
+            }
+            else if ( character == '*'
+                      && character_index + 1 < text.length
+                      && text[ character_index + 1 ] == '/' )
+            {
+                character_is_in_long_comment = true;
+                ++character_index;
+            }
+            else if ( character == '\''
+                      || character == '"' )
+            {
+                character_is_in_string_literal = true;
+                delimiter_character = character;
+            }
+            else
+            {
+                foreach ( prefix; [ "HasTranslation(", "GetTranslation(", "GetText(" ] )
+                {
+                    if ( text[ character_index .. $ ].startsWith( prefix ) )
                     {
-                        ++character_index;
-                    }
+                        character_index += prefix.length;
 
-                    if ( character_index < text.length )
-                    {
-                        delimiter_character = text[ character_index ];
-
-                        if ( delimiter_character == '\''
-                             || delimiter_character == '"' )
+                        while ( character_index < text.length
+                                && IsBlankCharacter( text[ character_index ] ) )
                         {
-                            constant_name = "\"";
-
                             ++character_index;
+                        }
 
-                            while ( character_index < text.length )
+                        if ( character_index < text.length )
+                        {
+                            delimiter_character = text[ character_index ];
+
+                            if ( delimiter_character == '\''
+                                 || delimiter_character == '"' )
                             {
-                                character = text[ character_index ];
+                                constant_name = "\"";
 
-                                if ( character == delimiter_character )
+                                ++character_index;
+
+                                while ( character_index < text.length )
                                 {
-                                    break;
-                                }
-                                else
-                                {
-                                    constant_name ~= character;
+                                    character = text[ character_index ];
 
-                                    ++character_index;
-
-                                    if ( character == '\\' )
+                                    if ( character == delimiter_character )
                                     {
-                                        if ( character_index < text.length )
-                                        {
-                                            constant_name ~= text[ character_index ];
+                                        ++character_index;
 
-                                            ++character_index;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        constant_name ~= character;
+
+                                        ++character_index;
+
+                                        if ( character == '\\' )
+                                        {
+                                            if ( character_index < text.length )
+                                            {
+                                                constant_name ~= text[ character_index ];
+
+                                                ++character_index;
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            constant_name ~= "\"";
+                                constant_name ~= "\"";
 
-                            first_character_index = character_index;
-
-                            if ( !Rule.FindConstant( constant_name ) )
-                            {
-                                Warn( "Unknown constant : " ~ constant_name );
+                                if ( !Rule.FindConstant( constant_name ) )
+                                {
+                                    Warn( "Unknown constant : " ~ constant_name );
+                                }
                             }
                         }
+
+                        --character_index;
+
+                        break;
                     }
-                }
-                else
-                {
-                    break;
                 }
             }
         }
