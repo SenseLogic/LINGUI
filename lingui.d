@@ -1064,13 +1064,16 @@ class RULE
         foreach ( base_function_rule; base_language_rule.SubRuleArray )
         {
             if ( !base_function_rule.IsStringConstant()
+                 && !base_function_rule.IsNativeImport
                  && base_function_rule.SubRuleArray.length == 0 )
             {
                 function_is_found = false;
 
                 foreach ( function_rule; SubRuleArray )
                 {
-                    if ( function_rule.Text == base_function_rule.Text )
+                    if ( !function_rule.IsStringConstant()
+                         && !function_rule.IsNativeImport
+                         && function_rule.Text == base_function_rule.Text )
                     {
                         function_is_found = true;
 
