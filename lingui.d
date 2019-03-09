@@ -3393,9 +3393,9 @@ class SCRIPT
                 character_is_in_short_comment = true;
                 ++character_index;
             }
-            else if ( character == '*'
+            else if ( character == '/'
                       && character_index + 1 < text.length
-                      && text[ character_index + 1 ] == '/' )
+                      && text[ character_index + 1 ] == '*' )
             {
                 character_is_in_long_comment = true;
                 ++character_index;
