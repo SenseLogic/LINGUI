@@ -603,7 +603,7 @@ Operators and variables must be separated by spaces.
 
 ### Installation
 
-Install the [DMD 2 compiler](https://dlang.org/download.html) (choosing the MinGW setup option on Windows).
+Install the [DMD 2 compiler](https://dlang.org/download.html) ((using the MinGW setup option on Windows)).
 
 Then build the executable with the following command line :
 
