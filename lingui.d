@@ -3490,9 +3490,9 @@ class SCRIPT
             {
                 foreach ( folder_entry; dirEntries( folder_path.to!string(), file_filter, SpanMode.depth ) )
                 {
-                    if ( folder_entry.isFile() )
+                    if ( folder_entry.isFile )
                     {
-                        FindConstants( ReadText( folder_entry.name().to!dstring() ) );
+                        FindConstants( ReadText( folder_entry.name.to!dstring() ) );
                     }
                 }
             }
