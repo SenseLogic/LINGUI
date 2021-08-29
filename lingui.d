@@ -24,7 +24,7 @@ import core.stdc.stdlib : exit;
 import std.algorithm : countUntil, sort;
 import std.array : replicate;
 import std.conv : to;
-import std.file : dirEntries, exists, readText, thisExePath, write, SpanMode, FileException;
+import std.file : dirEntries, exists, readText, thisExePath, write, SpanMode;
 import std.path : dirName;
 import std.stdio : writeln;
 import std.string : endsWith, indexOf, join, replace, startsWith, split, strip, stripRight, toLower, toUpper;
@@ -3590,11 +3590,11 @@ void Abort(
 
 void Abort(
     dstring message,
-    FileException file_exception
+    Exception exception
     )
 {
     PrintError( message );
-    PrintError( file_exception.msg.to!dstring() );
+    PrintError( exception.msg.to!dstring() );
 
     exit( -1 );
 }
@@ -3651,9 +3651,9 @@ void WriteText(
         {
             file_path.write( file_text.to!string() );
         }
-        catch ( FileException file_exception )
+        catch ( Exception exception )
         {
-            Abort( "Can't write file : " ~ file_path, file_exception );
+            Abort( "Can't write file : " ~ file_path, exception );
         }
     }
 }
@@ -3673,9 +3673,9 @@ dstring ReadText(
     {
         file_text = file_path.readText().to!dstring();
     }
-    catch ( FileException file_exception )
+    catch ( Exception exception )
     {
-        Abort( "Can't read file : " ~ file_path, file_exception );
+        Abort( "Can't read file : " ~ file_path, exception );
     }
 
     return file_text;
